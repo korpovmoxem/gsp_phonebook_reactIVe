@@ -6,7 +6,7 @@ import { TreeNode } from "./TreeNode";
 import { SidebarSkeleton } from "./SidebarSkeleton";
 import styled from "styled-components";
 
-const TreeWrapper = styled.div`
+const MainTreeWrapper = styled.div`
     display: flex;
     flex-direction: column;
     height: auto;
@@ -15,12 +15,16 @@ const TreeWrapper = styled.div`
     text-align: left;
     width: 300px;
     max-width: 300px;
-    background: #e5f0f9;
+    background: rgb(215, 236, 248);
     border-radius: 10px;
+`;
+
+const TreeWrapper = styled.div`
+    max-height: 90%;
     overflow-y: auto;
     scrollbar-width: thin;
     scroll-behavior: smooth;
-    scrollbar-color: gray transparent;
+    scrollbar-color: #1d75bb transparent;
 `;
 
 export const OrgSidebar: React.FC = () => {
@@ -46,16 +50,18 @@ export const OrgSidebar: React.FC = () => {
     if (isOrgLoading) return <SidebarSkeleton />;
 
     return (
-        <TreeWrapper>
+        <MainTreeWrapper>
             <h3 style={{ marginLeft: "15px" }}>Организации</h3>
-            {organizations.map((org, index) => (
-                <TreeNode
-                    key={`${org.ID}_${index}`}
-                    node={org}
-                    selectedId={selectedOrgId}
-                    onSelect={handleSelect}
-                />
-            ))}
-        </TreeWrapper>
+            <TreeWrapper>
+                {organizations.map((org, index) => (
+                    <TreeNode
+                        key={`${org.id}_${index}`}
+                        node={org}
+                        selectedId={selectedOrgId}
+                        onSelect={handleSelect}
+                    />
+                ))}
+            </TreeWrapper>
+        </MainTreeWrapper>
     );
 };

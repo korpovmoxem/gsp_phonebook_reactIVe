@@ -32,8 +32,8 @@ const ItemText = styled.span`
 export const TreeNode: React.FC<Props> = ({ node, selectedId, onSelect }) => {
     const [expanded, setExpanded] = useState(false);
 
-    const hasChildren = node.Children && node.Children.length > 0;
-    const isSelected = selectedId === node.ID;
+    const hasChildren = node.children && node.children.length > 0;
+    const isSelected = selectedId === node.id;
 
     return (
         <div style={{ paddingLeft: 20 }}>
@@ -43,7 +43,7 @@ export const TreeNode: React.FC<Props> = ({ node, selectedId, onSelect }) => {
                     fontWeight: isSelected ? "bold" : "normal",
                     display: "flex",
                 }}
-                onClick={() => onSelect(String(node.ID))}
+                onClick={() => onSelect(String(node.id))}
             >
                 {hasChildren && (
                     <span
@@ -60,13 +60,13 @@ export const TreeNode: React.FC<Props> = ({ node, selectedId, onSelect }) => {
                         &nbsp;
                     </span>
                 )}
-                <ItemText>{node.Name}</ItemText>
+                <ItemText>{node.name}</ItemText>
             </div>
             {expanded &&
                 hasChildren &&
-                node.Children.map((child, index) => (
+                node.children.map((child, index) => (
                     <TreeNode
-                        key={`${child.ID}__${index}`}
+                        key={`${child.id}__${index}`}
                         node={child}
                         selectedId={selectedId}
                         onSelect={onSelect}
