@@ -1,11 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { useOrgStore } from '../store/organizationStore';
-import { TreeNode } from './TreeNode';
-import { SidebarSkeleton } from './SidebarSkeleton';
-import styled from 'styled-components';
-
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useOrgStore } from "../store/organizationStore";
+import { TreeNode } from "./TreeNode";
+import { SidebarSkeleton } from "./SidebarSkeleton";
+import styled from "styled-components";
 
 const TreeWrapper = styled.div`
     display: flex;
@@ -22,35 +21,41 @@ const TreeWrapper = styled.div`
     scrollbar-width: thin;
     scroll-behavior: smooth;
     scrollbar-color: gray transparent;
-`
+`;
 
 export const OrgSidebar: React.FC = () => {
-  const { organizations, fetchTree, selectedOrgId, selectOrg, isOrgLoading } = useOrgStore();
-  const [searchParams, setSearchParams] = useSearchParams();
+    const { organizations, fetchTree, selectedOrgId, selectOrg, isOrgLoading } =
+        useOrgStore();
+    const [searchParams, setSearchParams] = useSearchParams();
 
-  useEffect(() => {
-    fetchTree();
-  }, []);
+    useEffect(() => {
+        fetchTree();
+    }, []);
 
-  useEffect(() => {
-    const orgId = searchParams.get('organizationId');
-    if (orgId) {
-      selectOrg(orgId);
-    }
-  }, [searchParams]);
+    useEffect(() => {
+        const orgId = searchParams.get("organizationId");
+        if (orgId) {
+            selectOrg(orgId);
+        }
+    }, [searchParams]);
 
-  const handleSelect = (id: string) => {
-    setSearchParams({ organizationId: id });
-  };
+    const handleSelect = (id: string) => {
+        setSearchParams({ organizationId: id });
+    };
 
-  if (isOrgLoading) return <SidebarSkeleton />;
+    if (isOrgLoading) return <SidebarSkeleton />;
 
-  return (
-    <TreeWrapper>
-      <h3 style={{marginLeft: '15px'}}>Организации</h3>
-      {organizations.map((org) => (
-        <TreeNode key={org.ID} node={org} selectedId={selectedOrgId} onSelect={handleSelect} />
-      ))}
-    </TreeWrapper>
-  );
+    return (
+        <TreeWrapper>
+            <h3 style={{ marginLeft: "15px" }}>Организации</h3>
+            {organizations.map((org, index) => (
+                <TreeNode
+                    key={`${org.ID}_${index}`}
+                    node={org}
+                    selectedId={selectedOrgId}
+                    onSelect={handleSelect}
+                />
+            ))}
+        </TreeWrapper>
+    );
 };
