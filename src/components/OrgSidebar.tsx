@@ -1,11 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useOrgStore } from "../store/organizationStore";
 import { TreeNode } from "./TreeNode";
 import { SidebarSkeleton } from "./SidebarSkeleton";
 import styled from "styled-components";
-import { getPathToNode } from "../utils/getPathToNode";
+import {
+    buildOrgIndex,
+    getPathToNodeFast,
+    OrgMap,
+} from "../utils/buildOrgIndex";
+import { toast } from "react-toastify";
+import { Organization } from "../types";
 
 const MainTreeWrapper = styled.div`
     display: flex;
@@ -16,7 +22,7 @@ const MainTreeWrapper = styled.div`
     text-align: left;
     width: 300px;
     max-width: 300px;
-    background: rgb(215, 236, 248);
+    background: white;
     border-radius: 10px;
 `;
 
@@ -25,33 +31,66 @@ const TreeWrapper = styled.div`
     overflow-y: auto;
     scrollbar-width: thin;
     scroll-behavior: smooth;
-    scrollbar-color: #1d75bb transparent;
+    scrollbar-color: rgb(199, 199, 199) transparent;
 `;
 
 export const OrgSidebar: React.FC = () => {
-    const { organizations, fetchTree, selectedOrgId, selectOrg, isOrgLoading } =
+    const { organizations, selectedOrgId, fetchTree, selectOrg, isOrgLoading } =
         useOrgStore();
     const [searchParams, setSearchParams] = useSearchParams();
     const [expandedIds, setExpandedIds] = useState<string[]>([]);
+    const [orgMap, setOrgMap] = useState<OrgMap>(new Map());
 
-    // Загружаем дерево при инициализации
+    const navigate = useNavigate();
+
+    // Загружаем дерево
     useEffect(() => {
         fetchTree();
     }, []);
 
-    // Следим за организациями и параметром в URL
+    // Строим индекс после загрузки
     useEffect(() => {
-        const id = searchParams.get("organizationId");
-        if (!id || organizations.length === 0) return;
+        if (organizations.length > 0) {
+            const map = buildOrgIndex(organizations);
+            setOrgMap(map);
+        }
+    }, [organizations]);
 
-        selectOrg(id); // загрузка сотрудников
+    // Выделение и раскрытие по ID из URL
+    useEffect(() => {
+        const orgId = searchParams.get("organizationId");
+        const depId = searchParams.get("departmentId");
+        if (!orgId || orgMap.size === 0) return;
 
-        const path = getPathToNode(organizations, id);
+        if (!orgMap.has(orgId)) {
+            console.warn(`Организация с ID ${orgId} не найдена.`);
+            searchParams.delete("organizationId");
+            navigate(
+                { pathname: "/", search: searchParams.toString() },
+                { replace: true }
+            );
+            toast.error("Проверьте правильность написания ссылки", {
+                position: "top-right",
+            });
+            return;
+        }
+
+        selectOrg(orgId);
+        const path = getPathToNodeFast(orgId, orgMap);
         if (path) setExpandedIds(path);
-    }, [searchParams, organizations]);
+    }, [searchParams, orgMap]);
 
-    const handleSelect = (id: string) => {
-        setSearchParams({ organizationId: id });
+    const handleSelect = (node: Organization) => {
+        console.log(node);
+        if (node.root) {
+            setSearchParams({ organizationId: node.id });
+        } else {
+            setSearchParams({
+                organizationId: node.organizationId || "",
+                departmentId: node.id,
+            });
+        }
+        // setSearchParams({ organizationId: id });
     };
 
     if (isOrgLoading) return <SidebarSkeleton />;

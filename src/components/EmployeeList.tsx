@@ -2,6 +2,9 @@ import { useEffect } from "react";
 import { useOrgStore } from "../store/organizationStore";
 import { EmployeeSkeleton } from "./EmployeeSkeleton";
 import styled from "styled-components";
+import PhotoDefault from "../materials/photo.jpg";
+import { PhoneOutgoingIcon, SendIcon } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
 
 const EmployeeListWrapperMain = styled.div`
     display: flex;
@@ -10,10 +13,17 @@ const EmployeeListWrapperMain = styled.div`
     margin: 10px;
     padding: 10px;
     text-align: left;
-    background: #f9f9f9;
+    background: white;
     border-radius: 10px;
     width: 100%;
+`;
+
+const EmployeeListWrapperTable = styled.div`
+    width: 100%;
     overflow-y: auto;
+    scrollbar-width: thin;
+    scroll-behavior: smooth;
+    scrollbar-color: rgb(199, 199, 199) transparent;
 `;
 
 const EmployeeListWrapper = styled.div`
@@ -25,6 +35,7 @@ const EmployeeListWrapper = styled.div`
 `;
 
 export const EmployeeList: React.FC = () => {
+    const [searchParams, setSearchParams] = useSearchParams();
     const {
         employees,
         selectedOrgId,
@@ -33,46 +44,89 @@ export const EmployeeList: React.FC = () => {
         totalCount,
     } = useOrgStore();
 
-    console.log("EmployeeList");
-    console.log(employees);
-
     useEffect(() => {
-        loadMoreEmployees();
+        console.log(123123123123);
+        console.log(searchParams.get("organizationId"));
+        console.log(searchParams.get("departmentId"));
+        if (
+            searchParams.get("organizationId") === null &&
+            searchParams.get("departmentId") === null
+        ) {
+            loadMoreEmployees();
+        }
     }, []);
 
-    if (!selectedOrgId) return <div>Выберите подразделение</div>;
     if (isEmpLoading && employees.length === 0) return <EmployeeSkeleton />;
 
     return (
         <EmployeeListWrapperMain style={{ padding: 10 }}>
             <h3>Сотрудники</h3>
-            <table style={{ border: "1px solid black" }}>
-                <thead style={{ position: "sticky" }}>
-                    <tr>
-                        <th style={{ position: "sticky" }}>ФИО</th>
-                        <th style={{ position: "sticky" }}>Должность</th>
-                        <th style={{ position: "sticky" }}>Почта</th>
-                        <th style={{ position: "sticky" }}>Телефон</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {employees.map((emp) => (
-                        <tr
-                            key={emp.id}
-                            style={{
-                                height: "100px",
-                                border: "1px solid black",
-                            }}
-                        >
-                            <td>{emp.name}</td>
-                            <td>{emp.position}</td>
-                            <td>{emp.mail}</td>
-                            <td>{emp.phone}</td>
+            <EmployeeListWrapperTable>
+                <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                    <thead>
+                        <tr style={{ textAlign: "left" }}>
+                            <th style={{ width: "100px" }}></th>
+                            <th>ФИО</th>
+                            <th>Почта</th>
+                            <th>Телефон</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+
+                    <tbody>
+                        {employees.map((emp) => (
+                            <tr
+                                key={emp.id}
+                                style={{
+                                    height: "100px",
+                                    borderBottom:
+                                        "1px solid rgb(235, 235, 235)",
+                                }}
+                            >
+                                <td>
+                                    <img
+                                        src={
+                                            emp.photo
+                                                ? `data:image/jpeg;base64,${emp.photo}`
+                                                : PhotoDefault
+                                        }
+                                        alt={emp.fullNameRus}
+                                        width="80px"
+                                    />
+                                </td>
+                                <td>
+                                    <div>{emp.fullNameRus}</div>
+                                    <div
+                                        style={{
+                                            fontSize: "14px",
+                                            color: "grey",
+                                        }}
+                                    >
+                                        {emp.positionTitle}
+                                    </div>
+                                </td>
+                                <td>
+                                    {emp.email}
+                                    {emp.email && (
+                                        <a href={`tel:${emp.email}`}>
+                                            <SendIcon size={13} />
+                                        </a>
+                                    )}
+                                </td>
+                                <td>
+                                    {emp.telephoneNumberCorp}
+                                    {emp.telephoneNumberCorp !== "" && (
+                                        <a
+                                            href={`tel:${emp.telephoneNumberCorp}`}
+                                        >
+                                            <PhoneOutgoingIcon size={13} />
+                                        </a>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </EmployeeListWrapperTable>
         </EmployeeListWrapperMain>
     );
 };

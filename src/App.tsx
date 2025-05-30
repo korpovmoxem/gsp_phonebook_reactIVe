@@ -7,33 +7,39 @@ import { EmployeeList } from "./components/EmployeeList";
 import { ToastContainer, Bounce } from "react-toastify";
 
 const MainWrapper = styled.div`
+    margin: auto;
+    max-width: 85%;
+`;
+
+const ContentWrapper = styled.div`
     display: flex;
     flex-direction: row;
-    height: calc(100vh - 170px);
-    margin-top: 80px; //Удалить после добавления шапки
+    height: calc(100vh - 100px);
 `;
 
 function App() {
     return (
         <BrowserRouter>
-            <div
-                style={{
-                    padding: "10px",
-                    display: "flex",
-                    flexDirection: "column",
-                    maxWidth: "250px",
-                }}
-            >
-                <img src={MainLogo} alt="ГазСтройПром" />
-                <img
-                    src={AdressBook}
-                    alt="ГазСтройПром"
-                    style={{ fill: "red" }}
-                />
-            </div>
             <MainWrapper>
-                <OrgSidebar />
-                <EmployeeList />
+                <div
+                    style={{
+                        padding: "10px",
+                        display: "flex",
+                        flexDirection: "column",
+                        maxWidth: "250px",
+                    }}
+                >
+                    <img src={MainLogo} alt="ГазСтройПром" />
+                    <img
+                        src={AdressBook}
+                        alt="ГазСтройПром"
+                        style={{ fill: "red" }}
+                    />
+                </div>
+                <ContentWrapper>
+                    <OrgSidebar />
+                    <EmployeeList />
+                </ContentWrapper>
             </MainWrapper>
             <ToastContainer
                 position="top-right"

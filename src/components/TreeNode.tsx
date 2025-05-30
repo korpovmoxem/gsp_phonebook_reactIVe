@@ -6,7 +6,7 @@ import { ChevronRight, ChevronDown } from "lucide-react";
 interface Props {
     node: Organization;
     selectedId: string | null;
-    onSelect: (id: string) => void;
+    onSelect: (id: Organization) => void;
     expandedIds: string[];
 }
 const ChevronDownButton = styled(ChevronDown)`
@@ -44,7 +44,7 @@ export const TreeNode = ({
     return (
         <div style={{ marginLeft: 10 }}>
             <div
-                onClick={() => onSelect(node.id)}
+                onClick={() => onSelect(node)}
                 style={{
                     cursor: "pointer",
                     fontWeight: node.id === selectedId ? "bold" : "normal",
