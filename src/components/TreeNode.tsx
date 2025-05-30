@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Organization } from "../types";
 import styled from "styled-components";
 import { ChevronRight, ChevronDown } from "lucide-react";
@@ -7,8 +7,8 @@ interface Props {
     node: Organization;
     selectedId: string | null;
     onSelect: (id: string) => void;
+    expandedIds: string[];
 }
-
 const ChevronDownButton = styled(ChevronDown)`
     cursor: pointer;
     &:hover {
@@ -29,27 +29,32 @@ const ItemText = styled.span`
     }
 `;
 
-export const TreeNode: React.FC<Props> = ({ node, selectedId, onSelect }) => {
+export const TreeNode = ({
+    node,
+    selectedId,
+    onSelect,
+    expandedIds,
+}: Props) => {
     const [expanded, setExpanded] = useState(false);
 
-    const hasChildren = node.children && node.children.length > 0;
-    const isSelected = selectedId === node.id;
+    useEffect(() => {
+        setExpanded(expandedIds.includes(node.id));
+    }, [expandedIds]);
 
     return (
-        <div style={{ paddingLeft: 20 }}>
+        <div style={{ marginLeft: 10 }}>
             <div
+                onClick={() => onSelect(node.id)}
                 style={{
                     cursor: "pointer",
-                    fontWeight: isSelected ? "bold" : "normal",
-                    display: "flex",
+                    fontWeight: node.id === selectedId ? "bold" : "normal",
                 }}
-                onClick={() => onSelect(String(node.id))}
             >
-                {hasChildren && (
+                {node.children.length > 0 && (
                     <span
                         onClick={(e) => {
                             e.stopPropagation();
-                            setExpanded(!expanded);
+                            setExpanded((prev) => !prev);
                         }}
                     >
                         {expanded ? (
@@ -57,19 +62,19 @@ export const TreeNode: React.FC<Props> = ({ node, selectedId, onSelect }) => {
                         ) : (
                             <ChevronRightButton />
                         )}
-                        &nbsp;
                     </span>
-                )}
+                )}{" "}
                 <ItemText>{node.name}</ItemText>
             </div>
+
             {expanded &&
-                hasChildren &&
                 node.children.map((child, index) => (
                     <TreeNode
                         key={`${child.id}__${index}`}
                         node={child}
                         selectedId={selectedId}
                         onSelect={onSelect}
+                        expandedIds={expandedIds}
                     />
                 ))}
         </div>

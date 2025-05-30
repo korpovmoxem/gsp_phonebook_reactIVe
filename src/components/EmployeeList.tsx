@@ -13,6 +13,7 @@ const EmployeeListWrapperMain = styled.div`
     background: #f9f9f9;
     border-radius: 10px;
     width: 100%;
+    overflow-y: auto;
 `;
 
 const EmployeeListWrapper = styled.div`
@@ -45,40 +46,33 @@ export const EmployeeList: React.FC = () => {
     return (
         <EmployeeListWrapperMain style={{ padding: 10 }}>
             <h3>Сотрудники</h3>
-            {/* <EmployeeListWrapper> */}
             <table style={{ border: "1px solid black" }}>
-                <thead>
-                    <th>ФИО</th>
-                    <th>Должность</th>
-                    <th>Почта</th>
-                    <th>Телефон</th>
+                <thead style={{ position: "sticky" }}>
+                    <tr>
+                        <th style={{ position: "sticky" }}>ФИО</th>
+                        <th style={{ position: "sticky" }}>Должность</th>
+                        <th style={{ position: "sticky" }}>Почта</th>
+                        <th style={{ position: "sticky" }}>Телефон</th>
+                    </tr>
                 </thead>
 
                 <tbody>
-                    <EmployeeListWrapper>
-                        {employees.map((emp) => (
-                            <tr
-                                key={emp.id}
-                                style={{
-                                    height: "100px",
-                                    border: "1px solid black",
-                                }}
-                            >
-                                <td>{emp.name}</td>
-                                <td>{emp.position}</td>
-                                <td>{emp.mail}</td>
-                                <td>{emp.phone}</td>
-                            </tr>
-                        ))}
-                    </EmployeeListWrapper>
+                    {employees.map((emp) => (
+                        <tr
+                            key={emp.id}
+                            style={{
+                                height: "100px",
+                                border: "1px solid black",
+                            }}
+                        >
+                            <td>{emp.name}</td>
+                            <td>{emp.position}</td>
+                            <td>{emp.mail}</td>
+                            <td>{emp.phone}</td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
-            {/* </EmployeeListWrapper> */}
-            {/* {employees.length < totalCount && (
-                <button onClick={loadMoreEmployees} disabled={isEmpLoading}>
-                    {isEmpLoading ? "Загрузка..." : "Загрузить ещё"}
-                </button>
-            )} */}
         </EmployeeListWrapperMain>
     );
 };

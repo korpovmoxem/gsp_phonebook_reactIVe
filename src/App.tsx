@@ -4,6 +4,7 @@ import styled from "styled-components";
 import MainLogo from "./materials/logo.svg";
 import AdressBook from "./materials/adressBook.svg";
 import { EmployeeList } from "./components/EmployeeList";
+import { ToastContainer, Bounce } from "react-toastify";
 
 const MainWrapper = styled.div`
     display: flex;
@@ -34,6 +35,19 @@ function App() {
                 <OrgSidebar />
                 <EmployeeList />
             </MainWrapper>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+                transition={Bounce}
+            />
         </BrowserRouter>
     );
 }

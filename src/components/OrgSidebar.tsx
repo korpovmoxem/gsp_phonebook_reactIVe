@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useOrgStore } from "../store/organizationStore";
 import { TreeNode } from "./TreeNode";
 import { SidebarSkeleton } from "./SidebarSkeleton";
 import styled from "styled-components";
+import { getPathToNode } from "../utils/getPathToNode";
 
 const MainTreeWrapper = styled.div`
     display: flex;
@@ -31,17 +32,23 @@ export const OrgSidebar: React.FC = () => {
     const { organizations, fetchTree, selectedOrgId, selectOrg, isOrgLoading } =
         useOrgStore();
     const [searchParams, setSearchParams] = useSearchParams();
+    const [expandedIds, setExpandedIds] = useState<string[]>([]);
 
+    // Загружаем дерево при инициализации
     useEffect(() => {
         fetchTree();
     }, []);
 
+    // Следим за организациями и параметром в URL
     useEffect(() => {
-        const orgId = searchParams.get("organizationId");
-        if (orgId) {
-            selectOrg(orgId);
-        }
-    }, [searchParams]);
+        const id = searchParams.get("organizationId");
+        if (!id || organizations.length === 0) return;
+
+        selectOrg(id); // загрузка сотрудников
+
+        const path = getPathToNode(organizations, id);
+        if (path) setExpandedIds(path);
+    }, [searchParams, organizations]);
 
     const handleSelect = (id: string) => {
         setSearchParams({ organizationId: id });
@@ -59,6 +66,7 @@ export const OrgSidebar: React.FC = () => {
                         node={org}
                         selectedId={selectedOrgId}
                         onSelect={handleSelect}
+                        expandedIds={expandedIds}
                     />
                 ))}
             </TreeWrapper>

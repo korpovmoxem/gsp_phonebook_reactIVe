@@ -1,5 +1,5 @@
 export interface Organization {
-  id: string | number;
+  id: string;
   name: string;
   children: Organization[];
 }
