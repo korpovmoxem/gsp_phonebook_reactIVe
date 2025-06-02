@@ -60,23 +60,41 @@ export const OrgSidebar: React.FC = () => {
     useEffect(() => {
         const orgId = searchParams.get("organizationId");
         const depId = searchParams.get("departmentId");
+        const id = depId || orgId;
+        console.log("++++++++");
+        console.log(orgId);
+        console.log(depId);
+        console.log(orgMap);
         if (!orgId || orgMap.size === 0) return;
 
-        if (!orgMap.has(orgId)) {
-            console.warn(`Организация с ID ${orgId} не найдена.`);
-            searchParams.delete("organizationId");
-            navigate(
-                { pathname: "/", search: searchParams.toString() },
-                { replace: true }
-            );
-            toast.error("Проверьте правильность написания ссылки", {
-                position: "top-right",
-            });
-            return;
+        if (depId === null) {
+        } else {
+            if (!orgMap.has(orgId)) {
+                console.warn(`Организация с ID ${orgId} не найдена.`);
+                searchParams.delete("organizationId");
+                navigate(
+                    { pathname: "/", search: searchParams.toString() },
+                    { replace: true }
+                );
+                toast.error("Проверьте правильность написания ссылки", {
+                    position: "top-right",
+                });
+                return;
+            } else if (!orgMap.has(depId)) {
+                console.warn(`Департамент с ID ${orgId} не найден.`);
+                searchParams.delete("departmentId");
+                navigate(
+                    { pathname: "/", search: searchParams.toString() },
+                    { replace: true }
+                );
+                toast.error("Проверьте правильность написания ссылки", {
+                    position: "top-right",
+                });
+            }
         }
 
-        selectOrg(orgId);
-        const path = getPathToNodeFast(orgId, orgMap);
+        selectOrg(orgId, depId);
+        const path = id ? getPathToNodeFast(id, orgMap) : null;
         if (path) setExpandedIds(path);
     }, [searchParams, orgMap]);
 

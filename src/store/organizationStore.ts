@@ -12,7 +12,7 @@ interface OrgState {
 	totalCount: number;
 
 	fetchTree: () => Promise<void>;
-	selectOrg: (id: string, page?: number) => Promise<void>;
+	selectOrg: (organizationId: string, departmentId: string | null) => Promise<void>;
 	loadMoreEmployees: () => Promise<void>;
 }
 
@@ -52,25 +52,49 @@ export const useOrgStore = create<OrgState>((set, get) => ({
 		
 	},
 
-	selectOrg: async (id, page = 1) => {
-		set({ selectedOrgId: id, isEmpLoading: true});
+	// selectOrg: async (id, page = 1) => {
+	// 	set({ selectedOrgId: id, isEmpLoading: true});
+
+	// 	try {
+	// 		console.log('ЗАПРОС')
+	// 		const response = await fetch(`http://172.16.153.53:8001/employee?organizationId=${id}`);
+			
+	// 		if (!response.ok) {
+	// 			throw new Error(`Ошибка HTTP! Код статуса: ${response.status}`);
+	// 		}
+
+	// 		const resultData = await response.json(); // Парсим JSON-данные
+
+	// 		set({ employees: resultData.result, isEmpLoading: false });
+	// 	} catch (err: any) {
+	// 		console.error('Ошибка при получении списка сотрудников данной организации:', err.message);
+	// 		toast.error('Ошибка при получении списка сотрудников данной организации. Попробуйте позже!', {
+	// 			position: 'top-right',
+	// 		});
+	// 	}
+	// },
+
+	selectOrg: async (organizationId, departmentId) => {
+		const id = departmentId || organizationId
+		set({ selectedOrgId: String(id), isEmpLoading: true });
+		console.log('-------------')
+		console.log(departmentId)
+		console.log(organizationId)
+		console.log(id)
 
 		try {
-			console.log('ЗАПРОС')
-			const response = await fetch(`http://172.16.153.53:8001/employee?organizationId=${id}`);
-			
-			if (!response.ok) {
-				throw new Error(`Ошибка HTTP! Код статуса: ${response.status}`);
-			}
+			const url = new URL('http://172.16.153.53:8001/employee');
+			url.searchParams.append('organizationId', organizationId);
+			if (departmentId) url.searchParams.append('departmentId', String(departmentId));
 
-			const resultData = await response.json(); // Парсим JSON-данные
-
-			set({ employees: resultData.result, isEmpLoading: false });
+			const res = await fetch(url.toString());
+			if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+			const data = await res.json();
+			set({ employees: data.result, isEmpLoading: false });
 		} catch (err: any) {
-			console.error('Ошибка при получении списка сотрудников данной организации:', err.message);
-			toast.error('Ошибка при получении списка сотрудников данной организации. Попробуйте позже!', {
-				position: 'top-right',
-			});
+			console.error(err);
+			toast.error('Ошибка при загрузке сотрудников');
+			set({ isEmpLoading: false });
 		}
 	},
 
