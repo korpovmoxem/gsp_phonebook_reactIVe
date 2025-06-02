@@ -1,29 +1,61 @@
 import { create } from 'zustand';
-import { Organization, Employee } from '../types';
+import { Organization, Employee, ExternalOrganizations } from '../types';
 import { toast } from 'react-toastify';
 
 interface OrgState {
 	organizations: Organization[];
+	externalOrganizations: ExternalOrganizations[];
 	selectedOrgId: string | null;
 	employees: Employee[];
 	isOrgLoading: boolean;
+	isExternalOrgLoading: boolean;
 	isEmpLoading: boolean;
 	employeePage: number;
 	totalCount: number;
 
 	fetchTree: () => Promise<void>;
+	fetchExternalTree: () => Promise<void>;
 	selectOrg: (organizationId: string, departmentId: string | null) => Promise<void>;
 	loadMoreEmployees: () => Promise<void>;
 }
 
 export const useOrgStore = create<OrgState>((set, get) => ({
 	organizations: [],
+	externalOrganizations: [],
 	selectedOrgId: null,
 	employees: [],
 	isOrgLoading: false,
+	isExternalOrgLoading: false,
 	isEmpLoading: true,
 	employeePage: 1,
 	totalCount: 0,
+
+	fetchExternalTree: async () => {
+		set({ isExternalOrgLoading: true });
+		
+		try {
+			console.log('ЗАПРОС')
+			const response = await fetch('http://172.16.153.53:8001/external/phonebook');
+			
+			if (!response.ok) {
+				throw new Error(`Ошибка HTTP! Код статуса: ${response.status}`);
+			}
+
+			const resultData = await response.json(); // Парсим JSON-данные
+
+			set({
+				externalOrganizations: resultData.result,
+				isExternalOrgLoading: false
+			});
+		} catch (err: any) {
+			console.error('Ошибка при получении списка стороних справочников:', err.message);
+			toast.error('Ошибка при получении списка стороних справочников. Попробуйте позже!', {
+				position: 'top-right',
+			});
+		}
+		
+		
+	},
 
 	fetchTree: async () => {
 		set({ isOrgLoading: true });

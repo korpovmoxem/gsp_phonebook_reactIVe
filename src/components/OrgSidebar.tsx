@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useOrgStore } from "../store/organizationStore";
-import { TreeNode } from "./TreeNode";
+import { ItemText, TreeNode } from "./TreeNode";
 import { SidebarSkeleton } from "./SidebarSkeleton";
 import styled from "styled-components";
 import {
@@ -34,9 +34,22 @@ const TreeWrapper = styled.div`
     scrollbar-color: rgb(199, 199, 199) transparent;
 `;
 
+const CustomLink = styled.a`
+    text-decoration: none;
+    color: black;
+`;
+
 export const OrgSidebar: React.FC = () => {
-    const { organizations, selectedOrgId, fetchTree, selectOrg, isOrgLoading } =
-        useOrgStore();
+    const {
+        organizations,
+        externalOrganizations,
+        selectedOrgId,
+        fetchTree,
+        fetchExternalTree,
+        selectOrg,
+        isOrgLoading,
+        isExternalOrgLoading,
+    } = useOrgStore();
     const [searchParams, setSearchParams] = useSearchParams();
     const [expandedIds, setExpandedIds] = useState<string[]>([]);
     const [orgMap, setOrgMap] = useState<OrgMap>(new Map());
@@ -46,6 +59,7 @@ export const OrgSidebar: React.FC = () => {
     // Загружаем дерево
     useEffect(() => {
         fetchTree();
+        fetchExternalTree();
     }, []);
 
     // Строим индекс после загрузки
@@ -111,22 +125,47 @@ export const OrgSidebar: React.FC = () => {
         // setSearchParams({ organizationId: id });
     };
 
-    if (isOrgLoading) return <SidebarSkeleton />;
+    // if (isOrgLoading) return <SidebarSkeleton />;
 
     return (
         <MainTreeWrapper>
-            <h3 style={{ marginLeft: "15px" }}>Организации</h3>
-            <TreeWrapper>
-                {organizations.map((org, index) => (
-                    <TreeNode
-                        key={`${org.id}_${index}`}
-                        node={org}
-                        selectedId={selectedOrgId}
-                        onSelect={handleSelect}
-                        expandedIds={expandedIds}
-                    />
-                ))}
-            </TreeWrapper>
+            {!isOrgLoading ? (
+                <>
+                    <h3 style={{ margin: "0 15px 10px" }}>Организации</h3>
+                    <TreeWrapper>
+                        {organizations.map((org, index) => (
+                            <TreeNode
+                                key={`${org.id}_${index}`}
+                                node={org}
+                                selectedId={selectedOrgId}
+                                onSelect={handleSelect}
+                                expandedIds={expandedIds}
+                            />
+                        ))}
+                    </TreeWrapper>
+                </>
+            ) : (
+                <SidebarSkeleton title="Организации" />
+            )}
+            {!isExternalOrgLoading ? (
+                <>
+                    <h3 style={{ margin: "0 15px 10px" }}>
+                        Внешние организации (?)
+                    </h3>
+                    {externalOrganizations.map((item) => (
+                        <CustomLink
+                            href={item.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            key={item.id}
+                        >
+                            <ItemText>{item.name}</ItemText>
+                        </CustomLink>
+                    ))}
+                </>
+            ) : (
+                <SidebarSkeleton title="Внешние организации(?)" />
+            )}
         </MainTreeWrapper>
     );
 };

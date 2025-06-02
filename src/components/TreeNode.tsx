@@ -23,7 +23,7 @@ const ChevronRightButton = styled(ChevronRight)`
     }
 `;
 
-const ItemText = styled.span`
+export const ItemText = styled.span`
     &:hover {
         color: #00000070;
     }

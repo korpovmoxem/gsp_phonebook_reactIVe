@@ -6,6 +6,12 @@ export interface Organization {
   children: Organization[];
 }
 
+export interface ExternalOrganizations {
+  id: number;
+  url: string;
+  name: string;
+  order: number;
+}
 export interface Employee {
   id: string;
   fullNameRus: string;
