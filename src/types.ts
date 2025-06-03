@@ -26,3 +26,11 @@ export interface Employee {
   unavailable: boolean;
   photo: string | null;
 }
+
+export interface EmployeesList {
+    departmentId: string,
+    departmentName: string,
+    organizationId: string,
+    organizationName: string,
+    employees: Employee[]
+}

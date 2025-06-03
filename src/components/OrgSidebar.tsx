@@ -12,6 +12,7 @@ import {
 } from "../utils/buildOrgIndex";
 import { toast } from "react-toastify";
 import { Organization } from "../types";
+import { ExternalLink } from "lucide-react";
 
 const MainTreeWrapper = styled.div`
     display: flex;
@@ -142,29 +143,29 @@ export const OrgSidebar: React.FC = () => {
                                 expandedIds={expandedIds}
                             />
                         ))}
+                        {!isExternalOrgLoading ? (
+                            <>
+                                {externalOrganizations.map((item) => (
+                                    <div>
+                                        <CustomLink
+                                            href={item.url}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            key={item.id}
+                                        >
+                                            <ExternalLink size={15} />
+                                            <ItemText>{item.name}</ItemText>
+                                        </CustomLink>
+                                    </div>
+                                ))}
+                            </>
+                        ) : (
+                            <SidebarSkeleton />
+                        )}
                     </TreeWrapper>
                 </>
             ) : (
                 <SidebarSkeleton title="Организации" />
-            )}
-            {!isExternalOrgLoading ? (
-                <>
-                    <h3 style={{ margin: "0 15px 10px" }}>
-                        Внешние организации (?)
-                    </h3>
-                    {externalOrganizations.map((item) => (
-                        <CustomLink
-                            href={item.url}
-                            target="_blank"
-                            rel="noreferrer"
-                            key={item.id}
-                        >
-                            <ItemText>{item.name}</ItemText>
-                        </CustomLink>
-                    ))}
-                </>
-            ) : (
-                <SidebarSkeleton title="Внешние организации(?)" />
             )}
         </MainTreeWrapper>
     );

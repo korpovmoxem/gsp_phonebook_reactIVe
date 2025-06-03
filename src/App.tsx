@@ -22,7 +22,7 @@ const MainWrapper = styled.div`
 const ContentWrapper = styled.div`
     display: flex;
     flex-direction: row;
-    height: calc(100vh - 180px);
+    height: calc(100vh - 200px);
 `;
 
 const SearchWrapper = styled.div`
@@ -49,7 +49,11 @@ function App() {
                 >
                     <a href="/">
                         <>
-                            <img src={MainLogo} alt="ГазСтройПром" />
+                            <img
+                                style={{ marginBottom: "20px" }}
+                                src={MainLogo}
+                                alt="ГазСтройПром"
+                            />
                             <img
                                 src={AdressBook}
                                 alt="ГазСтройПром"
