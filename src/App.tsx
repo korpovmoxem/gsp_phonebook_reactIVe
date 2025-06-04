@@ -11,7 +11,7 @@ import MainLogo from "./materials/logo.svg";
 import AdressBook from "./materials/adressBook.svg";
 import { EmployeeList } from "./components/EmployeeList";
 import { ToastContainer, Bounce } from "react-toastify";
-import SearchBar from "./components/SearchBar";
+import { SearchBar } from "./components/SearchBar";
 import { ExternalLink } from "lucide-react";
 import Shepherd from "shepherd.js";
 import { useEffect, useState } from "react";

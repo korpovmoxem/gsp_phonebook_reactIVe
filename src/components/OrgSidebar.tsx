@@ -21,8 +21,8 @@ const MainTreeWrapper = styled.div`
     margin: 10px;
     padding: 10px;
     text-align: left;
-    width: 300px;
-    max-width: 300px;
+    width: 400px;
+    max-width: 400px;
     background: white;
     border-radius: 10px;
 `;
@@ -144,7 +144,7 @@ export const OrgSidebar: React.FC = () => {
                             />
                         ))}
                         {!isExternalOrgLoading ? (
-                            <>
+                            <div style={{ marginTop: "10px" }}>
                                 {externalOrganizations.map((item) => (
                                     <div>
                                         <CustomLink
@@ -158,7 +158,7 @@ export const OrgSidebar: React.FC = () => {
                                         </CustomLink>
                                     </div>
                                 ))}
-                            </>
+                            </div>
                         ) : (
                             <SidebarSkeleton />
                         )}

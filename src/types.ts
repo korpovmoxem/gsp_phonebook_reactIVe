@@ -34,3 +34,5 @@ export interface EmployeesList {
     organizationName: string,
     employees: Employee[]
 }
+
+export type CATEGORIES = "fullName" | "email" | "position" | "phone";

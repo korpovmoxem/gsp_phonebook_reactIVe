@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Organization, Employee, ExternalOrganizations } from '../types';
+import { Organization, Employee, ExternalOrganizations, CATEGORIES } from '../types';
 import { toast } from 'react-toastify';
 
 interface OrgState {
@@ -12,11 +12,17 @@ interface OrgState {
 	isEmpLoading: boolean;
 	employeePage: number;
 	totalCount: number;
+	categories: CATEGORIES;
+	search: string;
 
 	fetchTree: () => Promise<void>;
 	fetchExternalTree: () => Promise<void>;
 	selectOrg: (organizationId: string, departmentId: string | null) => Promise<void>;
 	loadMoreEmployees: () => Promise<void>;
+	fetchEmployeesWithParams: () => Promise<void>;
+
+	setCategories: (category: CATEGORIES) => Promise<void>;
+	setSearch: (newValue: string) => Promise<void>;
 }
 
 export const useOrgStore = create<OrgState>((set, get) => ({
@@ -29,6 +35,8 @@ export const useOrgStore = create<OrgState>((set, get) => ({
 	isEmpLoading: true,
 	employeePage: 1,
 	totalCount: 0,
+	categories: 'fullName',
+	search: '',
 
 	fetchExternalTree: async () => {
 		set({ isExternalOrgLoading: true });
@@ -158,5 +166,45 @@ export const useOrgStore = create<OrgState>((set, get) => ({
 				position: 'top-right',
 			});
 		}
+	},
+
+	fetchEmployeesWithParams: async () => {
+		console.log('fetchEmployeesWithParams')
+		const { selectedOrgId, employeePage, employees } = get();
+		const nextPage = employeePage + 1;
+		set({ isEmpLoading: true });
+
+		try {
+			const response = await fetch('http://172.16.153.53:8001/employee');
+			
+			if (!response.ok) {
+				throw new Error(`Ошибка HTTP! Код статуса: ${response.status}`);
+			}
+
+			const resultData = await response.json(); // Парсим JSON-данные
+			console.log(resultData)
+
+			set({
+				employeePage: nextPage,
+				employees: resultData.result,
+				totalCount: resultData.totalCount,
+				isEmpLoading: false,
+			});
+		} catch (err: any) {
+			console.error('Ошибка при получении списка сотрудников:', err.message);
+			toast.error('Ошибка при получении списка сотрудников. Попробуйте позже!', {
+				position: 'top-right',
+			});
+		}
+	},
+
+	setCategories: async (newCategory) => {
+		console.log('setCategories')
+		set({ categories: newCategory });
+	},
+
+	setSearch: async (newValue) => {
+		console.log('setSearch')
+		set({ search: newValue });
 	},
 }));

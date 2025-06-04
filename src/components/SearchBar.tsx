@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./SearchBar.css"; // стили вынесены отдельно
 import axios from "axios";
-import { Employee, EmployeesList } from "../types";
+import { CATEGORIES, Employee, EmployeesList } from "../types";
 import Highlighter from "react-highlight-words";
 import { styled } from "styled-components";
+import { useOrgStore } from "../store/organizationStore";
 
 const CustomDatalist = styled.div`
     position: fixed;
@@ -42,13 +43,12 @@ const CustomDatalistItemText = styled.span`
     color: grey;
 `;
 
-type CATEGORIES = "fullName" | "email" | "position" | "phone";
-
 interface Props {
     onSearch: (query: string, category: string) => void;
 }
 
 export const SearchBar = ({ onSearch }: Props) => {
+    const { categories, search, setCategories, setSearch } = useOrgStore();
     const [query, setQuery] = useState("");
     const [category, setCategory] = useState<CATEGORIES>("fullName");
     const [listQuery, setListQuery] = useState<EmployeesList[]>([]);
@@ -281,5 +281,3 @@ export const SearchBar = ({ onSearch }: Props) => {
         </div>
     );
 };
-
-export default SearchBar;
