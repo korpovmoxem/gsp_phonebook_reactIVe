@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Organization } from "../types";
 import styled from "styled-components";
-import { ChevronRight, ChevronDown } from "lucide-react";
+import { SquareChevronRight, SquareChevronDown } from "lucide-react";
 
 interface Props {
     node: Organization;
@@ -9,14 +9,14 @@ interface Props {
     onSelect: (id: Organization) => void;
     expandedIds: string[];
 }
-const ChevronDownButton = styled(ChevronDown)`
+const ChevronDownButton = styled(SquareChevronDown)`
     cursor: pointer;
     &:hover {
         color: #00000070;
     }
 `;
 
-const ChevronRightButton = styled(ChevronRight)`
+const ChevronRightButton = styled(SquareChevronRight)`
     cursor: pointer;
     &:hover {
         color: #00000070;
@@ -24,10 +24,14 @@ const ChevronRightButton = styled(ChevronRight)`
 `;
 
 export const ItemText = styled.span`
+    user-select: none;
+    margin-left: 10px;
     &:hover {
         color: #00000070;
     }
 `;
+
+const DEFAULT_EXPAND_ICON_SIZE = 18;
 
 export const TreeNode = ({
     node,
@@ -48,6 +52,10 @@ export const TreeNode = ({
                 style={{
                     cursor: "pointer",
                     fontWeight: node.id === selectedId ? "bold" : "normal",
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginTop: "5px",
                 }}
             >
                 {node.children.length > 0 && (
@@ -58,9 +66,13 @@ export const TreeNode = ({
                         }}
                     >
                         {expanded ? (
-                            <ChevronDownButton />
+                            <ChevronDownButton
+                                size={DEFAULT_EXPAND_ICON_SIZE}
+                            />
                         ) : (
-                            <ChevronRightButton />
+                            <ChevronRightButton
+                                size={DEFAULT_EXPAND_ICON_SIZE}
+                            />
                         )}
                     </span>
                 )}{" "}
