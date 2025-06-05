@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Organization, Employee, ExternalOrganizations, CATEGORIES } from '../types';
+import { Organization, Employee, ExternalOrganizations, CATEGORIES, EmployeesList } from '../types';
 import { toast } from 'react-toastify';
 
 interface OrgState {
@@ -14,22 +14,23 @@ interface OrgState {
 	totalCount: number;
 	categories: CATEGORIES;
 	search: string;
+	employeesList: EmployeesList[];
 
 	fetchTree: () => Promise<void>;
 	fetchExternalTree: () => Promise<void>;
 	selectOrg: (organizationId: string, departmentId: string | null) => Promise<void>;
 	loadMoreEmployees: () => Promise<void>;
-	fetchEmployeesWithParams: () => Promise<void>;
+	fetchEmployeesWithParams: (value: string, category: CATEGORIES) => Promise<void>;
 
-	setCategories: (category: CATEGORIES) => Promise<void>;
-	setSearch: (newValue: string) => Promise<void>;
+	// setCategories: (category: CATEGORIES) => Promise<void>;
+	// setSearch: (newValue: string) => Promise<void>;
 }
 
 export const useOrgStore = create<OrgState>((set, get) => ({
 	organizations: [],
 	externalOrganizations: [],
 	selectedOrgId: null,
-	employees: [],
+	employees: [], // Список сотрудников при зпуске приложения
 	isOrgLoading: false,
 	isExternalOrgLoading: false,
 	isEmpLoading: true,
@@ -37,6 +38,7 @@ export const useOrgStore = create<OrgState>((set, get) => ({
 	totalCount: 0,
 	categories: 'fullName',
 	search: '',
+	employeesList: [], // Список сотрудников по параметрам из поисковой строки
 
 	fetchExternalTree: async () => {
 		set({ isExternalOrgLoading: true });
@@ -168,14 +170,12 @@ export const useOrgStore = create<OrgState>((set, get) => ({
 		}
 	},
 
-	fetchEmployeesWithParams: async () => {
+	fetchEmployeesWithParams: async (value, category) => {
 		console.log('fetchEmployeesWithParams')
-		const { selectedOrgId, employeePage, employees } = get();
-		const nextPage = employeePage + 1;
-		set({ isEmpLoading: true });
+		set({ isEmpLoading: true, employeesList: [] });
 
 		try {
-			const response = await fetch('http://172.16.153.53:8001/employee');
+			const response = await fetch(`http://172.16.153.53:8001/employee/search?value=${value}&type=${category}`);
 			
 			if (!response.ok) {
 				throw new Error(`Ошибка HTTP! Код статуса: ${response.status}`);
@@ -185,9 +185,7 @@ export const useOrgStore = create<OrgState>((set, get) => ({
 			console.log(resultData)
 
 			set({
-				employeePage: nextPage,
-				employees: resultData.result,
-				totalCount: resultData.totalCount,
+				employeesList: resultData.result,
 				isEmpLoading: false,
 			});
 		} catch (err: any) {
@@ -198,13 +196,13 @@ export const useOrgStore = create<OrgState>((set, get) => ({
 		}
 	},
 
-	setCategories: async (newCategory) => {
-		console.log('setCategories')
-		set({ categories: newCategory });
-	},
+	// setCategories: async (newCategory) => {
+	// 	console.log('setCategories')
+	// 	set({ categories: newCategory });
+	// },
 
-	setSearch: async (newValue) => {
-		console.log('setSearch')
-		set({ search: newValue });
-	},
+	// setSearch: async (newValue) => {
+	// 	console.log('setSearch')
+	// 	set({ search: newValue });
+	// },
 }));

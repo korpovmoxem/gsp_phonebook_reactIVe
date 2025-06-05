@@ -44,6 +44,25 @@ const EmployeeTableRow = styled.tr`
     }
 `;
 
+const EmployeeTableRowDiv = styled.div`
+    display: flex;
+    padding: 6px 8px;
+    height: 100px;
+    border-bottom: 1px solid rgb(235, 235, 235);
+    align-items: anchor-center;
+    cursor: pointer;
+    &:hover {
+        background-color: #f8f8ff;
+    }
+`;
+
+// display:
+// "flex",
+// padding:
+// "6px 8px",
+// borderBottom:
+// "1px solid #e0e0e0",
+
 const CustomEmailLink = styled.a`
     color: black;
     &:hover {
@@ -61,13 +80,8 @@ const CustomCopyButton = styled(CopyIcon)`
 
 export const EmployeeList: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
-    const {
-        employees,
-        selectedOrgId,
-        isEmpLoading,
-        loadMoreEmployees,
-        totalCount,
-    } = useOrgStore();
+    const { employees, isEmpLoading, loadMoreEmployees, employeesList } =
+        useOrgStore();
 
     const handleCopyClick = (text: string) => {
         navigator.clipboard.writeText(text);
@@ -89,125 +103,435 @@ export const EmployeeList: React.FC = () => {
 
     return (
         <EmployeeListWrapperMain style={{ padding: 10 }}>
-            {isEmpLoading && employees.length === 0 ? (
+            {isEmpLoading ? (
                 <EmployeeSkeleton />
             ) : (
                 <>
-                    <h3 style={{ margin: "0 15px 10px" }}>Сотрудники</h3>
                     <EmployeeListWrapperTable>
-                        <table
-                            style={{
-                                width: "100%",
-                                borderCollapse: "collapse",
-                            }}
-                        >
-                            <thead
+                        {employeesList.length === 0 ? (
+                            <table
                                 style={{
-                                    position: "sticky",
-                                    top: "0",
-                                    background: "#b2ddf6",
-                                    height: "40px",
+                                    width: "100%",
+                                    borderCollapse: "collapse",
                                 }}
                             >
-                                <tr
+                                <thead
                                     style={{
+                                        position: "sticky",
+                                        top: "0",
+                                        background: "#b2ddf6",
+                                        height: "40px",
                                         textAlign: "left",
                                     }}
                                 >
-                                    <th
-                                        style={{
-                                            width: "100px",
-                                            border: "none",
-                                            borderTopLeftRadius: "5px",
-                                            overflow: "hidden",
-                                        }}
-                                    ></th>
-                                    <th>ФИО</th>
-                                    <th>Почта</th>
-                                    <th
-                                        style={{
-                                            border: "none",
-                                            borderTopRightRadius: "5px",
-                                            minWidth: "100px",
-                                        }}
-                                    >
-                                        Телефон
-                                    </th>
-                                </tr>
-                            </thead>
+                                    <tr>
+                                        <th
+                                            style={{
+                                                width: "100px",
+                                                border: "none",
+                                                borderTopLeftRadius: "5px",
+                                                overflow: "hidden",
+                                            }}
+                                        ></th>
+                                        <th
+                                            style={{
+                                                width: "50%",
+                                            }}
+                                        >
+                                            ФИО
+                                        </th>
+                                        <th
+                                            style={{
+                                                width: "25%",
+                                            }}
+                                        >
+                                            Почта
+                                        </th>
+                                        <th
+                                            style={{
+                                                border: "none",
+                                                borderTopRightRadius: "5px",
+                                                minWidth: "100px",
+                                                width: "25%",
+                                            }}
+                                        >
+                                            Телефон
+                                        </th>
+                                    </tr>
+                                </thead>
 
-                            <tbody>
-                                {employees.map((emp) => (
-                                    <EmployeeTableRow
-                                        key={emp.id}
-                                        onClick={() => {
-                                            console.log("Click");
-                                        }}
-                                    >
-                                        <td>
-                                            <img
-                                                src={
-                                                    emp.photo
-                                                        ? `data:image/jpeg;base64,${emp.photo}`
-                                                        : PhotoDefault
-                                                }
-                                                alt={emp.fullNameRus}
-                                                width="75px"
-                                            />
-                                        </td>
-                                        <td>
-                                            <div>{emp.fullNameRus}</div>
-                                            <div
-                                                style={{
-                                                    fontSize: "14px",
-                                                    color: "grey",
-                                                }}
-                                            >
-                                                {emp.positionTitle}
-                                            </div>
-                                        </td>
-                                        <td>
-                                            {emp.email && (
-                                                <>
-                                                    <CustomEmailLink
-                                                        href={`mailTo:${emp.email}`}
-                                                        onClick={(e) =>
-                                                            e.stopPropagation()
-                                                        }
-                                                    >
-                                                        {emp.email}
-                                                    </CustomEmailLink>
+                                <tbody>
+                                    {employees.map((emp) => (
+                                        <EmployeeTableRow
+                                            key={emp.id}
+                                            onClick={() => {
+                                                console.log("Click");
+                                            }}
+                                        >
+                                            <td>
+                                                <img
+                                                    src={
+                                                        emp.photo
+                                                            ? `data:image/jpeg;base64,${emp.photo}`
+                                                            : PhotoDefault
+                                                    }
+                                                    alt={emp.fullNameRus}
+                                                    width="75px"
+                                                />
+                                            </td>
+                                            <td>
+                                                <div>{emp.fullNameRus}</div>
+                                                <div
+                                                    style={{
+                                                        fontSize: "14px",
+                                                        color: "grey",
+                                                    }}
+                                                >
+                                                    {emp.positionTitle}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                {emp.email && (
+                                                    <>
+                                                        <CustomEmailLink
+                                                            href={`mailTo:${emp.email}`}
+                                                            onClick={(e) =>
+                                                                e.stopPropagation()
+                                                            }
+                                                        >
+                                                            {emp.email}
+                                                        </CustomEmailLink>
+                                                        <CustomCopyButton
+                                                            onClick={(e) => {
+                                                                handleCopyClick(
+                                                                    emp.email ||
+                                                                        ""
+                                                                );
+                                                                e.stopPropagation();
+                                                            }}
+                                                            size={13}
+                                                        />
+                                                    </>
+                                                )}
+                                            </td>
+                                            <td>
+                                                {emp.telephoneNumberCorp}
+                                                {emp.telephoneNumberCorp !==
+                                                    "" && (
                                                     <CustomCopyButton
                                                         onClick={(e) => {
                                                             handleCopyClick(
-                                                                emp.email || ""
+                                                                emp.telephoneNumberCorp ||
+                                                                    ""
                                                             );
                                                             e.stopPropagation();
                                                         }}
                                                         size={13}
                                                     />
-                                                </>
-                                            )}
-                                        </td>
-                                        <td>
-                                            {emp.telephoneNumberCorp}
-                                            {emp.telephoneNumberCorp !== "" && (
-                                                <CustomCopyButton
-                                                    onClick={(e) => {
-                                                        handleCopyClick(
-                                                            emp.telephoneNumberCorp ||
-                                                                ""
-                                                        );
-                                                        e.stopPropagation();
+                                                )}
+                                            </td>
+                                        </EmployeeTableRow>
+                                    ))}
+                                </tbody>
+                            </table>
+                        ) : (
+                            <>
+                                {/* {employeesList.map((organization) => (
+                                    <>
+                                        <h1 style={{ position: "sticky" }}>
+                                            {organization.organizationName}
+                                        </h1>
+                                        {organization.departments.map(
+                                            (department) => (
+                                                <table
+                                                    style={{
+                                                        width: "100%",
+                                                        borderCollapse:
+                                                            "collapse",
+                                                        marginBottom: "10px",
                                                     }}
-                                                    size={13}
-                                                />
-                                            )}
-                                        </td>
-                                    </EmployeeTableRow>
-                                ))}
-                            </tbody>
-                        </table>
+                                                >
+                                                    <thead
+                                                        style={{
+                                                            top: "0",
+                                                            background:
+                                                                "#b2ddf6",
+                                                            height: "40px",
+                                                        }}
+                                                    >
+                                                        <tr>
+                                                            <th colSpan={5}>
+                                                                {
+                                                                    department.departmentName
+                                                                }
+                                                                <hr
+                                                                    style={{
+                                                                        border: "1px solid #FFFFFF",
+                                                                    }}
+                                                                ></hr>
+                                                            </th>
+                                                        </tr>
+                                                        <tr
+                                                            style={{
+                                                                textAlign:
+                                                                    "left",
+                                                            }}
+                                                        >
+                                                            <th
+                                                                style={{
+                                                                    width: "100px",
+                                                                    border: "none",
+                                                                    overflow:
+                                                                        "hidden",
+                                                                    textAlign:
+                                                                        "left",
+                                                                }}
+                                                            ></th>
+                                                            <th
+                                                                style={{
+                                                                    width: "50%",
+                                                                }}
+                                                            >
+                                                                ФИО
+                                                            </th>
+                                                            <th
+                                                                style={{
+                                                                    width: "25%",
+                                                                }}
+                                                            >
+                                                                Почта
+                                                            </th>
+                                                            <th
+                                                                style={{
+                                                                    border: "none",
+                                                                    minWidth:
+                                                                        "100px",
+                                                                    width: "25%",
+                                                                }}
+                                                            >
+                                                                Телефон
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {department.employees.map(
+                                                            (employee) => (
+                                                                <EmployeeTableRow
+                                                                    key={
+                                                                        employee.id
+                                                                    }
+                                                                    onClick={() => {
+                                                                        console.log(
+                                                                            "Click"
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <td>
+                                                                        <img
+                                                                            src={
+                                                                                employee.photo
+                                                                                    ? `data:image/jpeg;base64,${employee.photo}`
+                                                                                    : PhotoDefault
+                                                                            }
+                                                                            alt={
+                                                                                employee.fullNameRus
+                                                                            }
+                                                                            width="75px"
+                                                                        />
+                                                                    </td>
+                                                                    <td>
+                                                                        <div>
+                                                                            {
+                                                                                employee.fullNameRus
+                                                                            }
+                                                                        </div>
+                                                                        <div
+                                                                            style={{
+                                                                                fontSize:
+                                                                                    "14px",
+                                                                                color: "grey",
+                                                                            }}
+                                                                        >
+                                                                            {
+                                                                                employee.positionTitle
+                                                                            }
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        {employee.email && (
+                                                                            <>
+                                                                                <CustomEmailLink
+                                                                                    href={`mailTo:${employee.email}`}
+                                                                                    onClick={(
+                                                                                        e
+                                                                                    ) =>
+                                                                                        e.stopPropagation()
+                                                                                    }
+                                                                                >
+                                                                                    {
+                                                                                        employee.email
+                                                                                    }
+                                                                                </CustomEmailLink>
+                                                                                <CustomCopyButton
+                                                                                    onClick={(
+                                                                                        e
+                                                                                    ) => {
+                                                                                        handleCopyClick(
+                                                                                            employee.email ||
+                                                                                                ""
+                                                                                        );
+                                                                                        e.stopPropagation();
+                                                                                    }}
+                                                                                    size={
+                                                                                        13
+                                                                                    }
+                                                                                />
+                                                                            </>
+                                                                        )}
+                                                                    </td>
+                                                                    <td>
+                                                                        {employee.telephoneNumberCorp && (
+                                                                            <>
+                                                                                {
+                                                                                    employee.telephoneNumberCorp
+                                                                                }
+                                                                                <CustomCopyButton
+                                                                                    onClick={(
+                                                                                        e
+                                                                                    ) => {
+                                                                                        handleCopyClick(
+                                                                                            employee.telephoneNumberCorp ||
+                                                                                                ""
+                                                                                        );
+                                                                                        e.stopPropagation();
+                                                                                    }}
+                                                                                    size={
+                                                                                        13
+                                                                                    }
+                                                                                />
+                                                                            </>
+                                                                        )}
+                                                                    </td>
+                                                                </EmployeeTableRow>
+                                                            )
+                                                        )}
+                                                    </tbody>
+                                                </table>
+                                            )
+                                        )}
+                                    </>
+                                ))} */}
+
+                                <div
+                                    style={{
+                                        height: "600px",
+                                        overflowY: "auto",
+                                        fontFamily: "Arial, sans-serif",
+                                    }}
+                                >
+                                    {employeesList.map((org) => (
+                                        <div key={org.organizaionId}>
+                                            {/* Sticky organization */}
+                                            <div
+                                                style={{
+                                                    position: "sticky",
+                                                    top: 0,
+                                                    background: "#b2ddf6",
+                                                    padding: "8px",
+                                                    fontWeight: "bold",
+                                                    borderBottom:
+                                                        "1px solid #ccc",
+                                                    zIndex: 3,
+                                                }}
+                                            >
+                                                Организация:{" "}
+                                                {org.organizationName}
+                                            </div>
+
+                                            {/* Departments block */}
+                                            {org.departments.map((dept) => (
+                                                <div key={dept.departmentId}>
+                                                    {/* Sticky department */}
+                                                    <div
+                                                        style={{
+                                                            position: "sticky",
+                                                            top: "36px",
+                                                            background:
+                                                                "#F1F1F1",
+                                                            padding: "6px",
+                                                            fontWeight: 500,
+                                                            borderBottom:
+                                                                "1px solid #ccc",
+                                                            zIndex: 2,
+                                                        }}
+                                                    >
+                                                        Департамент:{" "}
+                                                        {dept.departmentName}
+                                                    </div>
+
+                                                    {/* Employee rows inside department */}
+                                                    {dept.employees.map(
+                                                        (employee) => (
+                                                            <EmployeeTableRowDiv
+                                                                key={
+                                                                    employee.id
+                                                                }
+                                                            >
+                                                                <img
+                                                                    src={
+                                                                        employee.photo
+                                                                            ? `data:image/jpeg;base64,${employee.photo}`
+                                                                            : PhotoDefault
+                                                                    }
+                                                                    alt={
+                                                                        employee.fullNameRus
+                                                                    }
+                                                                    width="75px"
+                                                                    height="75px"
+                                                                />
+                                                                <div
+                                                                    style={{
+                                                                        flex: 1,
+                                                                        padding:
+                                                                            "4px 8px",
+                                                                    }}
+                                                                >
+                                                                    {
+                                                                        employee.fullNameRus
+                                                                    }
+                                                                </div>
+                                                                <div
+                                                                    style={{
+                                                                        flex: 1,
+                                                                        padding:
+                                                                            "4px 8px",
+                                                                    }}
+                                                                >
+                                                                    {
+                                                                        employee.telephoneNumberCorp
+                                                                    }
+                                                                </div>
+                                                                <div
+                                                                    style={{
+                                                                        flex: 1,
+                                                                        padding:
+                                                                            "4px 8px",
+                                                                    }}
+                                                                >
+                                                                    {
+                                                                        employee.email
+                                                                    }
+                                                                </div>
+                                                            </EmployeeTableRowDiv>
+                                                        )
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ))}
+                                </div>
+                            </>
+                        )}
                     </EmployeeListWrapperTable>
                 </>
             )}

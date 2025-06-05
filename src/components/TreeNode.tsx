@@ -11,21 +11,24 @@ interface Props {
 }
 const ChevronDownButton = styled(SquareChevronDown)`
     cursor: pointer;
+    stroke: #1d75bb;
     &:hover {
-        color: #00000070;
+        stroke: #1d74bb8a;
     }
 `;
 
 const ChevronRightButton = styled(SquareChevronRight)`
     cursor: pointer;
+    stroke: #1d75bb;
     &:hover {
-        color: #00000070;
+        stroke: #1d74bb8a;
     }
 `;
 
 export const ItemText = styled.span`
     user-select: none;
     margin-left: 10px;
+    letter-spacing: 0.57;
     &:hover {
         color: #00000070;
     }
@@ -46,7 +49,13 @@ export const TreeNode = ({
     }, [expandedIds]);
 
     return (
-        <div style={{ marginLeft: 10 }}>
+        <div
+            style={{
+                marginLeft: 10,
+                marginTop: 5,
+                // borderBottom: "1px dashed rgb(197, 197, 197)",
+            }}
+        >
             <div
                 onClick={() => onSelect(node)}
                 style={{
@@ -55,7 +64,8 @@ export const TreeNode = ({
                     display: "flex",
                     flexDirection: "row",
                     alignItems: "center",
-                    marginTop: "5px",
+                    marginTop: "7px",
+                    lineHeight: 1,
                 }}
             >
                 {node.children.length > 0 && (

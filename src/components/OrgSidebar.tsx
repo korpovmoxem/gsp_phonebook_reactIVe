@@ -132,7 +132,14 @@ export const OrgSidebar: React.FC = () => {
         <MainTreeWrapper>
             {!isOrgLoading ? (
                 <>
-                    <h3 style={{ margin: "0 15px 10px" }}>Организации</h3>
+                    <h3
+                        style={{
+                            margin: "0 15px 10px",
+                            borderBottom: "0.5px solid #cfcfcf",
+                        }}
+                    >
+                        Организации
+                    </h3>
                     <TreeWrapper>
                         {organizations.map((org, index) => (
                             <TreeNode
@@ -153,7 +160,10 @@ export const OrgSidebar: React.FC = () => {
                                             rel="noreferrer"
                                             key={item.id}
                                         >
-                                            <ExternalLink size={15} />
+                                            <ExternalLink
+                                                size={15}
+                                                stroke="#1d75bb"
+                                            />
                                             <ItemText>{item.name}</ItemText>
                                         </CustomLink>
                                     </div>

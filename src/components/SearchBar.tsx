@@ -48,11 +48,12 @@ interface Props {
 }
 
 export const SearchBar = ({ onSearch }: Props) => {
-    const { categories, search, setCategories, setSearch } = useOrgStore();
     const [query, setQuery] = useState("");
     const [category, setCategory] = useState<CATEGORIES>("fullName");
     const [listQuery, setListQuery] = useState<EmployeesList[]>([]);
     const [isOpen, setIsOpen] = useState(false);
+
+    const { fetchEmployeesWithParams } = useOrgStore();
 
     const handleInputChange = (e: string) => {
         setQuery(e);
@@ -73,6 +74,7 @@ export const SearchBar = ({ onSearch }: Props) => {
     const handleSearch = () => {
         if (query.trim()) {
             onSearch(query.trim(), category);
+            fetchEmployeesWithParams(query, category);
         } else {
             alert("Введите запрос");
         }
@@ -105,7 +107,10 @@ export const SearchBar = ({ onSearch }: Props) => {
 
     // Обработка запроса при изменении debouncedQuery
     useEffect(() => {
-        if (!debouncedQuery.trim()) return;
+        if (!debouncedQuery.trim()) {
+            setListQuery([]);
+            return;
+        }
 
         async function fetchData() {
             try {
@@ -153,6 +158,9 @@ export const SearchBar = ({ onSearch }: Props) => {
         };
     }, []);
 
+    console.log("+_+_+_+_+_+_+_+_+_+_+_+");
+    console.log(listQuery);
+
     return (
         <div className="search-component">
             <div className="search-input-wrapper">
@@ -191,68 +199,76 @@ export const SearchBar = ({ onSearch }: Props) => {
                             </div>
                         ))} */}
                             {listQuery.map((item) =>
-                                item.employees.map((employee) => (
-                                    <CustomDatalistItem
-                                        onClick={() =>
-                                            handleClickItem(employee)
-                                        }
-                                    >
-                                        <CustomDatalistItemHeader>
-                                            {category === "fullName" ? (
-                                                <Highlighter
-                                                    searchWords={[query]}
-                                                    autoEscape={true}
-                                                    textToHighlight={`${employee.fullNameRus}`}
-                                                    highlightStyle={{
-                                                        backgroundColor:
-                                                            "#38b6b2",
-                                                    }}
-                                                />
-                                            ) : (
-                                                employee.fullNameRus
-                                            )}
-                                        </CustomDatalistItemHeader>
-                                        <CustomDatalistItemText>
-                                            {employee.organizationName}
-                                            {category === "email" &&
-                                                employee.email && (
+                                item.departments.map((department) =>
+                                    department.employees.map((employee) => (
+                                        <CustomDatalistItem
+                                            onClick={() =>
+                                                handleClickItem(employee)
+                                            }
+                                        >
+                                            <CustomDatalistItemHeader>
+                                                {category === "fullName" ? (
                                                     <Highlighter
                                                         searchWords={[query]}
                                                         autoEscape={true}
-                                                        textToHighlight={`, ${employee.email}`}
+                                                        textToHighlight={`${employee.fullNameRus}`}
                                                         highlightStyle={{
                                                             backgroundColor:
                                                                 "#38b6b2",
                                                         }}
                                                     />
+                                                ) : (
+                                                    employee.fullNameRus
                                                 )}
-                                            {category === "phone" &&
-                                                employee.telephoneNumberCorp && (
-                                                    <Highlighter
-                                                        searchWords={[query]}
-                                                        autoEscape={true}
-                                                        textToHighlight={`, ${employee.telephoneNumberCorp}`}
-                                                        highlightStyle={{
-                                                            backgroundColor:
-                                                                "#38b6b2",
-                                                        }}
-                                                    />
-                                                )}
-                                            {category === "position" &&
-                                                employee.positionTitle && (
-                                                    <Highlighter
-                                                        searchWords={[query]}
-                                                        autoEscape={true}
-                                                        textToHighlight={`, ${employee.positionTitle}`}
-                                                        highlightStyle={{
-                                                            backgroundColor:
-                                                                "#38b6b2",
-                                                        }}
-                                                    />
-                                                )}
-                                        </CustomDatalistItemText>
-                                    </CustomDatalistItem>
-                                ))
+                                            </CustomDatalistItemHeader>
+                                            <CustomDatalistItemText>
+                                                {employee.organizationName}
+                                                {category === "email" &&
+                                                    employee.email && (
+                                                        <Highlighter
+                                                            searchWords={[
+                                                                query,
+                                                            ]}
+                                                            autoEscape={true}
+                                                            textToHighlight={`, ${employee.email}`}
+                                                            highlightStyle={{
+                                                                backgroundColor:
+                                                                    "#38b6b2",
+                                                            }}
+                                                        />
+                                                    )}
+                                                {category === "phone" &&
+                                                    employee.telephoneNumberCorp && (
+                                                        <Highlighter
+                                                            searchWords={[
+                                                                query,
+                                                            ]}
+                                                            autoEscape={true}
+                                                            textToHighlight={`, ${employee.telephoneNumberCorp}`}
+                                                            highlightStyle={{
+                                                                backgroundColor:
+                                                                    "#38b6b2",
+                                                            }}
+                                                        />
+                                                    )}
+                                                {category === "position" &&
+                                                    employee.positionTitle && (
+                                                        <Highlighter
+                                                            searchWords={[
+                                                                query,
+                                                            ]}
+                                                            autoEscape={true}
+                                                            textToHighlight={`, ${employee.positionTitle}`}
+                                                            highlightStyle={{
+                                                                backgroundColor:
+                                                                    "#38b6b2",
+                                                            }}
+                                                        />
+                                                    )}
+                                            </CustomDatalistItemText>
+                                        </CustomDatalistItem>
+                                    ))
+                                )
                             )}
                         </CustomDatalist>
                     )}
