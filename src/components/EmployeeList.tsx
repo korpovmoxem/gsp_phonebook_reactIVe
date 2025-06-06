@@ -6,6 +6,8 @@ import PhotoDefault from "../materials/photo.jpg";
 import { CopyIcon } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { EmployeeDepartmentPath } from "./EmployeeDepartmentPath";
+import { CATEGORIES } from "../types";
 
 const EmployeeListWrapperMain = styled.div`
     display: flex;
@@ -80,8 +82,18 @@ const CustomCopyButton = styled(CopyIcon)`
 
 export const EmployeeList: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
-    const { employees, isEmpLoading, loadMoreEmployees, employeesList } =
-        useOrgStore();
+    const {
+        employees,
+        isEmpLoading,
+        loadMoreEmployees,
+        employeesList,
+        fetchEmployeesWithParams,
+    } = useOrgStore();
+
+    const value = searchParams.get("value");
+    const category = searchParams.get("type") as CATEGORIES;
+    const organizationId = searchParams.get("organizationId");
+    const departmentId = searchParams.get("departmentId");
 
     const handleCopyClick = (text: string) => {
         navigator.clipboard.writeText(text);
@@ -91,11 +103,14 @@ export const EmployeeList: React.FC = () => {
     };
 
     useEffect(() => {
-        if (
-            searchParams.get("organizationId") === null &&
-            searchParams.get("departmentId") === null
-        ) {
+        if (!value && !category && !organizationId && !departmentId) {
             loadMoreEmployees();
+        }
+        if (value && category) {
+            fetchEmployeesWithParams(value, category);
+        }
+        if (organizationId || departmentId) {
+            console.log("departmentId || organizationId");
         }
         // Зависимости не нужны, нужно только при первом рендере
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -217,7 +232,7 @@ export const EmployeeList: React.FC = () => {
                                             <td>
                                                 {emp.telephoneNumberCorp}
                                                 {emp.telephoneNumberCorp !==
-                                                    "" && (
+                                                    null && (
                                                     <CustomCopyButton
                                                         onClick={(e) => {
                                                             handleCopyClick(
@@ -424,7 +439,7 @@ export const EmployeeList: React.FC = () => {
 
                                 <div
                                     style={{
-                                        height: "600px",
+                                        height: "100%",
                                         overflowY: "auto",
                                         fontFamily: "Arial, sans-serif",
                                     }}
@@ -465,8 +480,11 @@ export const EmployeeList: React.FC = () => {
                                                             zIndex: 2,
                                                         }}
                                                     >
-                                                        Департамент:{" "}
-                                                        {dept.departmentName}
+                                                        <EmployeeDepartmentPath
+                                                            departmentId={
+                                                                dept.departmentId
+                                                            }
+                                                        />
                                                     </div>
 
                                                     {/* Employee rows inside department */}
@@ -538,3 +556,6 @@ export const EmployeeList: React.FC = () => {
         </EmployeeListWrapperMain>
     );
 };
+function fetchEmployeesWithParams() {
+    throw new Error("Function not implemented.");
+}

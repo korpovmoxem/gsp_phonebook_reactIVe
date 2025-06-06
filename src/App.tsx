@@ -170,6 +170,23 @@ function App() {
                     theme="light"
                     transition={Bounce}
                 />
+                <div
+                    style={{
+                        display: "block",
+                        position: "fixed",
+                        top: 0,
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        width: "100%",
+                        zIndex: 9999,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundColor: "rgba(0, 0, 0, 0.25)",
+                        animationName: "appear",
+                        animationDuration: "300ms",
+                    }}
+                ></div>
             </BrowserRouter>
             <FAB title="Помощь">?</FAB>
         </>

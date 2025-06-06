@@ -1,150 +1,117 @@
 import { create } from 'zustand';
-import { Organization, Employee, ExternalOrganizations, CATEGORIES, EmployeesList } from '../types';
+import {
+  Organization,
+  Employee,
+  ExternalOrganizations,
+  CATEGORIES,
+  EmployeesList,
+} from '../types';
 import { toast } from 'react-toastify';
+import { buildOrgIndex } from '../utils/buildOrgIndex';
+import { OrgMap } from '../utils/buildOrgIndex';
 
 interface OrgState {
-	organizations: Organization[];
-	externalOrganizations: ExternalOrganizations[];
-	selectedOrgId: string | null;
-	employees: Employee[];
-	isOrgLoading: boolean;
-	isExternalOrgLoading: boolean;
-	isEmpLoading: boolean;
-	employeePage: number;
-	totalCount: number;
-	categories: CATEGORIES;
-	search: string;
-	employeesList: EmployeesList[];
+  organizations: Organization[];
+  externalOrganizations: ExternalOrganizations[];
+  selectedOrgId: string | null;
+  employees: Employee[];
+  isOrgLoading: boolean;
+  isExternalOrgLoading: boolean;
+  isEmpLoading: boolean;
+  categories: CATEGORIES;
+  search: string;
+  employeesList: EmployeesList[];
+  orgMap: OrgMap;
 
-	fetchTree: () => Promise<void>;
-	fetchExternalTree: () => Promise<void>;
-	selectOrg: (organizationId: string, departmentId: string | null) => Promise<void>;
-	loadMoreEmployees: () => Promise<void>;
-	fetchEmployeesWithParams: (value: string, category: CATEGORIES) => Promise<void>;
-
-	// setCategories: (category: CATEGORIES) => Promise<void>;
-	// setSearch: (newValue: string) => Promise<void>;
+  fetchTree: () => Promise<void>;
+  fetchExternalTree: () => Promise<void>;
+  selectOrg: (organizationId: string, departmentId: string | null) => Promise<void>;
+  loadMoreEmployees: () => Promise<void>;
+  fetchEmployeesWithParams: (value: string, category: CATEGORIES) => Promise<void>;
 }
 
 export const useOrgStore = create<OrgState>((set, get) => ({
-	organizations: [],
-	externalOrganizations: [],
-	selectedOrgId: null,
-	employees: [], // Список сотрудников при зпуске приложения
-	isOrgLoading: false,
-	isExternalOrgLoading: false,
-	isEmpLoading: true,
-	employeePage: 1,
-	totalCount: 0,
-	categories: 'fullName',
-	search: '',
-	employeesList: [], // Список сотрудников по параметрам из поисковой строки
+  organizations: [],
+  externalOrganizations: [],
+  selectedOrgId: null,
+  employees: [],
+  isOrgLoading: false,
+  isExternalOrgLoading: false,
+  isEmpLoading: true,
+  categories: 'fullName',
+  search: '',
+  employeesList: [],
+  orgMap: new Map(),
 
-	fetchExternalTree: async () => {
-		set({ isExternalOrgLoading: true });
-		
-		try {
-			console.log('ЗАПРОС')
-			const response = await fetch('http://172.16.153.53:8001/external/phonebook');
-			
-			if (!response.ok) {
-				throw new Error(`Ошибка HTTP! Код статуса: ${response.status}`);
-			}
+  fetchExternalTree: async () => {
+	console.log('fetchExternalTree')
+    set({ isExternalOrgLoading: true });
+    try {
+      const response = await fetch('http://172.16.153.53:8001/external/phonebook');
+      if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+      const data = await response.json();
+      set({
+        externalOrganizations: data.result,
+        isExternalOrgLoading: false,
+      });
+    } catch (error: any) {
+      console.error('Ошибка загрузки внешних организаций:', error.message);
+      toast.error('Ошибка при загрузке внешних справочников');
+      set({ isExternalOrgLoading: false });
+    }
+  },
 
-			const resultData = await response.json(); // Парсим JSON-данные
+  fetchTree: async () => {
+	console.log('fetchTree')
+    set({ isOrgLoading: true });
+    try {
+      const response = await fetch('http://172.16.153.53:8001/organization/tree');
+      if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+      const data = await response.json();
 
-			set({
-				externalOrganizations: resultData.result,
-				isExternalOrgLoading: false
-			});
-		} catch (err: any) {
-			console.error('Ошибка при получении списка стороних справочников:', err.message);
-			toast.error('Ошибка при получении списка стороних справочников. Попробуйте позже!', {
-				position: 'top-right',
-			});
-		}
-		
-		
-	},
+      const builtOrgMap = buildOrgIndex(data.result);
 
-	fetchTree: async () => {
-		set({ isOrgLoading: true });
-		
-		try {
-			console.log('ЗАПРОС')
-			const response = await fetch('http://172.16.153.53:8001/organization/tree');
-			
-			if (!response.ok) {
-				throw new Error(`Ошибка HTTP! Код статуса: ${response.status}`);
-			}
+      set({
+        organizations: data.result,
+        orgMap: builtOrgMap,
+        isOrgLoading: false,
+      });
+    } catch (error: any) {
+      console.error('Ошибка загрузки организаций:', error.message);
+      toast.error('Ошибка при загрузке организаций');
+      set({ isOrgLoading: false });
+    }
+  },
 
-			const resultData = await response.json(); // Парсим JSON-данные
+  selectOrg: async (organizationId, departmentId) => {
+	console.log('selectOrg')
+	set({employeesList: []})
+    const targetId = departmentId || organizationId;
+    set({ selectedOrgId: targetId, isEmpLoading: true });
 
-			set({
-				organizations: resultData.result,
-				isOrgLoading: false
-			});
-		} catch (err: any) {
-			console.error('Ошибка при получении списка организаций:', err.message);
-			toast.error('Ошибка при получении списка организаций. Попробуйте позже!', {
-				position: 'top-right',
-			});
-		}
-		
-		
-	},
+    try {
+      const url = new URL('http://172.16.153.53:8001/employee');
+      url.searchParams.append('organizationId', organizationId);
+      if (departmentId) url.searchParams.append('departmentId', departmentId);
 
-	// selectOrg: async (id, page = 1) => {
-	// 	set({ selectedOrgId: id, isEmpLoading: true});
+      const response = await fetch(url.toString());
+      if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+      const data = await response.json();
 
-	// 	try {
-	// 		console.log('ЗАПРОС')
-	// 		const response = await fetch(`http://172.16.153.53:8001/employee?organizationId=${id}`);
-			
-	// 		if (!response.ok) {
-	// 			throw new Error(`Ошибка HTTP! Код статуса: ${response.status}`);
-	// 		}
+      set({
+        employees: data.result,
+        isEmpLoading: false,
+      });
+    } catch (error: any) {
+      console.error('Ошибка загрузки сотрудников:', error.message);
+      toast.error('Ошибка при загрузке сотрудников');
+      set({ isEmpLoading: false });
+    }
+  },
 
-	// 		const resultData = await response.json(); // Парсим JSON-данные
-
-	// 		set({ employees: resultData.result, isEmpLoading: false });
-	// 	} catch (err: any) {
-	// 		console.error('Ошибка при получении списка сотрудников данной организации:', err.message);
-	// 		toast.error('Ошибка при получении списка сотрудников данной организации. Попробуйте позже!', {
-	// 			position: 'top-right',
-	// 		});
-	// 	}
-	// },
-
-	selectOrg: async (organizationId, departmentId) => {
-		const id = departmentId || organizationId
-		set({ selectedOrgId: String(id), isEmpLoading: true });
-		console.log('-------------')
-		console.log(departmentId)
-		console.log(organizationId)
-		console.log(id)
-
-		try {
-			const url = new URL('http://172.16.153.53:8001/employee');
-			url.searchParams.append('organizationId', organizationId);
-			if (departmentId) url.searchParams.append('departmentId', String(departmentId));
-
-			const res = await fetch(url.toString());
-			if (!res.ok) throw new Error(`HTTP error ${res.status}`);
-			const data = await res.json();
-			set({ employees: data.result, isEmpLoading: false });
-		} catch (err: any) {
-			console.error(err);
-			toast.error('Ошибка при загрузке сотрудников');
-			set({ isEmpLoading: false });
-		}
-	},
-
-	loadMoreEmployees: async () => {
+  loadMoreEmployees: async () => {
 		console.log('loadMoreEmployees')
-		const { selectedOrgId, employeePage, employees } = get();
-		const nextPage = employeePage + 1;
-		set({ isEmpLoading: true });
+		set({ isEmpLoading: true, employeesList: [] });
 
 		try {
 			const response = await fetch('http://172.16.153.53:8001/employee');
@@ -157,9 +124,7 @@ export const useOrgStore = create<OrgState>((set, get) => ({
 			console.log(resultData)
 
 			set({
-				employeePage: nextPage,
 				employees: resultData.result,
-				totalCount: resultData.totalCount,
 				isEmpLoading: false,
 			});
 		} catch (err: any) {
@@ -170,39 +135,25 @@ export const useOrgStore = create<OrgState>((set, get) => ({
 		}
 	},
 
-	fetchEmployeesWithParams: async (value, category) => {
-		console.log('fetchEmployeesWithParams')
-		set({ isEmpLoading: true, employeesList: [] });
+  fetchEmployeesWithParams: async (value, category) => {
+	console.log('fetchEmployeesWithParams')
+    set({ isEmpLoading: true, employeesList: [], selectedOrgId: null });
 
-		try {
-			const response = await fetch(`http://172.16.153.53:8001/employee/search?value=${value}&type=${category}`);
-			
-			if (!response.ok) {
-				throw new Error(`Ошибка HTTP! Код статуса: ${response.status}`);
-			}
+    try {
+      const response = await fetch(
+       ` http://172.16.153.53:8001/employee/search?value=${value}&type=${category}`
+      );
+      if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+      const data = await response.json();
 
-			const resultData = await response.json(); // Парсим JSON-данные
-			console.log(resultData)
-
-			set({
-				employeesList: resultData.result,
-				isEmpLoading: false,
-			});
-		} catch (err: any) {
-			console.error('Ошибка при получении списка сотрудников:', err.message);
-			toast.error('Ошибка при получении списка сотрудников. Попробуйте позже!', {
-				position: 'top-right',
-			});
-		}
-	},
-
-	// setCategories: async (newCategory) => {
-	// 	console.log('setCategories')
-	// 	set({ categories: newCategory });
-	// },
-
-	// setSearch: async (newValue) => {
-	// 	console.log('setSearch')
-	// 	set({ search: newValue });
-	// },
+      set({
+        employeesList: data.result,
+        isEmpLoading: false,
+      });
+    } catch (error: any) {
+      console.error('Ошибка поиска сотрудников:', error.message);
+      toast.error('Ошибка при поиске сотрудников');
+      set({ isEmpLoading: false });
+    }
+  },
 }));
