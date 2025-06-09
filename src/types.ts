@@ -41,3 +41,19 @@ export interface EmployeesList {
 }
 
 export type CATEGORIES = "fullName" | "email" | "position" | "phone";
+
+export interface EmployeeShort {
+    id: string,
+    organizationId: string,
+    fullName: string,
+}
+
+export interface CurrentEmployeeInfo extends Employee {
+    mobileNumberCorp: string,
+    mobileNumberPersonal: string,
+    workPlace: string,
+    address: string,
+    assistants: EmployeeShort[],
+    managers: EmployeeShort[],
+    [key: string]: any | undefined,
+}

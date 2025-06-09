@@ -153,12 +153,11 @@ export const OrgSidebar: React.FC = () => {
                         {!isExternalOrgLoading ? (
                             <div style={{ marginTop: "10px" }}>
                                 {externalOrganizations.map((item) => (
-                                    <div>
+                                    <div key={item.id}>
                                         <CustomLink
                                             href={item.url}
                                             target="_blank"
                                             rel="noreferrer"
-                                            key={item.id}
                                         >
                                             <ExternalLink
                                                 size={15}

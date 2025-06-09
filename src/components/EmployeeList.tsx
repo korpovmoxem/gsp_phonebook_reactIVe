@@ -58,13 +58,6 @@ const EmployeeTableRowDiv = styled.div`
     }
 `;
 
-// display:
-// "flex",
-// padding:
-// "6px 8px",
-// borderBottom:
-// "1px solid #e0e0e0",
-
 const CustomEmailLink = styled.a`
     color: black;
     &:hover {
@@ -88,6 +81,9 @@ export const EmployeeList: React.FC = () => {
         loadMoreEmployees,
         employeesList,
         fetchEmployeesWithParams,
+        isEmployeeInfoModalOpen,
+        setIsEmployeeInfoModalOpen,
+        fetchCurrentEmployeeInfo,
     } = useOrgStore();
 
     const value = searchParams.get("value");
@@ -100,6 +96,11 @@ export const EmployeeList: React.FC = () => {
         toast.info("Скопировано в буфер обмена", {
             position: "top-right",
         });
+    };
+
+    const handleRowClick = (idEmployee: string, idOrganization: string) => {
+        setIsEmployeeInfoModalOpen(!isEmployeeInfoModalOpen);
+        fetchCurrentEmployeeInfo(idEmployee, idOrganization);
     };
 
     useEffect(() => {
@@ -179,9 +180,12 @@ export const EmployeeList: React.FC = () => {
                                     {employees.map((emp) => (
                                         <EmployeeTableRow
                                             key={emp.id}
-                                            onClick={() => {
-                                                console.log("Click");
-                                            }}
+                                            onClick={() =>
+                                                handleRowClick(
+                                                    emp.id,
+                                                    emp.organizationId
+                                                )
+                                            }
                                         >
                                             <td>
                                                 <img
@@ -493,6 +497,12 @@ export const EmployeeList: React.FC = () => {
                                                             <EmployeeTableRowDiv
                                                                 key={
                                                                     employee.id
+                                                                }
+                                                                onClick={() =>
+                                                                    handleRowClick(
+                                                                        employee.id,
+                                                                        employee.organizationId
+                                                                    )
                                                                 }
                                                             >
                                                                 <img

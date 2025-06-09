@@ -22,6 +22,7 @@
     "react-scripts": "5.0.1",
     "react-toastify": "^11.0.5",
     "shepherd.js": "^14.5.0",
+    "spinners-react": "^1.0.11",
     "styled-components": "^6.1.18",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4",

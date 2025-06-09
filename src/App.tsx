@@ -15,6 +15,9 @@ import { SearchBar } from "./components/SearchBar";
 import { ExternalLink } from "lucide-react";
 import Shepherd from "shepherd.js";
 import { useEffect, useState } from "react";
+import { useOrgStore } from "./store/organizationStore";
+import { EmployeeInfoModal } from "./components/EmployeeInfoModal";
+import { EditInformationModal } from "./components/EditInformationModal";
 
 const MainWrapper = styled.div`
     margin: auto;
@@ -55,6 +58,12 @@ function App() {
     const handleSearch = (a: string, b: string) => {
         console.log(a, b);
     };
+
+    const {
+        isEmployeeInfoModalOpen,
+        setIsEmployeeInfoModalOpen,
+        isEditInformation,
+    } = useOrgStore();
 
     // Подключить, если потребуется интерактивный тур
     // TODO: разобраться с ошибками в модуле
@@ -170,23 +179,8 @@ function App() {
                     theme="light"
                     transition={Bounce}
                 />
-                <div
-                    style={{
-                        display: "block",
-                        position: "fixed",
-                        top: 0,
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        width: "100%",
-                        zIndex: 9999,
-                        alignItems: "center",
-                        justifyContent: "center",
-                        backgroundColor: "rgba(0, 0, 0, 0.25)",
-                        animationName: "appear",
-                        animationDuration: "300ms",
-                    }}
-                ></div>
+                {isEmployeeInfoModalOpen && <EmployeeInfoModal />}
+                {isEditInformation && <EditInformationModal />}
             </BrowserRouter>
             <FAB title="Помощь">?</FAB>
         </>

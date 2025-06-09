@@ -5,59 +5,72 @@ import {
   ExternalOrganizations,
   CATEGORIES,
   EmployeesList,
+  CurrentEmployeeInfo,
 } from '../types';
 import { toast } from 'react-toastify';
 import { buildOrgIndex } from '../utils/buildOrgIndex';
 import { OrgMap } from '../utils/buildOrgIndex';
 
 interface OrgState {
-  organizations: Organization[];
-  externalOrganizations: ExternalOrganizations[];
-  selectedOrgId: string | null;
-  employees: Employee[];
-  isOrgLoading: boolean;
-  isExternalOrgLoading: boolean;
-  isEmpLoading: boolean;
-  categories: CATEGORIES;
-  search: string;
-  employeesList: EmployeesList[];
-  orgMap: OrgMap;
+    organizations: Organization[];
+    externalOrganizations: ExternalOrganizations[];
+    selectedOrgId: string | null;
+    employees: Employee[];
+    isOrgLoading: boolean;
+    isExternalOrgLoading: boolean;
+    isEmpLoading: boolean;
+    categories: CATEGORIES;
+    search: string;
+    employeesList: EmployeesList[];
+    orgMap: OrgMap;
+    isEmployeeInfoModalOpen: boolean;
+    currentEmployeeInfo?: CurrentEmployeeInfo,
+    isCurrentEmployeeLoading: boolean,
+    isEditInformation: boolean,
 
-  fetchTree: () => Promise<void>;
-  fetchExternalTree: () => Promise<void>;
-  selectOrg: (organizationId: string, departmentId: string | null) => Promise<void>;
-  loadMoreEmployees: () => Promise<void>;
-  fetchEmployeesWithParams: (value: string, category: CATEGORIES) => Promise<void>;
+    fetchTree: () => Promise<void>;
+    fetchExternalTree: () => Promise<void>;
+    selectOrg: (organizationId: string, departmentId: string | null) => Promise<void>;
+    loadMoreEmployees: () => Promise<void>;
+    fetchEmployeesWithParams: (value: string, category: CATEGORIES) => Promise<void>;
+    fetchCurrentEmployeeInfo: (idEmployee: string, idOrganization: string) => Promise<void>;
+
+    setIsEmployeeInfoModalOpen: (currentState: boolean) => void;
+    setIsEditInformation: (currentState: boolean) => void;
 }
 
 export const useOrgStore = create<OrgState>((set, get) => ({
-  organizations: [],
-  externalOrganizations: [],
-  selectedOrgId: null,
-  employees: [],
-  isOrgLoading: false,
-  isExternalOrgLoading: false,
-  isEmpLoading: true,
-  categories: 'fullName',
-  search: '',
-  employeesList: [],
-  orgMap: new Map(),
+    organizations: [],
+    externalOrganizations: [],
+    selectedOrgId: null,
+    employees: [],
+    isOrgLoading: false,
+    isExternalOrgLoading: false,
+    isEmpLoading: true,
+    categories: 'fullName',
+    search: '',
+    employeesList: [],
+    orgMap: new Map(),
+    isEmployeeInfoModalOpen: false,
+    currentEmployeeInfo: undefined,
+    isCurrentEmployeeLoading: false,
+    isEditInformation: false,
 
   fetchExternalTree: async () => {
-	console.log('fetchExternalTree')
+    console.log('fetchExternalTree')
     set({ isExternalOrgLoading: true });
     try {
-      const response = await fetch('http://172.16.153.53:8001/external/phonebook');
-      if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
-      const data = await response.json();
-      set({
-        externalOrganizations: data.result,
-        isExternalOrgLoading: false,
-      });
+        const response = await fetch('http://172.16.153.53:8001/external/phonebook');
+        if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+            const data = await response.json();
+        set({
+            externalOrganizations: data.result,
+            isExternalOrgLoading: false,
+        });
     } catch (error: any) {
-      console.error('Ошибка загрузки внешних организаций:', error.message);
-      toast.error('Ошибка при загрузке внешних справочников');
-      set({ isExternalOrgLoading: false });
+        console.error('Ошибка загрузки внешних организаций:', error.message);
+        toast.error('Ошибка при загрузке внешних справочников');
+        set({ isExternalOrgLoading: false });
     }
   },
 
@@ -154,6 +167,39 @@ export const useOrgStore = create<OrgState>((set, get) => ({
       console.error('Ошибка поиска сотрудников:', error.message);
       toast.error('Ошибка при поиске сотрудников');
       set({ isEmpLoading: false });
+    }
+  },
+
+  setIsEmployeeInfoModalOpen: (currentState) =>{
+    console.log('setIsEmployeeInfoModalOpen')
+    set({isEmployeeInfoModalOpen: currentState, currentEmployeeInfo: undefined})
+  },
+
+   setIsEditInformation: (currentState) =>{
+    console.log('setIsEditInformation')
+    set({isEditInformation: currentState})
+  },
+
+  fetchCurrentEmployeeInfo: async (idEmployee, idOrganization) => {
+	console.log('fetchCurrentEmployeeInfo')
+    set({isCurrentEmployeeLoading: true})
+
+    try {
+      const response = await fetch(
+       `http://172.16.153.53:8001/employee/detail?id=${idEmployee}&organizationId=${idOrganization}`
+      );
+      if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+      const data = await response.json();
+
+      set({
+        currentEmployeeInfo: data.result,
+      });
+    } catch (error: any) {
+      console.error('Ошибка получения информации о сотруднике:', error.message);
+      toast.error('Ошибка получения информации о сотруднике. Поробуйте позже');
+      
+    } finally {
+        set({ isCurrentEmployeeLoading: false });
     }
   },
 }));

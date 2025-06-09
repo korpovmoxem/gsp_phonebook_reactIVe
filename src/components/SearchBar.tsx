@@ -189,6 +189,87 @@ export const SearchBar = ({ onSearch }: Props) => {
                             }
                         }}
                     />
+                    {listQuery.length > 0 && isOpen && (
+                        <CustomDatalist ref={containerRef}>
+                            {/* {[...Array(12)].map((_, i) => (
+                            <div key={i} style={{ marginBottom: "2px" }}>
+                                <Skeleton height={40} />
+                            </div>
+                        ))} */}
+                            {listQuery.map((item) =>
+                                item.departments.map((departmnt) =>
+                                    departmnt.employees.map((employee) => (
+                                        <CustomDatalistItem
+                                            onClick={() =>
+                                                handleClickItem(employee)
+                                            }
+                                        >
+                                            <CustomDatalistItemHeader>
+                                                {category === "fullName" ? (
+                                                    <Highlighter
+                                                        searchWords={[query]}
+                                                        autoEscape={true}
+                                                        textToHighlight={`${employee.fullNameRus}`}
+                                                        highlightStyle={{
+                                                            backgroundColor:
+                                                                "#38b6b2",
+                                                        }}
+                                                    />
+                                                ) : (
+                                                    employee.fullNameRus
+                                                )}
+                                            </CustomDatalistItemHeader>
+                                            <CustomDatalistItemText>
+                                                {employee.organizationName}
+                                                {category === "email" &&
+                                                    employee.email && (
+                                                        <Highlighter
+                                                            searchWords={[
+                                                                query,
+                                                            ]}
+                                                            autoEscape={true}
+                                                            textToHighlight={`, ${employee.email}`}
+                                                            highlightStyle={{
+                                                                backgroundColor:
+                                                                    "#38b6b2",
+                                                            }}
+                                                        />
+                                                    )}
+                                                {category === "phone" &&
+                                                    employee.telephoneNumberCorp && (
+                                                        <Highlighter
+                                                            searchWords={[
+                                                                query,
+                                                            ]}
+                                                            autoEscape={true}
+                                                            textToHighlight={`, ${employee.telephoneNumberCorp}`}
+                                                            highlightStyle={{
+                                                                backgroundColor:
+                                                                    "#38b6b2",
+                                                            }}
+                                                        />
+                                                    )}
+                                                {category === "position" &&
+                                                    employee.positionTitle && (
+                                                        <Highlighter
+                                                            searchWords={[
+                                                                query,
+                                                            ]}
+                                                            autoEscape={true}
+                                                            textToHighlight={`, ${employee.positionTitle}`}
+                                                            highlightStyle={{
+                                                                backgroundColor:
+                                                                    "#38b6b2",
+                                                            }}
+                                                        />
+                                                    )}
+                                            </CustomDatalistItemText>
+                                        </CustomDatalistItem>
+                                    ))
+                                )
+                            )}
+                        </CustomDatalist>
+                    )}
                 </div>
                 {query && (
                     <button className="clear-button" onClick={clearInput}>
