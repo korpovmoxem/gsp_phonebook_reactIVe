@@ -26,6 +26,7 @@ const PhotoBlock = styled.div`
     justify-content: center;
     padding: 20px;
     width: 30%;
+    min-width: 240px;
     height: 50%;
     background-color: rgba(240, 240, 240, 0.49);
     border-radius: 10px;
@@ -163,16 +164,8 @@ export const EmployeeInfoModal: React.FC = () => {
                                     >
                                         <h3>Информация о сотруднике</h3>
                                         <CustomButton
-                                            disabled={
-                                                !currentEmployeeInfo?.email
-                                            }
                                             onClick={() => handleEditInfo()}
                                             height="25px"
-                                            title={
-                                                !currentEmployeeInfo?.email
-                                                    ? "Отсутствует элеткронная почта"
-                                                    : ""
-                                            }
                                         >
                                             Изменить данные
                                         </CustomButton>

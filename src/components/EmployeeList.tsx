@@ -78,12 +78,13 @@ export const EmployeeList: React.FC = () => {
     const {
         employees,
         isEmpLoading,
-        loadMoreEmployees,
+        // loadMoreEmployees,
         employeesList,
         fetchEmployeesWithParams,
         isEmployeeInfoModalOpen,
         setIsEmployeeInfoModalOpen,
         fetchCurrentEmployeeInfo,
+        selectOrg,
     } = useOrgStore();
 
     const value = searchParams.get("value");
@@ -105,7 +106,8 @@ export const EmployeeList: React.FC = () => {
 
     useEffect(() => {
         if (!value && !category && !organizationId && !departmentId) {
-            loadMoreEmployees();
+            // loadMoreEmployees();
+            selectOrg("7842155505", "9c685cfe-e9a0-11e8-90f2-0050569026ba");
         }
         if (value && category) {
             fetchEmployeesWithParams(value, category);

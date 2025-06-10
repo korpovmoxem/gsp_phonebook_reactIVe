@@ -6,6 +6,8 @@ import Highlighter from "react-highlight-words";
 import { styled } from "styled-components";
 import { useOrgStore } from "../store/organizationStore";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { ClipboardCopy } from "lucide-react";
+import { toast } from "react-toastify";
 
 const CustomDatalist = styled.div`
     position: fixed;
@@ -58,6 +60,7 @@ export const SearchBar = ({ onSearch }: Props) => {
         (searchParams.get("category") as CATEGORIES) || "fullName"
     );
     /////////////////
+    const [listEmails, setListEmails] = useState("");
 
     const navigate = useNavigate();
 
@@ -66,7 +69,12 @@ export const SearchBar = ({ onSearch }: Props) => {
         setIsEmployeeInfoModalOpen,
         isEmployeeInfoModalOpen,
         fetchCurrentEmployeeInfo,
+        employees,
+        employeesList,
     } = useOrgStore();
+
+    console.log(";;;;;;;;;;;;;;;;;;;;;");
+    console.log(employees);
 
     const handleInputChange = (e: string) => {
         setQuery(e);
@@ -169,6 +177,41 @@ export const SearchBar = ({ onSearch }: Props) => {
         }
     };
 
+    const handleClickCopyEmails = () => {
+        let emails = listEmails;
+        console.log("handleClickCopyEmails");
+        console.log(listQuery);
+        if (employeesList.length > 0) {
+            console.log("--------------listQuery---------------");
+            console.log(listQuery);
+            employeesList.forEach((organization) => {
+                organization.departments.forEach((department) => {
+                    department.employees.forEach((employee) => {
+                        if (employee.email) {
+                            console.log("СОТРУДНИК ЧЕРЕЗ ПОИСК:");
+                            console.log(employee);
+                            emails += ` ${employee.email}`;
+                        }
+                    });
+                });
+            });
+            console.log("БУФЕР");
+            console.log(listEmails);
+        } else {
+            employees.forEach((employee) => {
+                if (employee.email) {
+                    console.log("СОТРУДНИК НА ГЛАВНОЙ:");
+                    console.log(employee);
+                    emails += ` ${employee.email}`;
+                }
+            });
+        }
+        navigator.clipboard.writeText(emails);
+        toast.info("Скопировано в буфер обмена", {
+            position: "top-right",
+        });
+    };
+
     useEffect(() => {
         document.addEventListener("mousedown", handleClickOutside);
         return () => {
@@ -180,127 +223,144 @@ export const SearchBar = ({ onSearch }: Props) => {
     console.log(listQuery);
 
     return (
-        <div className="search-component">
-            <div className="search-input-wrapper">
-                <div>
-                    <input
-                        type="text"
-                        value={query}
-                        onChange={(e) => handleInputChange(e.target.value)}
-                        className="search-input"
-                        placeholder="Введите..."
-                        list="searchList"
-                        onFocus={() => setIsOpen(true)}
-                        ref={inputRef}
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                                handleSearch();
-                            }
-                        }}
-                    />
-                    {listQuery.length > 0 && isOpen && (
-                        <CustomDatalist ref={containerRef}>
-                            {/* {[...Array(12)].map((_, i) => (
-                            <div key={i} style={{ marginBottom: "2px" }}>
-                                <Skeleton height={40} />
-                            </div>
-                        ))} */}
-                            {listQuery.map((item) =>
-                                item.departments.map((departmnt) =>
-                                    departmnt.employees.map((employee) => (
-                                        <CustomDatalistItem
-                                            onClick={() =>
-                                                handleClickItem(employee)
-                                            }
-                                        >
-                                            <CustomDatalistItemHeader>
-                                                {category === "fullName" ? (
-                                                    <Highlighter
-                                                        searchWords={[query]}
-                                                        autoEscape={true}
-                                                        textToHighlight={`${employee.fullNameRus}`}
-                                                        highlightStyle={{
-                                                            backgroundColor:
-                                                                "#38b6b2",
-                                                        }}
-                                                    />
-                                                ) : (
-                                                    employee.fullNameRus
-                                                )}
-                                            </CustomDatalistItemHeader>
-                                            <CustomDatalistItemText>
-                                                {employee.organizationName}
-                                                {category === "email" &&
-                                                    employee.email && (
+        <>
+            <div className="search-component">
+                <div className="search-input-wrapper">
+                    <div>
+                        <input
+                            type="text"
+                            value={query}
+                            onChange={(e) => handleInputChange(e.target.value)}
+                            className="search-input"
+                            placeholder="Введите..."
+                            list="searchList"
+                            onFocus={() => setIsOpen(true)}
+                            ref={inputRef}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    handleSearch();
+                                }
+                            }}
+                        />
+                        {listQuery.length > 0 && isOpen && (
+                            <CustomDatalist ref={containerRef}>
+                                {/* {[...Array(12)].map((_, i) => (
+            <div key={i} style={{ marginBottom: "2px" }}>
+                <Skeleton height={40} />
+            </div>
+        ))} */}
+                                {listQuery.map((item) =>
+                                    item.departments.map((departmnt) =>
+                                        departmnt.employees.map((employee) => (
+                                            <CustomDatalistItem
+                                                onClick={() =>
+                                                    handleClickItem(employee)
+                                                }
+                                            >
+                                                <CustomDatalistItemHeader>
+                                                    {category === "fullName" ? (
                                                         <Highlighter
                                                             searchWords={[
                                                                 query,
                                                             ]}
                                                             autoEscape={true}
-                                                            textToHighlight={`, ${employee.email}`}
+                                                            textToHighlight={`${employee.fullNameRus}`}
                                                             highlightStyle={{
                                                                 backgroundColor:
                                                                     "#38b6b2",
                                                             }}
                                                         />
+                                                    ) : (
+                                                        employee.fullNameRus
                                                     )}
-                                                {category === "phone" &&
-                                                    employee.telephoneNumberCorp && (
-                                                        <Highlighter
-                                                            searchWords={[
-                                                                query,
-                                                            ]}
-                                                            autoEscape={true}
-                                                            textToHighlight={`, ${employee.telephoneNumberCorp}`}
-                                                            highlightStyle={{
-                                                                backgroundColor:
-                                                                    "#38b6b2",
-                                                            }}
-                                                        />
-                                                    )}
-                                                {category === "position" &&
-                                                    employee.positionTitle && (
-                                                        <Highlighter
-                                                            searchWords={[
-                                                                query,
-                                                            ]}
-                                                            autoEscape={true}
-                                                            textToHighlight={`, ${employee.positionTitle}`}
-                                                            highlightStyle={{
-                                                                backgroundColor:
-                                                                    "#38b6b2",
-                                                            }}
-                                                        />
-                                                    )}
-                                            </CustomDatalistItemText>
-                                        </CustomDatalistItem>
-                                    ))
-                                )
-                            )}
-                        </CustomDatalist>
+                                                </CustomDatalistItemHeader>
+                                                <CustomDatalistItemText>
+                                                    {employee.organizationName}
+                                                    {category === "email" &&
+                                                        employee.email && (
+                                                            <Highlighter
+                                                                searchWords={[
+                                                                    query,
+                                                                ]}
+                                                                autoEscape={
+                                                                    true
+                                                                }
+                                                                textToHighlight={`, ${employee.email}`}
+                                                                highlightStyle={{
+                                                                    backgroundColor:
+                                                                        "#38b6b2",
+                                                                }}
+                                                            />
+                                                        )}
+                                                    {category === "phone" &&
+                                                        employee.telephoneNumberCorp && (
+                                                            <Highlighter
+                                                                searchWords={[
+                                                                    query,
+                                                                ]}
+                                                                autoEscape={
+                                                                    true
+                                                                }
+                                                                textToHighlight={`, ${employee.telephoneNumberCorp}`}
+                                                                highlightStyle={{
+                                                                    backgroundColor:
+                                                                        "#38b6b2",
+                                                                }}
+                                                            />
+                                                        )}
+                                                    {category === "position" &&
+                                                        employee.positionTitle && (
+                                                            <Highlighter
+                                                                searchWords={[
+                                                                    query,
+                                                                ]}
+                                                                autoEscape={
+                                                                    true
+                                                                }
+                                                                textToHighlight={`, ${employee.positionTitle}`}
+                                                                highlightStyle={{
+                                                                    backgroundColor:
+                                                                        "#38b6b2",
+                                                                }}
+                                                            />
+                                                        )}
+                                                </CustomDatalistItemText>
+                                            </CustomDatalistItem>
+                                        ))
+                                    )
+                                )}
+                            </CustomDatalist>
+                        )}
+                    </div>
+                    {query && (
+                        <button className="clear-button" onClick={clearInput}>
+                            ×
+                        </button>
                     )}
                 </div>
-                {query && (
-                    <button className="clear-button" onClick={clearInput}>
-                        ×
-                    </button>
-                )}
+
+                <select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value as CATEGORIES)}
+                    className="search-select"
+                >
+                    <option value="fullName">ФИО</option>
+                    <option value="phone">Телефон</option>
+                    <option value="email">Email</option>
+                    <option value="position">Должность</option>
+                </select>
+
+                <button className="search-button" onClick={handleSearch}>
+                    Поиск
+                </button>
             </div>
-
-            <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value as CATEGORIES)}
-                className="search-select"
+            <span
+                style={{ alignSelf: "center", cursor: "pointer" }}
+                title="Скопировать Email всех найденных сотрудников"
+                onClick={() => handleClickCopyEmails()}
             >
-                <option value="fullName">ФИО</option>
-                <option value="phone">Телефон</option>
-                <option value="email">Email</option>
-                <option value="position">Должность</option>
-            </select>
-
-            <button className="search-button" onClick={handleSearch}>
-                Поиск
-            </button>
-        </div>
+                <ClipboardCopy />
+            </span>
+        </>
     );
 };
