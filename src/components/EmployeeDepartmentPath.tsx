@@ -43,14 +43,14 @@ export const EmployeeDepartmentPath = ({ departmentId }: Props) => {
                 return (
                     <>
                         <Crumb
-                        // onClick={() => {
-                        //     selectOrg(node.organizationId || id, id);
-                        //     navigate(
-                        //         `/?organizationId=${
-                        //             node.organizationId || id
-                        //         }&departmentId=${id}`
-                        //     );
-                        // }}
+                            onClick={() => {
+                                selectOrg(node.organizationId || id, id);
+                                navigate(
+                                    `/?organizationId=${
+                                        node.organizationId || id
+                                    }&departmentId=${id}`
+                                );
+                            }}
                         >
                             {node.name}
                         </Crumb>

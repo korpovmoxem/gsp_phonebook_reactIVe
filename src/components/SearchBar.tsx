@@ -61,7 +61,12 @@ export const SearchBar = ({ onSearch }: Props) => {
 
     const navigate = useNavigate();
 
-    const { fetchEmployeesWithParams } = useOrgStore();
+    const {
+        fetchEmployeesWithParams,
+        setIsEmployeeInfoModalOpen,
+        isEmployeeInfoModalOpen,
+        fetchCurrentEmployeeInfo,
+    } = useOrgStore();
 
     const handleInputChange = (e: string) => {
         setQuery(e);
@@ -81,6 +86,7 @@ export const SearchBar = ({ onSearch }: Props) => {
 
     const handleSearch = () => {
         if (query.trim()) {
+            setIsOpen(false);
             onSearch(query.trim(), category);
             fetchEmployeesWithParams(query, category);
             navigate(`/employee/search?value=${query}&type=${category}`);
@@ -112,6 +118,9 @@ export const SearchBar = ({ onSearch }: Props) => {
     const handleClickItem = (item: Employee) => {
         setIsOpen(false);
         console.log(item);
+        setQuery(item.fullNameRus);
+        setIsEmployeeInfoModalOpen(!isEmployeeInfoModalOpen);
+        fetchCurrentEmployeeInfo(item.id, item.organizationId);
     };
 
     // Обработка запроса при изменении debouncedQuery

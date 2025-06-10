@@ -1,0 +1,85 @@
+import { useOrgStore } from "../store/organizationStore";
+import styled from "styled-components";
+import PhotoDefault from "../materials/photo.jpg";
+import { ModalField } from "./ModalField";
+import { CurrentEmployeeInfo } from "../types";
+import { SpinnerCircular } from "spinners-react";
+import {
+    CloseButton,
+    CustomButton,
+    ModalBackground,
+    ModalContainer,
+    ModalContent,
+    ModalHeader,
+} from "./components";
+import { EditInformationModal } from "./EditInformationModal";
+import { useEffect, useRef } from "react";
+
+interface Props {
+    onClose: () => void;
+}
+
+export const HelpModal = ({ onClose }: Props) => {
+    console.log("HelpModal");
+
+    const containerRef = useRef<HTMLDivElement | null>(null);
+
+    const handleClickOutside = (event: MouseEvent) => {
+        console.log("handleClickOutside");
+        console.log(event);
+        console.log(containerRef);
+        if (
+            containerRef.current &&
+            !containerRef.current.childNodes[0].contains(event.target as Node)
+        ) {
+            onClose();
+        }
+    };
+
+    const handleESCClick = (event: KeyboardEvent) => {
+        if (event.key === "Escape") {
+            onClose();
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        document.addEventListener("keydown", handleESCClick);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener("keydown", handleESCClick);
+        };
+    }, []);
+
+    return (
+        <>
+            <ModalBackground ref={containerRef}>
+                <ModalContainer>
+                    <ModalContent>
+                        <ModalHeader>
+                            <h3>Помощь</h3>
+                            <CloseButton onClick={() => onClose()}>
+                                X
+                            </CloseButton>
+                        </ModalHeader>
+                        <div>
+                            Уважаемые коллеги! Если у вас есть предложения или
+                            вы нашли ошибку, то направляйте письма на адрес{" "}
+                            <a href="mailto:phonebook@gsprom.ru">
+                                phonebook@gsprom.ru
+                            </a>
+                            <br />
+                            <br />
+                            Справочник обновляется ежедневно с 7:00 до 7:30 для
+                            получения данных из следующих систем:
+                            <br />
+                            Фото, email, номера телефонов - ActiveDirectory
+                            <br />
+                            Остальная информация - 1С:ЗУП
+                        </div>
+                    </ModalContent>
+                </ModalContainer>
+            </ModalBackground>
+        </>
+    );
+};

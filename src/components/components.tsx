@@ -50,3 +50,24 @@ export const ModalHeader = styled.div`
     flex-direction: row;
     justify-content: space-between;
 `;
+
+interface ButtonProps {
+    height?: string;
+}
+
+export const CustomButton = styled.button<ButtonProps>`
+    height: ${(props) => (props.height ? props.height : "auto")};
+    margin-left: 20px;
+    border: none;
+    background-color: #1d75bb;
+    color: #ffffff;
+    cursor: pointer;
+
+    &:hover {
+        background-color: rgb(6, 106, 187);
+    }
+
+    &:disabled {
+        opacity: 0.4 !important;
+    }
+`;

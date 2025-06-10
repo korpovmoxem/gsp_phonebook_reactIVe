@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import { useOrgStore } from "./store/organizationStore";
 import { EmployeeInfoModal } from "./components/EmployeeInfoModal";
 import { EditInformationModal } from "./components/EditInformationModal";
+import { HelpModal } from "./components/HelpModal";
 
 const MainWrapper = styled.div`
     margin: auto;
@@ -55,6 +56,7 @@ const FAB = styled.button`
 `;
 
 function App() {
+    const [isHelpOpen, setIsHelpOpen] = useState(false);
     const handleSearch = (a: string, b: string) => {
         console.log(a, b);
     };
@@ -181,8 +183,17 @@ function App() {
                 />
                 {isEmployeeInfoModalOpen && <EmployeeInfoModal />}
                 {isEditInformation && <EditInformationModal />}
+                {isHelpOpen && (
+                    <HelpModal
+                        onClose={() => {
+                            setIsHelpOpen(false);
+                        }}
+                    />
+                )}
             </BrowserRouter>
-            <FAB title="Помощь">?</FAB>
+            <FAB title="Помощь" onClick={() => setIsHelpOpen(true)}>
+                ?
+            </FAB>
         </>
     );
 }

@@ -27,6 +27,7 @@ interface OrgState {
     currentEmployeeInfo?: CurrentEmployeeInfo,
     isCurrentEmployeeLoading: boolean,
     isEditInformation: boolean,
+    isLoadingCode: boolean,
 
     fetchTree: () => Promise<void>;
     fetchExternalTree: () => Promise<void>;
@@ -37,6 +38,10 @@ interface OrgState {
 
     setIsEmployeeInfoModalOpen: (currentState: boolean) => void;
     setIsEditInformation: (currentState: boolean) => void;
+
+    fetchVerificatinCode: (idEmployee: string, idOrganization: string) => Promise<void>;
+
+    saveEmployeeInfo: (personalMobile: string, cityPhone: string, workPlace: string, address: string, code: string) => Promise<void>; 
 }
 
 export const useOrgStore = create<OrgState>((set, get) => ({
@@ -55,151 +60,211 @@ export const useOrgStore = create<OrgState>((set, get) => ({
     currentEmployeeInfo: undefined,
     isCurrentEmployeeLoading: false,
     isEditInformation: false,
+    isLoadingCode: false,
 
-  fetchExternalTree: async () => {
-    console.log('fetchExternalTree')
-    set({ isExternalOrgLoading: true });
-    try {
-        const response = await fetch('http://172.16.153.53:8001/external/phonebook');
+    fetchExternalTree: async () => {
+        console.log('fetchExternalTree')
+        set({ isExternalOrgLoading: true });
+        try {
+            const response = await fetch('http://172.16.153.53:8001/external/phonebook');
+            if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+                const data = await response.json();
+            set({
+                externalOrganizations: data.result,
+                isExternalOrgLoading: false,
+            });
+        } catch (error: any) {
+            console.error('Ошибка загрузки внешних организаций:', error.message);
+            toast.error('Ошибка при загрузке внешних справочников');
+            set({ isExternalOrgLoading: false });
+        }
+    },
+
+    fetchTree: async () => {
+        console.log('fetchTree')
+        set({ isOrgLoading: true });
+        try {
+        const response = await fetch('http://172.16.153.53:8001/organization/tree');
         if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
-            const data = await response.json();
+        const data = await response.json();
+
+        const builtOrgMap = buildOrgIndex(data.result);
+
         set({
-            externalOrganizations: data.result,
-            isExternalOrgLoading: false,
+            organizations: data.result,
+            orgMap: builtOrgMap,
+            isOrgLoading: false,
         });
-    } catch (error: any) {
-        console.error('Ошибка загрузки внешних организаций:', error.message);
-        toast.error('Ошибка при загрузке внешних справочников');
-        set({ isExternalOrgLoading: false });
-    }
-  },
+        } catch (error: any) {
+        console.error('Ошибка загрузки организаций:', error.message);
+        toast.error('Ошибка при загрузке организаций');
+        set({ isOrgLoading: false });
+        }
+    },
 
-  fetchTree: async () => {
-	console.log('fetchTree')
-    set({ isOrgLoading: true });
-    try {
-      const response = await fetch('http://172.16.153.53:8001/organization/tree');
-      if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
-      const data = await response.json();
+    selectOrg: async (organizationId, departmentId) => {
+        console.log('selectOrg')
+        set({employeesList: []})
+        const targetId = departmentId || organizationId;
+        set({ selectedOrgId: targetId, isEmpLoading: true });
 
-      const builtOrgMap = buildOrgIndex(data.result);
+        try {
+        const url = new URL('http://172.16.153.53:8001/employee');
+        url.searchParams.append('organizationId', organizationId);
+        if (departmentId) url.searchParams.append('departmentId', departmentId);
 
-      set({
-        organizations: data.result,
-        orgMap: builtOrgMap,
-        isOrgLoading: false,
-      });
-    } catch (error: any) {
-      console.error('Ошибка загрузки организаций:', error.message);
-      toast.error('Ошибка при загрузке организаций');
-      set({ isOrgLoading: false });
-    }
-  },
+        const response = await fetch(url.toString());
+        if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+        const data = await response.json();
 
-  selectOrg: async (organizationId, departmentId) => {
-	console.log('selectOrg')
-	set({employeesList: []})
-    const targetId = departmentId || organizationId;
-    set({ selectedOrgId: targetId, isEmpLoading: true });
+        set({
+            employees: data.result,
+            isEmpLoading: false,
+        });
+        } catch (error: any) {
+        console.error('Ошибка загрузки сотрудников:', error.message);
+        toast.error('Ошибка при загрузке сотрудников');
+        set({ isEmpLoading: false });
+        }
+    },
 
-    try {
-      const url = new URL('http://172.16.153.53:8001/employee');
-      url.searchParams.append('organizationId', organizationId);
-      if (departmentId) url.searchParams.append('departmentId', departmentId);
+    loadMoreEmployees: async () => {
+        console.log('loadMoreEmployees')
+        set({ isEmpLoading: true, employeesList: [] });
 
-      const response = await fetch(url.toString());
-      if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
-      const data = await response.json();
+        try {
+            const response = await fetch('http://172.16.153.53:8001/employee');
+            
+            if (!response.ok) {
+                throw new Error(`Ошибка HTTP! Код статуса: ${response.status}`);
+            }
 
-      set({
-        employees: data.result,
-        isEmpLoading: false,
-      });
-    } catch (error: any) {
-      console.error('Ошибка загрузки сотрудников:', error.message);
-      toast.error('Ошибка при загрузке сотрудников');
-      set({ isEmpLoading: false });
-    }
-  },
+            const resultData = await response.json(); // Парсим JSON-данные
+            console.log(resultData)
 
-  loadMoreEmployees: async () => {
-		console.log('loadMoreEmployees')
-		set({ isEmpLoading: true, employeesList: [] });
+            set({
+                employees: resultData.result,
+                isEmpLoading: false,
+            });
+        } catch (err: any) {
+            console.error('Ошибка при получении списка сотрудников:', err.message);
+            toast.error('Ошибка при получении списка сотрудников. Попробуйте позже!', {
+                position: 'top-right',
+            });
+        }
+    },
 
-		try {
-			const response = await fetch('http://172.16.153.53:8001/employee');
-			
-			if (!response.ok) {
-				throw new Error(`Ошибка HTTP! Код статуса: ${response.status}`);
-			}
+    fetchEmployeesWithParams: async (value, category) => {
+        console.log('fetchEmployeesWithParams')
+        set({ isEmpLoading: true, employeesList: [], selectedOrgId: null });
 
-			const resultData = await response.json(); // Парсим JSON-данные
-			console.log(resultData)
+        try {
+        const response = await fetch(
+        ` http://172.16.153.53:8001/employee/search?value=${value}&type=${category}`
+        );
+        if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+        const data = await response.json();
 
-			set({
-				employees: resultData.result,
-				isEmpLoading: false,
-			});
-		} catch (err: any) {
-			console.error('Ошибка при получении списка сотрудников:', err.message);
-			toast.error('Ошибка при получении списка сотрудников. Попробуйте позже!', {
-				position: 'top-right',
-			});
-		}
-	},
+        set({
+            employeesList: data.result,
+            isEmpLoading: false,
+        });
+        } catch (error: any) {
+        console.error('Ошибка поиска сотрудников:', error.message);
+        toast.error('Ошибка при поиске сотрудников');
+        set({ isEmpLoading: false });
+        }
+    },
 
-  fetchEmployeesWithParams: async (value, category) => {
-	console.log('fetchEmployeesWithParams')
-    set({ isEmpLoading: true, employeesList: [], selectedOrgId: null });
+    setIsEmployeeInfoModalOpen: (currentState) =>{
+        console.log('setIsEmployeeInfoModalOpen')
+        set({isEmployeeInfoModalOpen: currentState}) //, currentEmployeeInfo: undefined
+    },
 
-    try {
-      const response = await fetch(
-       ` http://172.16.153.53:8001/employee/search?value=${value}&type=${category}`
-      );
-      if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
-      const data = await response.json();
+    setIsEditInformation: (currentState) =>{
+        console.log('setIsEditInformation')
+        set({isEditInformation: currentState})
+    },
 
-      set({
-        employeesList: data.result,
-        isEmpLoading: false,
-      });
-    } catch (error: any) {
-      console.error('Ошибка поиска сотрудников:', error.message);
-      toast.error('Ошибка при поиске сотрудников');
-      set({ isEmpLoading: false });
-    }
-  },
+    fetchCurrentEmployeeInfo: async (idEmployee, idOrganization) => {
+        console.log('fetchCurrentEmployeeInfo')
+        set({isCurrentEmployeeLoading: true})
 
-  setIsEmployeeInfoModalOpen: (currentState) =>{
-    console.log('setIsEmployeeInfoModalOpen')
-    set({isEmployeeInfoModalOpen: currentState, currentEmployeeInfo: undefined})
-  },
+        try {
+        const response = await fetch(
+        `http://172.16.153.53:8001/employee/detail?id=${idEmployee}&organizationId=${idOrganization}`
+        );
+        if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+        const data = await response.json();
 
-   setIsEditInformation: (currentState) =>{
-    console.log('setIsEditInformation')
-    set({isEditInformation: currentState})
-  },
+        set({
+            currentEmployeeInfo: data.result,
+        });
+        } catch (error: any) {
+        console.error('Ошибка получения информации о сотруднике:', error.message);
+        toast.error('Ошибка получения информации о сотруднике. Поробуйте позже');
+        
+        } finally {
+            set({ isCurrentEmployeeLoading: false });
+        }
+    },
 
-  fetchCurrentEmployeeInfo: async (idEmployee, idOrganization) => {
-	console.log('fetchCurrentEmployeeInfo')
-    set({isCurrentEmployeeLoading: true})
+    fetchVerificatinCode: async (idEmployee, idOrganization) => {
+        console.log('fetchVerificatinCode')
+        set({isLoadingCode: true})
 
-    try {
-      const response = await fetch(
-       `http://172.16.153.53:8001/employee/detail?id=${idEmployee}&organizationId=${idOrganization}`
-      );
-      if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
-      const data = await response.json();
+        try {
+            const response = await fetch('http://172.16.153.53:8001/employee/verification', {
+                method: 'POST',  
+                headers: { 'Content-Type': 'application/json' },  
+                body: JSON.stringify({
+                    "id": idEmployee,
+                    "organizationId": idOrganization
+                })
+            })
+            if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
 
-      set({
-        currentEmployeeInfo: data.result,
-      });
-    } catch (error: any) {
-      console.error('Ошибка получения информации о сотруднике:', error.message);
-      toast.error('Ошибка получения информации о сотруднике. Поробуйте позже');
-      
-    } finally {
-        set({ isCurrentEmployeeLoading: false });
-    }
-  },
+            set({
+                isLoadingCode: false,
+            });
+        } catch (error: any) {
+            console.error('Ошибка при отправке кода: ', error.message);
+            toast.error('Ошибка при отправке кода. Поробуйте позже');
+            
+        } finally {
+            set({ isLoadingCode: false });
+        }
+    },
+
+    saveEmployeeInfo: async (personalMobile, cityPhone, workPlace, address, code) => {
+        console.log('saveEmployeeInfo')
+        const employeeId = get().currentEmployeeInfo?.id
+        const organizationId = get().currentEmployeeInfo?.organizationId
+
+        try {
+            const response = await fetch(`http://172.16.153.53:8001/employee/edit?verification_code=${code}`, {
+                method: 'PATCH',  
+                headers: { 'Content-Type': 'application/json', 'accept': 'application/json' },  
+                body: JSON.stringify({
+                    "id": employeeId,
+                    "organizationId": organizationId,
+                    "mobileNumberPersonal": personalMobile,
+                    "externalNumber": cityPhone,
+                    "workPlace": workPlace,
+                    "address": address
+                })
+            })
+            if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+
+            set({
+                isLoadingCode: false,
+            });
+        } catch (error: any) {
+            console.error('Ошибка при отправке кода: ', error.message);
+            toast.error('Ошибка при отправке кода. Поробуйте позже');
+            
+        } finally {
+            set({ isLoadingCode: false });
+        }
+    },
 }));

@@ -6,12 +6,14 @@ import { CurrentEmployeeInfo } from "../types";
 import { SpinnerCircular } from "spinners-react";
 import {
     CloseButton,
+    CustomButton,
     ModalBackground,
     ModalContainer,
     ModalContent,
     ModalHeader,
 } from "./components";
 import { EditInformationModal } from "./EditInformationModal";
+import { useEffect, useRef } from "react";
 
 const PhotoAndInfo = styled.div`
     display: flex;
@@ -105,9 +107,38 @@ export const EmployeeInfoModal: React.FC = () => {
         setIsEditInformation(!isEditInformation);
     };
 
+    const containerRef = useRef<HTMLDivElement | null>(null);
+
+    const handleClickOutside = (event: MouseEvent) => {
+        console.log("handleClickOutside");
+        console.log(event);
+        console.log(containerRef);
+        if (
+            containerRef.current &&
+            !containerRef.current.childNodes[0].contains(event.target as Node)
+        ) {
+            setIsEmployeeInfoModalOpen(false);
+        }
+    };
+
+    const handleESCClick = (event: KeyboardEvent) => {
+        if (event.key === "Escape") {
+            setIsEmployeeInfoModalOpen(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        document.addEventListener("keydown", handleESCClick);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener("keydown", handleESCClick);
+        };
+    }, []);
+
     return (
         <>
-            <ModalBackground>
+            <ModalBackground ref={containerRef}>
                 <ModalContainer>
                     <ModalContent>
                         {isCurrentEmployeeLoading ? (
@@ -127,21 +158,24 @@ export const EmployeeInfoModal: React.FC = () => {
                                         style={{
                                             display: "flex",
                                             flexDirection: "row",
+                                            alignItems: "center",
                                         }}
                                     >
                                         <h3>Информация о сотруднике</h3>
-                                        <button
-                                            style={{
-                                                border: "none",
-                                                backgroundColor: "#1d75bb",
-                                                color: "#FFFFFF",
-                                                margin: "auto 0 auto 20px",
-                                                height: "20px",
-                                            }}
+                                        <CustomButton
+                                            disabled={
+                                                !currentEmployeeInfo?.email
+                                            }
                                             onClick={() => handleEditInfo()}
+                                            height="25px"
+                                            title={
+                                                !currentEmployeeInfo?.email
+                                                    ? "Отсутствует элеткронная почта"
+                                                    : ""
+                                            }
                                         >
                                             Изменить данные
-                                        </button>
+                                        </CustomButton>
                                     </div>
                                     <CloseButton
                                         onClick={() =>

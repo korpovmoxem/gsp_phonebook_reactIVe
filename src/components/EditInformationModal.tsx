@@ -6,90 +6,55 @@ import { CurrentEmployeeInfo } from "../types";
 import { SpinnerCircular } from "spinners-react";
 import {
     CloseButton,
+    CustomButton,
     Modal2Background,
-    ModalBackground,
     ModalContainer,
     ModalContent,
     ModalHeader,
 } from "./components";
+import { CustomInputEditModal } from "./CustomInputEditModal";
+import { useEffect, useRef, useState } from "react";
 
-const PhotoAndInfo = styled.div`
+const CustomInputContainer = styled.div`
     display: flex;
-    flex-direction: row;
-    gap: 10px;
-`;
-
-const PhotoBlock = styled.div`
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-    width: 30%;
-    height: 50%;
-    background-color: rgba(240, 240, 240, 0.49);
-    border-radius: 10px;
-`;
-
-const InfoBlock = styled.div`
-    padding: 20px;
+    flex-direction: column;
     width: 70%;
-    background-color: rgba(240, 240, 240, 0.49);
-    border-radius: 10px;
+    padding: 5px;
+    background-color: rgb(220, 220, 220);
+    border-bottom: 3px solid rgb(138, 138, 138);
+    font-size: 12pt;
+
+    &:focus-within {
+        border-bottom: 3px solid #1d75bb;
+        transition: all 0.7s ease-in-out;
+    }
 `;
 
-const Fio = styled.h3`
-    margin: 0;
+const CustomLabel = styled.label`
+    color: rgb(155, 155, 155);
+    font-size: 10pt;
+
+    &:focus-within {
+        color: rgb(129, 129, 129);
+        transition: all 0.1s ease-in-out;
+    }
 `;
 
-const FIELDS = [
-    {
-        nameField: "Организация",
-        value: "organizationName",
-        isEditable: false,
-    },
-    {
-        nameField: "Подразделение",
-        value: "departmentName",
-        isEditable: false,
-    },
-    {
-        nameField: "Номер телефона",
-        value: "telephoneNumberCorp",
-        isEditable: false,
-    },
-    {
-        nameField: "Городской номер",
-        value: "telephoneNumberCorp",
-        isEditable: true,
-    },
-    {
-        nameField: "Мобильный (рабочий)",
-        value: "mobileNumberCorp",
-        isEditable: false,
-    },
-    {
-        nameField: "Мобильный (личный)",
-        value: "mobileNumberPersonal",
-        isEditable: true,
-    },
-    {
-        nameField: "Email",
-        value: "email",
-        isEditable: false,
-    },
-    {
-        nameField: "Рабочее место",
-        value: "workPlace",
-        isEditable: true,
-    },
-    {
-        nameField: "Адрес",
-        value: "address",
-        isEditable: true,
-    },
-];
+const CustomInput = styled.input`
+    background-color: unset;
+    border: none;
+    line-height: 20px;
+    outline: none;
+    margin: 5px 0 0 10px;
+    padding: 0;
+
+    &::placeholder {
+        font-size: 12pt;
+    }
+`;
 
 export const EditInformationModal: React.FC = () => {
-    console.log("EmployeeInfoModal");
+    console.log("EditInformationModal");
     const {
         isEmployeeInfoModalOpen,
         setIsEmployeeInfoModalOpen,
@@ -98,20 +63,62 @@ export const EditInformationModal: React.FC = () => {
         isCurrentEmployeeLoading,
         isEditInformation,
         setIsEditInformation,
+        fetchVerificatinCode,
+        saveEmployeeInfo,
     } = useOrgStore();
+
+    const [personalMobile, setPersonalMobile] = useState("");
+    const [cityPhone, setCityPhone] = useState("");
+    const [workPlace, setWorkPlace] = useState("");
+    const [address, setAddress] = useState("");
+    const [code, setCode] = useState("");
+
+    const [isCheckboxOn, setIsCheckboxOn] = useState(false);
+
+    const handleSendButton = () => {
+        console.log("handleSendButton");
+        saveEmployeeInfo(personalMobile, cityPhone, workPlace, address, code);
+    };
+
+    const containerRef = useRef<HTMLDivElement | null>(null);
+
+    const handleClickOutside = (event: MouseEvent) => {
+        console.log("handleClickOutside");
+        console.log(event);
+        console.log(containerRef);
+        if (
+            containerRef.current &&
+            !containerRef.current.childNodes[0].contains(event.target as Node)
+        ) {
+            setIsEditInformation(false);
+        }
+    };
+
+    const handleESCClick = (event: KeyboardEvent) => {
+        if (event.key === "Escape") {
+            setIsEditInformation(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        document.addEventListener("keydown", handleESCClick);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener("keydown", handleESCClick);
+        };
+    }, []);
 
     return (
         <>
-            <Modal2Background>
-                <ModalContainer>
+            <Modal2Background ref={containerRef}>
+                <ModalContainer style={{ maxWidth: "800px" }}>
                     <ModalContent>
                         <ModalHeader>
                             <h3>Изменение данных о сотруднике</h3>
                             <CloseButton
                                 onClick={() =>
-                                    setIsEmployeeInfoModalOpen(
-                                        !isEmployeeInfoModalOpen
-                                    )
+                                    setIsEditInformation(!isEditInformation)
                                 }
                             >
                                 X
@@ -153,6 +160,7 @@ export const EditInformationModal: React.FC = () => {
                                 <a
                                     href="https://sd.gsprom.ru/portal/navigator-fields.html?service=slmService$2601911&amp;component=slmService$2603460&amp;category=serviceCateg$2601801&amp;route=serviceCall$request"
                                     target="_blank"
+                                    rel="noreferrer"
                                 >
                                     <b>
                                         заявку на Портале системы «Поддержка
@@ -161,6 +169,89 @@ export const EditInformationModal: React.FC = () => {
                                     </b>
                                 </a>
                             </span>
+                        </div>
+                        <h3>{currentEmployeeInfo?.fullNameRus}</h3>
+                        <CustomInputEditModal
+                            id={"mobilePersonal"}
+                            labelField={"Мобильный телефон(личный)"}
+                            onChange={(value) => setPersonalMobile(value)}
+                        />
+                        <CustomInputEditModal
+                            id={"cityPhone"}
+                            labelField={"Городской телефон"}
+                            onChange={(value) => setCityPhone(value)}
+                        />
+                        <CustomInputEditModal
+                            id={"placeWork"}
+                            labelField={"Рабочее место"}
+                            onChange={(value) => setWorkPlace(value)}
+                        />
+                        <CustomInputEditModal
+                            id={"Adress"}
+                            labelField={"Адрес"}
+                            onChange={(value) => setAddress(value)}
+                        />
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                width: "70%",
+                                alignSelf: "anchor-center",
+                            }}
+                        >
+                            <CustomInputEditModal
+                                id={"code"}
+                                labelField={"Код проверки"}
+                                onChange={(value) => setCode(value)}
+                            />
+                            {currentEmployeeInfo && (
+                                <CustomButton
+                                    onClick={() => {
+                                        fetchVerificatinCode(
+                                            currentEmployeeInfo?.id,
+                                            currentEmployeeInfo?.organizationId
+                                        );
+                                    }}
+                                    height="53px"
+                                >
+                                    Отправить код проверки
+                                </CustomButton>
+                            )}
+                        </div>
+                        <div style={{ margin: "20px 0" }}>
+                            <input
+                                type="checkbox"
+                                value=""
+                                id="flexCheckDefault"
+                                onClick={() => setIsCheckboxOn(!isCheckboxOn)}
+                            />
+                            <label htmlFor="flexCheckDefault">
+                                Нажимая на кнопку, я соглашаюсь с{" "}
+                                <a
+                                    href="https://www.gsprom.ru/politic/"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    Политикой обработки персональных данных
+                                </a>{" "}
+                                и даю согласие на{" "}
+                                <a
+                                    href="https://www.gsprom.ru/politic/"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    обработку персональных данных
+                                </a>
+                            </label>
+                        </div>
+                        <div style={{ alignSelf: "center" }}>
+                            <CustomButton
+                                disabled={!isCheckboxOn || code.length < 10}
+                                onClick={() => handleSendButton()}
+                                height="40px"
+                            >
+                                Сохранить
+                            </CustomButton>
                         </div>
                     </ModalContent>
                 </ModalContainer>
