@@ -7,7 +7,7 @@ import { CopyIcon } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { EmployeeDepartmentPath } from "./EmployeeDepartmentPath";
-import { CATEGORIES } from "../types";
+import { CATEGORIES, Employee, EmployeesListTree } from "../types";
 
 const EmployeeListWrapperMain = styled.div`
     display: flex;
@@ -104,10 +104,24 @@ export const EmployeeList: React.FC = () => {
         fetchCurrentEmployeeInfo(idEmployee, idOrganization);
     };
 
+    const getAllEmployees = (tree: EmployeesListTree): Employee[] => {
+        let result: Employee[] = [...tree.employees];
+
+        for (const child of tree.children) {
+            result = result.concat(getAllEmployees(child));
+        }
+
+        return result;
+    };
+
     useEffect(() => {
         if (!value && !category && !organizationId && !departmentId) {
             // loadMoreEmployees();
-            selectOrg("7842155505", "9c685cfe-e9a0-11e8-90f2-0050569026ba");
+            selectOrg(
+                "7842155505",
+                "9c685cfe-e9a0-11e8-90f2-0050569026ba",
+                "false"
+            );
         }
         if (value && category) {
             fetchEmployeesWithParams(value, category);
@@ -118,6 +132,9 @@ export const EmployeeList: React.FC = () => {
         // Зависимости не нужны, нужно только при первом рендере
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    console.log("========employees=========");
+    console.log(employees);
 
     return (
         <EmployeeListWrapperMain style={{ padding: 10 }}>
@@ -178,81 +195,206 @@ export const EmployeeList: React.FC = () => {
                                     </tr>
                                 </thead>
 
-                                <tbody>
-                                    {employees.map((emp) => (
-                                        <EmployeeTableRow
-                                            key={emp.id}
-                                            onClick={() =>
-                                                handleRowClick(
-                                                    emp.id,
-                                                    emp.organizationId
-                                                )
-                                            }
-                                        >
-                                            <td>
-                                                <img
-                                                    src={
-                                                        emp.photo
-                                                            ? `data:image/jpeg;base64,${emp.photo}`
-                                                            : PhotoDefault
-                                                    }
-                                                    alt={emp.fullNameRus}
-                                                    width="75px"
-                                                />
-                                            </td>
-                                            <td>
-                                                <div>{emp.fullNameRus}</div>
-                                                <div
-                                                    style={{
-                                                        fontSize: "14px",
-                                                        color: "grey",
-                                                    }}
-                                                >
-                                                    {emp.positionTitle}
-                                                </div>
-                                            </td>
-                                            <td>
-                                                {emp.email && (
-                                                    <>
-                                                        <CustomEmailLink
-                                                            href={`mailTo:${emp.email}`}
-                                                            onClick={(e) =>
-                                                                e.stopPropagation()
-                                                            }
+                                {/* <tbody>  МОЙ КОД
+                                    {employees ? (
+                                        employees.employees.map((emp) => (
+                                            <EmployeeTableRow
+                                                key={emp.id}
+                                                onClick={() =>
+                                                    handleRowClick(
+                                                        emp.id,
+                                                        emp.organizationId
+                                                    )
+                                                }
+                                            >
+                                                <td>
+                                                    <img
+                                                        src={
+                                                            emp.photo
+                                                                ? `data:image/jpeg;base64,${emp.photo}`
+                                                                : PhotoDefault
+                                                        }
+                                                        alt={emp.fullNameRus}
+                                                        width="75px"
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <div
+                                                        style={{
+                                                            marginLeft: "20px",
+                                                        }}
+                                                    >
+                                                        <div>
+                                                            {emp.fullNameRus}
+                                                        </div>
+                                                        <div
+                                                            style={{
+                                                                fontSize:
+                                                                    "14px",
+                                                                color: "grey",
+                                                            }}
                                                         >
-                                                            {emp.email}
-                                                        </CustomEmailLink>
+                                                            {emp.positionTitle}
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    {emp.email && (
+                                                        <>
+                                                            <CustomEmailLink
+                                                                href={`mailTo:${emp.email}`}
+                                                                onClick={(e) =>
+                                                                    e.stopPropagation()
+                                                                }
+                                                            >
+                                                                {emp.email}
+                                                            </CustomEmailLink>
+                                                            <CustomCopyButton
+                                                                onClick={(
+                                                                    e
+                                                                ) => {
+                                                                    handleCopyClick(
+                                                                        emp.email ||
+                                                                            ""
+                                                                    );
+                                                                    e.stopPropagation();
+                                                                }}
+                                                                size={13}
+                                                            />
+                                                        </>
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    {emp.telephoneNumberCorp}
+                                                    {emp.telephoneNumberCorp !==
+                                                        null && (
                                                         <CustomCopyButton
                                                             onClick={(e) => {
                                                                 handleCopyClick(
-                                                                    emp.email ||
+                                                                    emp.telephoneNumberCorp ||
                                                                         ""
                                                                 );
                                                                 e.stopPropagation();
                                                             }}
                                                             size={13}
                                                         />
-                                                    </>
-                                                )}
-                                            </td>
-                                            <td>
-                                                {emp.telephoneNumberCorp}
-                                                {emp.telephoneNumberCorp !==
-                                                    null && (
-                                                    <CustomCopyButton
-                                                        onClick={(e) => {
-                                                            handleCopyClick(
-                                                                emp.telephoneNumberCorp ||
-                                                                    ""
-                                                            );
-                                                            e.stopPropagation();
-                                                        }}
-                                                        size={13}
-                                                    />
-                                                )}
-                                            </td>
-                                        </EmployeeTableRow>
-                                    ))}
+                                                    )}
+                                                </td>
+                                            </EmployeeTableRow>
+                                        ))
+                                    ) : (
+                                        <></>
+                                    )}
+                                </tbody> МОЙ КОД */}
+
+                                <tbody>
+                                    {employees ? (
+                                        getAllEmployees(employees).map(
+                                            (emp) => (
+                                                <EmployeeTableRow
+                                                    key={emp.id}
+                                                    onClick={() =>
+                                                        handleRowClick(
+                                                            emp.id,
+                                                            emp.organizationId
+                                                        )
+                                                    }
+                                                >
+                                                    <td>
+                                                        <img
+                                                            src={
+                                                                emp.photo
+                                                                    ? `data:image/jpeg;base64,${emp.photo}`
+                                                                    : PhotoDefault
+                                                            }
+                                                            alt={
+                                                                emp.fullNameRus
+                                                            }
+                                                            width="75px"
+                                                        />
+                                                    </td>
+                                                    <td>
+                                                        <div
+                                                            style={{
+                                                                marginLeft:
+                                                                    "20px",
+                                                            }}
+                                                        >
+                                                            <div>
+                                                                {
+                                                                    emp.fullNameRus
+                                                                }
+                                                            </div>
+                                                            <div
+                                                                style={{
+                                                                    fontSize:
+                                                                        "14px",
+                                                                    color: "grey",
+                                                                }}
+                                                            >
+                                                                {
+                                                                    emp.positionTitle
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        {emp.email && (
+                                                            <>
+                                                                <CustomEmailLink
+                                                                    href={`mailto:${emp.email}`}
+                                                                    onClick={(
+                                                                        e
+                                                                    ) =>
+                                                                        e.stopPropagation()
+                                                                    }
+                                                                >
+                                                                    {emp.email}
+                                                                </CustomEmailLink>
+                                                                <CustomCopyButton
+                                                                    onClick={(
+                                                                        e
+                                                                    ) => {
+                                                                        handleCopyClick(
+                                                                            emp.email ||
+                                                                                ""
+                                                                        );
+                                                                        e.stopPropagation();
+                                                                    }}
+                                                                    size={13}
+                                                                />
+                                                            </>
+                                                        )}
+                                                    </td>
+                                                    <td>
+                                                        {emp.telephoneNumberCorp && (
+                                                            <>
+                                                                {
+                                                                    emp.telephoneNumberCorp
+                                                                }
+                                                                <CustomCopyButton
+                                                                    onClick={(
+                                                                        e
+                                                                    ) => {
+                                                                        handleCopyClick(
+                                                                            emp.telephoneNumberCorp ||
+                                                                                ""
+                                                                        );
+                                                                        e.stopPropagation();
+                                                                    }}
+                                                                    size={13}
+                                                                />
+                                                            </>
+                                                        )}
+                                                    </td>
+                                                </EmployeeTableRow>
+                                            )
+                                        )
+                                    ) : (
+                                        <tr>
+                                            <td colSpan={4}>Нет данных</td>
+                                        </tr>
+                                    )}
                                 </tbody>
                             </table>
                         ) : (

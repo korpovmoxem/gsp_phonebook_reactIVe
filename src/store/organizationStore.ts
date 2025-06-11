@@ -6,6 +6,7 @@ import {
   CATEGORIES,
   EmployeesList,
   CurrentEmployeeInfo,
+  EmployeesListTree,
 } from '../types';
 import { toast } from 'react-toastify';
 import { buildOrgIndex } from '../utils/buildOrgIndex';
@@ -15,7 +16,7 @@ interface OrgState {
     organizations: Organization[];
     externalOrganizations: ExternalOrganizations[];
     selectedOrgId: string | null;
-    employees: Employee[];
+    employees?: EmployeesListTree;
     isOrgLoading: boolean;
     isExternalOrgLoading: boolean;
     isEmpLoading: boolean;
@@ -31,7 +32,7 @@ interface OrgState {
 
     fetchTree: () => Promise<void>;
     fetchExternalTree: () => Promise<void>;
-    selectOrg: (organizationId: string, departmentId: string | null) => Promise<void>;
+    selectOrg: (organizationId: string, departmentId: string | null, withChildren?: string) => Promise<void>;
     loadMoreEmployees: () => Promise<void>;
     fetchEmployeesWithParams: (value: string, category: CATEGORIES) => Promise<void>;
     fetchCurrentEmployeeInfo: (idEmployee: string, idOrganization: string) => Promise<void>;
@@ -48,7 +49,7 @@ export const useOrgStore = create<OrgState>((set, get) => ({
     organizations: [],
     externalOrganizations: [],
     selectedOrgId: null,
-    employees: [],
+    employees: undefined,
     isOrgLoading: false,
     isExternalOrgLoading: false,
     isEmpLoading: true,
@@ -102,7 +103,7 @@ export const useOrgStore = create<OrgState>((set, get) => ({
         }
     },
 
-    selectOrg: async (organizationId, departmentId) => {
+    selectOrg: async (organizationId, departmentId, withChildren) => {
         console.log('selectOrg')
         set({employeesList: []})
         const targetId = departmentId || organizationId;
@@ -110,9 +111,12 @@ export const useOrgStore = create<OrgState>((set, get) => ({
 
         try {
         const url = new URL('http://172.16.153.53:8001/employee');
-        url.searchParams.append('organizationId', organizationId);
+        
         if (departmentId) url.searchParams.append('departmentId', departmentId);
-
+        if (withChildren) {
+            url.searchParams.append('withChildren', withChildren);
+        }
+        url.searchParams.append('organizationId', organizationId);
         const response = await fetch(url.toString());
         if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
         const data = await response.json();

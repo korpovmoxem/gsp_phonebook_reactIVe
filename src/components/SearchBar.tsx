@@ -6,7 +6,7 @@ import Highlighter from "react-highlight-words";
 import { styled } from "styled-components";
 import { useOrgStore } from "../store/organizationStore";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ClipboardCopy } from "lucide-react";
+import { ClipboardCopy, ExternalLink } from "lucide-react";
 import { toast } from "react-toastify";
 
 const CustomDatalist = styled.div`
@@ -198,7 +198,7 @@ export const SearchBar = ({ onSearch }: Props) => {
             console.log("БУФЕР");
             console.log(listEmails);
         } else {
-            employees.forEach((employee) => {
+            employees?.employees.forEach((employee) => {
                 if (employee.email) {
                     console.log("СОТРУДНИК НА ГЛАВНОЙ:");
                     console.log(employee);
@@ -355,11 +355,35 @@ export const SearchBar = ({ onSearch }: Props) => {
                 </button>
             </div>
             <span
-                style={{ alignSelf: "center", cursor: "pointer" }}
+                style={{
+                    alignSelf: "center",
+                    cursor: "pointer",
+                    display: "flex",
+                }}
                 title="Скопировать Email всех найденных сотрудников"
                 onClick={() => handleClickCopyEmails()}
             >
-                <ClipboardCopy />
+                <ClipboardCopy size={30} stroke="#1d75bb" />
+            </span>
+            <span
+                title="Перейти в архивный справочник"
+                style={{
+                    alignSelf: "center",
+                    cursor: "pointer",
+                    display: "flex",
+                }}
+            >
+                <a
+                    href="https://intranet.gsprom.ru/phone-archive/"
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{
+                        textDecoration: "none",
+                        color: "#1d75bb",
+                    }}
+                >
+                    <ExternalLink size={30} />
+                </a>
             </span>
         </>
     );

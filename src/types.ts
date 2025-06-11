@@ -57,3 +57,12 @@ export interface CurrentEmployeeInfo extends Employee {
     managers: EmployeeShort[],
     [key: string]: any | undefined,
 }
+
+export interface EmployeesListTree {
+    children: EmployeesListTree[],
+    departmentId: string,
+    departmentName: string,
+    employees: Employee[],
+    organizationId: string,
+    organizationName: string,
+}
