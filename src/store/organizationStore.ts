@@ -64,7 +64,6 @@ export const useOrgStore = create<OrgState>((set, get) => ({
     isLoadingCode: false,
 
     fetchExternalTree: async () => {
-        console.log('fetchExternalTree')
         set({ isExternalOrgLoading: true });
         try {
             const response = await fetch('http://172.16.153.53:8001/external/phonebook');
@@ -82,7 +81,6 @@ export const useOrgStore = create<OrgState>((set, get) => ({
     },
 
     fetchTree: async () => {
-        console.log('fetchTree')
         set({ isOrgLoading: true });
         try {
         const response = await fetch('http://172.16.153.53:8001/organization/tree');
@@ -104,7 +102,6 @@ export const useOrgStore = create<OrgState>((set, get) => ({
     },
 
     selectOrg: async (organizationId, departmentId, withChildren) => {
-        console.log('selectOrg')
         set({employeesList: []})
         const targetId = departmentId || organizationId;
         set({ selectedOrgId: targetId, isEmpLoading: true });
@@ -133,7 +130,6 @@ export const useOrgStore = create<OrgState>((set, get) => ({
     },
 
     loadMoreEmployees: async () => {
-        console.log('loadMoreEmployees')
         set({ isEmpLoading: true, employeesList: [] });
 
         try {
@@ -144,7 +140,6 @@ export const useOrgStore = create<OrgState>((set, get) => ({
             }
 
             const resultData = await response.json(); // Парсим JSON-данные
-            console.log(resultData)
 
             set({
                 employees: resultData.result,
@@ -159,7 +154,6 @@ export const useOrgStore = create<OrgState>((set, get) => ({
     },
 
     fetchEmployeesWithParams: async (value, category) => {
-        console.log('fetchEmployeesWithParams')
         set({ isEmpLoading: true, employeesList: [], selectedOrgId: null });
 
         try {
@@ -181,17 +175,14 @@ export const useOrgStore = create<OrgState>((set, get) => ({
     },
 
     setIsEmployeeInfoModalOpen: (currentState) =>{
-        console.log('setIsEmployeeInfoModalOpen')
         set({isEmployeeInfoModalOpen: currentState}) //, currentEmployeeInfo: undefined
     },
 
     setIsEditInformation: (currentState) =>{
-        console.log('setIsEditInformation')
         set({isEditInformation: currentState})
     },
 
     fetchCurrentEmployeeInfo: async (idEmployee, idOrganization) => {
-        console.log('fetchCurrentEmployeeInfo')
         set({isCurrentEmployeeLoading: true})
 
         try {
@@ -214,7 +205,6 @@ export const useOrgStore = create<OrgState>((set, get) => ({
     },
 
     fetchVerificatinCode: async (idEmployee, idOrganization) => {
-        console.log('fetchVerificatinCode')
         set({isLoadingCode: true})
 
         try {
@@ -241,7 +231,6 @@ export const useOrgStore = create<OrgState>((set, get) => ({
     },
 
     saveEmployeeInfo: async (personalMobile, cityPhone, workPlace, address, code) => {
-        console.log('saveEmployeeInfo')
         const employeeId = get().currentEmployeeInfo?.id
         const organizationId = get().currentEmployeeInfo?.organizationId
 

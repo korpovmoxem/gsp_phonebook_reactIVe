@@ -35,7 +35,7 @@ interface Department {
 }
 
 export interface EmployeesList {
-    organizaionId: string,
+    organizationId: string,
     organizationName: string,
     departments: Department[]
 }

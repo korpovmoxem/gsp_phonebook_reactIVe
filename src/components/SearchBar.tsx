@@ -73,9 +73,6 @@ export const SearchBar = ({ onSearch }: Props) => {
         employeesList,
     } = useOrgStore();
 
-    console.log(";;;;;;;;;;;;;;;;;;;;;");
-    console.log(employees);
-
     const handleInputChange = (e: string) => {
         setQuery(e);
         if (!isNaN(Number(e)) && e !== "") {
@@ -125,7 +122,6 @@ export const SearchBar = ({ onSearch }: Props) => {
 
     const handleClickItem = (item: Employee) => {
         setIsOpen(false);
-        console.log(item);
         setQuery(item.fullNameRus);
         setIsEmployeeInfoModalOpen(!isEmployeeInfoModalOpen);
         fetchCurrentEmployeeInfo(item.id, item.organizationId);
@@ -144,7 +140,6 @@ export const SearchBar = ({ onSearch }: Props) => {
                     const response = await axios.get(
                         `http://172.16.153.53:8001/employee/search?value=${debouncedQuery}&type=${category}&limit=10`
                     );
-                    console.log("Results:", response.data.result);
                     setListQuery(response.data.result);
                     setIsOpen(true);
                 } else {
@@ -179,29 +174,19 @@ export const SearchBar = ({ onSearch }: Props) => {
 
     const handleClickCopyEmails = () => {
         let emails = listEmails;
-        console.log("handleClickCopyEmails");
-        console.log(listQuery);
         if (employeesList.length > 0) {
-            console.log("--------------listQuery---------------");
-            console.log(listQuery);
             employeesList.forEach((organization) => {
                 organization.departments.forEach((department) => {
                     department.employees.forEach((employee) => {
                         if (employee.email) {
-                            console.log("СОТРУДНИК ЧЕРЕЗ ПОИСК:");
-                            console.log(employee);
                             emails += ` ${employee.email}`;
                         }
                     });
                 });
             });
-            console.log("БУФЕР");
-            console.log(listEmails);
         } else {
             employees?.employees.forEach((employee) => {
                 if (employee.email) {
-                    console.log("СОТРУДНИК НА ГЛАВНОЙ:");
-                    console.log(employee);
                     emails += ` ${employee.email}`;
                 }
             });
@@ -218,9 +203,6 @@ export const SearchBar = ({ onSearch }: Props) => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
-
-    console.log("+_+_+_+_+_+_+_+_+_+_+_+");
-    console.log(listQuery);
 
     return (
         <>

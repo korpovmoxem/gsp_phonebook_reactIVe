@@ -54,7 +54,6 @@ const CustomInput = styled.input`
 `;
 
 export const EditInformationModal: React.FC = () => {
-    console.log("EditInformationModal");
     const {
         isEmployeeInfoModalOpen,
         setIsEmployeeInfoModalOpen,
@@ -76,16 +75,12 @@ export const EditInformationModal: React.FC = () => {
     const [isCheckboxOn, setIsCheckboxOn] = useState(false);
 
     const handleSendButton = () => {
-        console.log("handleSendButton");
         saveEmployeeInfo(personalMobile, cityPhone, workPlace, address, code);
     };
 
     const containerRef = useRef<HTMLDivElement | null>(null);
 
     const handleClickOutside = (event: MouseEvent) => {
-        console.log("handleClickOutside");
-        console.log(event);
-        console.log(containerRef);
         if (
             containerRef.current &&
             !containerRef.current.childNodes[0].contains(event.target as Node)

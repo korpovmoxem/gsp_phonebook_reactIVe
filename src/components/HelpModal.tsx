@@ -20,14 +20,9 @@ interface Props {
 }
 
 export const HelpModal = ({ onClose }: Props) => {
-    console.log("HelpModal");
-
     const containerRef = useRef<HTMLDivElement | null>(null);
 
     const handleClickOutside = (event: MouseEvent) => {
-        console.log("handleClickOutside");
-        console.log(event);
-        console.log(containerRef);
         if (
             containerRef.current &&
             !containerRef.current.childNodes[0].contains(event.target as Node)

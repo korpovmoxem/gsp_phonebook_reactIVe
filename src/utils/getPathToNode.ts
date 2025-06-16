@@ -5,10 +5,6 @@ export const getPathToNode = (
   targetId: string,
   path: string[] = []
 ): string[] | null => {
-    console.log('getPathToNode')
-    console.log(nodes)
-    console.log(targetId)
-    console.log(path)
   for (const node of nodes) {
     const currentPath = [...path, node.id];
 

@@ -17,8 +17,6 @@ interface Props {
 }
 
 export const ModalField = ({ nameField, value }: Props) => {
-    console.log("ModalField");
-
     return (
         <FieldWrapper>
             <NameField>{nameField}</NameField>

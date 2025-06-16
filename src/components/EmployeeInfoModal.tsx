@@ -92,7 +92,6 @@ const FIELDS = [
 ];
 
 export const EmployeeInfoModal: React.FC = () => {
-    console.log("EmployeeInfoModal");
     const {
         isEmployeeInfoModalOpen,
         setIsEmployeeInfoModalOpen,
@@ -111,9 +110,6 @@ export const EmployeeInfoModal: React.FC = () => {
     const containerRef = useRef<HTMLDivElement | null>(null);
 
     const handleClickOutside = (event: MouseEvent) => {
-        console.log("handleClickOutside");
-        console.log(event);
-        console.log(containerRef);
         if (
             containerRef.current &&
             !containerRef.current.childNodes[0].contains(event.target as Node)

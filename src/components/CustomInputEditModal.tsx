@@ -54,7 +54,6 @@ export const CustomInputEditModal = ({
     width,
     onChange,
 }: Props) => {
-    console.log("CustomInputEditModal");
     const {
         isEmployeeInfoModalOpen,
         setIsEmployeeInfoModalOpen,

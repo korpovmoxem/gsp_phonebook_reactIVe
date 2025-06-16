@@ -73,13 +73,13 @@ export const OrgSidebar: React.FC = () => {
 
     // Выделение и раскрытие по ID из URL
     useEffect(() => {
+        console.log("Изменился searchParams");
+        console.log(searchParams);
         const orgId = searchParams.get("organizationId");
         const depId = searchParams.get("departmentId");
+        console.log(`Организация: ${orgId}`);
+        console.log(`Депатамент: ${depId}`);
         const id = depId || orgId;
-        console.log("++++++++");
-        console.log(orgId);
-        console.log(depId);
-        console.log(orgMap);
         if (!orgId || orgMap.size === 0) return;
 
         if (depId === null) {
@@ -111,10 +111,11 @@ export const OrgSidebar: React.FC = () => {
         selectOrg(orgId, depId);
         const path = id ? getPathToNodeFast(id, orgMap) : null;
         if (path) setExpandedIds(path);
+
+        console.log(path);
     }, [searchParams, orgMap]);
 
     const handleSelect = (node: Organization) => {
-        console.log(node);
         if (node.root) {
             setSearchParams({ organizationId: node.id });
         } else {
