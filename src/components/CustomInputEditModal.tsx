@@ -54,16 +54,6 @@ export const CustomInputEditModal = ({
     width,
     onChange,
 }: Props) => {
-    const {
-        isEmployeeInfoModalOpen,
-        setIsEmployeeInfoModalOpen,
-        currentEmployeeInfo,
-        fetchCurrentEmployeeInfo,
-        isCurrentEmployeeLoading,
-        isEditInformation,
-        setIsEditInformation,
-    } = useOrgStore();
-
     return (
         <>
             <CustomInputContainer>

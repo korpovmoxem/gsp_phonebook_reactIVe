@@ -264,7 +264,7 @@ export const EditInformationModal: React.FC = () => {
                                 <div style={{ alignSelf: "center" }}>
                                     <CustomButton
                                         disabled={
-                                            !isCheckboxOn || code.length < 10
+                                            !isCheckboxOn || code.length < 6
                                         }
                                         onClick={() => handleSendButton()}
                                         height="40px"

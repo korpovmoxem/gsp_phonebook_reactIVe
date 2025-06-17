@@ -4,6 +4,7 @@ export interface Organization {
     root?: true;
     organizationId?: string;
     children: Organization[];
+    treeId: string;
 }
 
 export interface ExternalOrganizations {

@@ -46,13 +46,13 @@ export const TreeNode = ({
 
     useEffect(() => {
         console.log("Проверка на открытие ветки");
-        if (expandedIds.includes(node.id)) {
+        if (expandedIds.includes(node.treeId)) {
             console.log("MATCHED");
             console.log(expandedIds);
             console.log(node);
         }
 
-        setExpanded(expandedIds.includes(node.id));
+        setExpanded(expandedIds.includes(node.treeId));
     }, [expandedIds]);
 
     return (
@@ -65,9 +65,9 @@ export const TreeNode = ({
         >
             <div
                 onClick={() => {
-                    node.id.length > 3
-                        ? onSelect(node)
-                        : setExpanded((prev) => !prev);
+                    node.id === null
+                        ? setExpanded((prev) => !prev)
+                        : onSelect(node);
                 }}
                 style={{
                     cursor: "pointer",
@@ -103,7 +103,7 @@ export const TreeNode = ({
             {expanded &&
                 node.children.map((child, index) => (
                     <TreeNode
-                        key={`${child.id}__${index}`}
+                        key={`${child.id}_${child.treeId}_${index}`}
                         node={child}
                         selectedId={selectedId}
                         onSelect={onSelect}
