@@ -9,7 +9,7 @@ import {
   EmployeesListTree,
 } from '../types';
 import { toast } from 'react-toastify';
-import { buildOrgIndex } from '../utils/buildOrgIndex';
+import { buildOrgIndexId, buildOrgIndexTreeId } from '../utils/buildOrgIndex';
 import { OrgMap } from '../utils/buildOrgIndex';
 
 interface OrgState {
@@ -24,6 +24,7 @@ interface OrgState {
     search: string;
     employeesList: EmployeesList[];
     orgMap: OrgMap;
+    orgMapId: OrgMap;
     isEmployeeInfoModalOpen: boolean;
     currentEmployeeInfo?: CurrentEmployeeInfo,
     isCurrentEmployeeLoading: boolean,
@@ -42,7 +43,7 @@ interface OrgState {
 
     fetchVerificatinCode: (idEmployee: string, idOrganization: string) => Promise<void>;
 
-    saveEmployeeInfo: (personalMobile: string, cityPhone: string, workPlace: string, address: string, code: string) => Promise<void>; 
+    saveEmployeeInfo: (personalMobile: string, cityPhone: string, workPlace: number | null, address: string, code: string) => Promise<void>; 
 }
 
 export const useOrgStore = create<OrgState>((set, get) => ({
@@ -57,6 +58,7 @@ export const useOrgStore = create<OrgState>((set, get) => ({
     search: '',
     employeesList: [],
     orgMap: new Map(),
+    orgMapId: new Map(),
     isEmployeeInfoModalOpen: false,
     currentEmployeeInfo: undefined,
     isCurrentEmployeeLoading: false,
@@ -87,11 +89,13 @@ export const useOrgStore = create<OrgState>((set, get) => ({
         if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
         const data = await response.json();
 
-        const builtOrgMap = buildOrgIndex(data.result);
+        const builtOrgMap = buildOrgIndexTreeId(data.result);
+        const builtOrgMapId = buildOrgIndexId(data.result);
 
         set({
             organizations: data.result,
             orgMap: builtOrgMap,
+            orgMapId: builtOrgMapId,
             isOrgLoading: false,
         });
         } catch (error: any) {
@@ -154,7 +158,7 @@ export const useOrgStore = create<OrgState>((set, get) => ({
     },
 
     fetchEmployeesWithParams: async (value, category) => {
-        set({ isEmpLoading: true, employeesList: [], selectedOrgId: null });
+        set({ isEmpLoading: true, employeesList: [], selectedOrgId: null, employees: undefined });
 
         try {
         const response = await fetch(
@@ -251,10 +255,13 @@ export const useOrgStore = create<OrgState>((set, get) => ({
 
             set({
                 isLoadingCode: false,
+                isEditInformation: false,
             });
+            toast.success('Данные успешно изменены.');
+
         } catch (error: any) {
-            console.error('Ошибка при отправке кода: ', error.message);
-            toast.error('Ошибка при отправке кода. Поробуйте позже');
+            console.error('Ошибка при сохраннии данных: ', error.message);
+            toast.error('Ошибка при сохранении данных');
             
         } finally {
             set({ isLoadingCode: false });

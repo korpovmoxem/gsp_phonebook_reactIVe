@@ -61,11 +61,10 @@ function App() {
         console.log(a, b);
     };
 
-    const {
-        isEmployeeInfoModalOpen,
-        setIsEmployeeInfoModalOpen,
-        isEditInformation,
-    } = useOrgStore();
+    const isEmployeeInfoModalOpen = useOrgStore(
+        (state) => state.isEmployeeInfoModalOpen
+    );
+    const isEditInformation = useOrgStore((state) => state.isEditInformation);
 
     // Подключить, если потребуется интерактивный тур
     // TODO: разобраться с ошибками в модуле

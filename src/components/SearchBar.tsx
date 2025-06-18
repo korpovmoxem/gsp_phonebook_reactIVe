@@ -64,14 +64,20 @@ export const SearchBar = ({ onSearch }: Props) => {
 
     const navigate = useNavigate();
 
-    const {
-        fetchEmployeesWithParams,
-        setIsEmployeeInfoModalOpen,
-        isEmployeeInfoModalOpen,
-        fetchCurrentEmployeeInfo,
-        employees,
-        employeesList,
-    } = useOrgStore();
+    const fetchEmployeesWithParams = useOrgStore(
+        (state) => state.fetchEmployeesWithParams
+    );
+    const setIsEmployeeInfoModalOpen = useOrgStore(
+        (state) => state.setIsEmployeeInfoModalOpen
+    );
+    const isEmployeeInfoModalOpen = useOrgStore(
+        (state) => state.isEmployeeInfoModalOpen
+    );
+    const fetchCurrentEmployeeInfo = useOrgStore(
+        (state) => state.fetchCurrentEmployeeInfo
+    );
+    const employees = useOrgStore((state) => state.employees);
+    const employeesList = useOrgStore((state) => state.employeesList);
 
     const handleInputChange = (e: string) => {
         setQuery(e);
@@ -226,11 +232,6 @@ export const SearchBar = ({ onSearch }: Props) => {
                         />
                         {listQuery.length > 0 && isOpen && (
                             <CustomDatalist ref={containerRef}>
-                                {/* {[...Array(12)].map((_, i) => (
-            <div key={i} style={{ marginBottom: "2px" }}>
-                <Skeleton height={40} />
-            </div>
-        ))} */}
                                 {listQuery.map((item) =>
                                     item.departments.map((departmnt) =>
                                         departmnt.employees.map((employee) => (
@@ -313,6 +314,16 @@ export const SearchBar = ({ onSearch }: Props) => {
                                 )}
                             </CustomDatalist>
                         )}
+                        {listQuery.length === 0 &&
+                            query.length > 0 &&
+                            isOpen && (
+                                <CustomDatalist ref={containerRef}>
+                                    <CustomDatalistItem>
+                                        По данным критериям сотрудники не
+                                        найдены
+                                    </CustomDatalistItem>
+                                </CustomDatalist>
+                            )}
                     </div>
                     {query && (
                         <button className="clear-button" onClick={clearInput}>

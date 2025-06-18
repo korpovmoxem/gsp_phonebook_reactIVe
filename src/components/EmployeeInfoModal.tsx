@@ -92,15 +92,25 @@ const FIELDS = [
 ];
 
 export const EmployeeInfoModal: React.FC = () => {
-    const {
-        isEmployeeInfoModalOpen,
-        setIsEmployeeInfoModalOpen,
-        currentEmployeeInfo,
-        fetchCurrentEmployeeInfo,
-        isCurrentEmployeeLoading,
-        isEditInformation,
-        setIsEditInformation,
-    } = useOrgStore();
+    const isEmployeeInfoModalOpen = useOrgStore(
+        (state) => state.isEmployeeInfoModalOpen
+    );
+    const setIsEmployeeInfoModalOpen = useOrgStore(
+        (state) => state.setIsEmployeeInfoModalOpen
+    );
+    const currentEmployeeInfo = useOrgStore(
+        (state) => state.currentEmployeeInfo
+    );
+    const fetchCurrentEmployeeInfo = useOrgStore(
+        (state) => state.fetchCurrentEmployeeInfo
+    );
+    const isCurrentEmployeeLoading = useOrgStore(
+        (state) => state.isCurrentEmployeeLoading
+    );
+    const isEditInformation = useOrgStore((state) => state.isEditInformation);
+    const setIsEditInformation = useOrgStore(
+        (state) => state.setIsEditInformation
+    );
 
     const handleEditInfo = () => {
         setIsEmployeeInfoModalOpen(!isEmployeeInfoModalOpen);

@@ -6,8 +6,10 @@ import { ItemText, TreeNode } from "./TreeNode";
 import { SidebarSkeleton } from "./SidebarSkeleton";
 import styled from "styled-components";
 import {
-    buildOrgIndex,
+    buildOrgIndexId,
+    buildOrgIndexTreeId,
     getPathToNodeFast,
+    getPathToNodeFast1,
     OrgMap,
 } from "../utils/buildOrgIndex";
 import { toast } from "react-toastify";
@@ -41,22 +43,24 @@ const CustomLink = styled.a`
 `;
 
 export const OrgSidebar: React.FC = () => {
-    const {
-        organizations,
-        externalOrganizations,
-        selectedOrgId,
-        fetchTree,
-        fetchExternalTree,
-        selectOrg,
-        isOrgLoading,
-        isExternalOrgLoading,
-    } = useOrgStore();
+    const organizations = useOrgStore((state) => state.organizations);
+    const externalOrganizations = useOrgStore(
+        (state) => state.externalOrganizations
+    );
+    const selectedOrgId = useOrgStore((state) => state.selectedOrgId);
+    const fetchTree = useOrgStore((state) => state.fetchTree);
+    const fetchExternalTree = useOrgStore((state) => state.fetchExternalTree);
+    const selectOrg = useOrgStore((state) => state.selectOrg);
+    const isOrgLoading = useOrgStore((state) => state.isOrgLoading);
+    const isExternalOrgLoading = useOrgStore(
+        (state) => state.isExternalOrgLoading
+    );
     const [searchParams, setSearchParams] = useSearchParams();
     const [expandedIds, setExpandedIds] = useState<string[]>([]);
     const [orgMap, setOrgMap] = useState<OrgMap>(new Map());
 
     const navigate = useNavigate();
-
+    const treeId = searchParams.get("treeId");
     // Загружаем дерево
     useEffect(() => {
         fetchTree();
@@ -66,68 +70,78 @@ export const OrgSidebar: React.FC = () => {
     // Строим индекс после загрузки
     useEffect(() => {
         if (organizations.length > 0) {
-            const map = buildOrgIndex(organizations);
+            const map = treeId
+                ? buildOrgIndexTreeId(organizations)
+                : buildOrgIndexId(organizations);
             setOrgMap(map);
+            console.log(treeId ? "CREATE MAP FOR TREEID" : "CREATE MAP FOR ID");
         }
-    }, [organizations]);
+    }, [organizations, treeId]);
 
     // Выделение и раскрытие по ID из URL
     useEffect(() => {
-        console.log("Изменился searchParams");
-        console.log(searchParams);
         const orgId = searchParams.get("organizationId");
         const depId = searchParams.get("departmentId");
-        console.log(`Организация: ${orgId}`);
-        console.log(`Депатамент: ${depId}`);
-        const id = depId || orgId;
-        if (!orgId || orgMap.size === 0) return;
+        const treeId = searchParams.get("treeId");
+        console.log("-----------[searchParams, orgMap]-----------");
+        console.log(orgMap);
+        console.log(orgId);
+        console.log(depId);
+        console.log(treeId);
 
-        if (depId === null) {
-        } else {
-            if (!orgMap.has(orgId)) {
-                console.warn(`Организация с ID ${orgId} не найдена.`);
-                searchParams.delete("organizationId");
-                navigate(
-                    { pathname: "/", search: searchParams.toString() },
-                    { replace: true }
-                );
-                toast.error("Проверьте правильность написания ссылки", {
-                    position: "top-right",
-                });
-                return;
-            } else if (!orgMap.has(depId)) {
-                console.warn(`Департамент с ID ${orgId} не найден.`);
-                searchParams.delete("departmentId");
-                navigate(
-                    { pathname: "/", search: searchParams.toString() },
-                    { replace: true }
-                );
-                toast.error("Проверьте правильность написания ссылки", {
-                    position: "top-right",
-                });
-            }
+        if (!orgMap || orgMap.size === 0) return;
+
+        // Приоритет: treeId > depId > orgId
+        let id = depId || orgId;
+        if (!id) return;
+
+        // Найти путь по treeId (или другому ID)
+        console.log(treeId ? "SEARCH WITH TREEID" : "SEARCH WITH ID");
+        console.log(orgMap);
+        const path = treeId
+            ? getPathToNodeFast(treeId, buildOrgIndexTreeId(organizations))
+            : getPathToNodeFast1(id, orgMap);
+        console.log("path");
+        console.log(path);
+
+        if (!path) {
+            console.warn(`Элемент с treeId=${treeId} не найден.`);
+            toast.error("Проверьте правильность ссылки", {
+                position: "top-right",
+            });
+
+            // Очистить параметры
+            const newSearchParams = new URLSearchParams(searchParams);
+            newSearchParams.delete("organizationId");
+            newSearchParams.delete("departmentId");
+            newSearchParams.delete("treeId");
+            navigate(
+                { pathname: "/", search: newSearchParams.toString() },
+                { replace: true }
+            );
+            return;
         }
 
-        selectOrg(orgId, depId);
-        const path = id ? getPathToNodeFast(id, orgMap) : null;
-        if (path) setExpandedIds(path);
+        // Раскрыть путь
+        setExpandedIds(path);
 
-        console.log(path);
+        // Выбрать организацию/отдел
+        if (treeId && orgId) {
+            selectOrg(orgId, depId);
+        }
     }, [searchParams, orgMap]);
 
     const handleSelect = (node: Organization) => {
         if (node.root) {
-            setSearchParams({ organizationId: node.id });
+            setSearchParams({ organizationId: node.id, treeId: node.treeId });
         } else {
             setSearchParams({
                 organizationId: node.organizationId || "",
                 departmentId: node.id,
+                treeId: node.treeId,
             });
         }
-        // setSearchParams({ organizationId: id });
     };
-
-    // if (isOrgLoading) return <SidebarSkeleton />;
 
     return (
         <MainTreeWrapper>

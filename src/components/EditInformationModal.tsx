@@ -54,21 +54,21 @@ const CustomInput = styled.input`
 `;
 
 export const EditInformationModal: React.FC = () => {
-    const {
-        isEmployeeInfoModalOpen,
-        setIsEmployeeInfoModalOpen,
-        currentEmployeeInfo,
-        fetchCurrentEmployeeInfo,
-        isCurrentEmployeeLoading,
-        isEditInformation,
-        setIsEditInformation,
-        fetchVerificatinCode,
-        saveEmployeeInfo,
-    } = useOrgStore();
+    const currentEmployeeInfo = useOrgStore(
+        (state) => state.currentEmployeeInfo
+    );
+    const isEditInformation = useOrgStore((state) => state.isEditInformation);
+    const setIsEditInformation = useOrgStore(
+        (state) => state.setIsEditInformation
+    );
+    const fetchVerificatinCode = useOrgStore(
+        (state) => state.fetchVerificatinCode
+    );
+    const saveEmployeeInfo = useOrgStore((state) => state.saveEmployeeInfo);
 
     const [personalMobile, setPersonalMobile] = useState("");
     const [cityPhone, setCityPhone] = useState("");
-    const [workPlace, setWorkPlace] = useState("");
+    const [workPlace, setWorkPlace] = useState<number | null>(null);
     const [address, setAddress] = useState("");
     const [code, setCode] = useState("");
 
@@ -198,7 +198,9 @@ export const EditInformationModal: React.FC = () => {
                                 <CustomInputEditModal
                                     id={"placeWork"}
                                     labelField={"Рабочее место"}
-                                    onChange={(value) => setWorkPlace(value)}
+                                    onChange={(value) =>
+                                        setWorkPlace(Number(value))
+                                    }
                                 />
                                 <CustomInputEditModal
                                     id={"Adress"}

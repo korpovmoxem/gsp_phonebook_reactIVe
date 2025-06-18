@@ -232,32 +232,32 @@
 //                                                                     emp.fullNameRus
 //                                                                 }
 //                                                             </div>
-//                                                             <div
-//                                                                 style={{
-//                                                                     fontSize:
-//                                                                         "14px",
-//                                                                     color: "grey",
-//                                                                 }}
-//                                                             >
-//                                                                 {
-//                                                                     emp.positionTitle
-//                                                                 }
-//                                                             </div>
+// <div
+//     style={{
+//         fontSize:
+//             "14px",
+//         color: "grey",
+//     }}
+// >
+//     {
+//         emp.positionTitle
+//     }
+// </div>
 //                                                         </div>
 //                                                     </td>
 //                                                     <td>
 //                                                         {emp.email && (
 //                                                             <>
-//                                                                 <CustomEmailLink
-//                                                                     href={`mailto:${emp.email}`}
-//                                                                     onClick={(
-//                                                                         e
-//                                                                     ) =>
-//                                                                         e.stopPropagation()
-//                                                                     }
-//                                                                 >
-//                                                                     {emp.email}
-//                                                                 </CustomEmailLink>
+// <CustomEmailLink
+//     href={`mailto:${emp.email}`}
+//     onClick={(
+//         e
+//     ) =>
+//         e.stopPropagation()
+//     }
+// >
+//     {emp.email}
+// </CustomEmailLink>
 //                                                                 <CustomCopyButton
 //                                                                     onClick={(
 //                                                                         e
@@ -449,6 +449,8 @@ import {
     EmployeesListTree,
     EmployeesList,
 } from "../types";
+import NotFound from "../materials/notFound.gif";
+import NotFoundIcon from "../materials/notFoundIcon.png";
 
 const EmployeeListWrapperMain = styled.div`
     display: flex;
@@ -516,16 +518,23 @@ const emptyEmployeesTree: EmployeesListTree = {
 export const EmployeeList: React.FC = () => {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
-    const {
-        employees,
-        isEmpLoading,
-        employeesList,
-        fetchEmployeesWithParams,
-        isEmployeeInfoModalOpen,
-        setIsEmployeeInfoModalOpen,
-        fetchCurrentEmployeeInfo,
-        selectOrg,
-    } = useOrgStore();
+
+    const employees = useOrgStore((state) => state.employees);
+    const isEmpLoading = useOrgStore((state) => state.isEmpLoading);
+    const employeesList = useOrgStore((state) => state.employeesList);
+    const fetchEmployeesWithParams = useOrgStore(
+        (state) => state.fetchEmployeesWithParams
+    );
+    const isEmployeeInfoModalOpen = useOrgStore(
+        (state) => state.isEmployeeInfoModalOpen
+    );
+    const setIsEmployeeInfoModalOpen = useOrgStore(
+        (state) => state.setIsEmployeeInfoModalOpen
+    );
+    const fetchCurrentEmployeeInfo = useOrgStore(
+        (state) => state.fetchCurrentEmployeeInfo
+    );
+    const selectOrg = useOrgStore((state) => state.selectOrg);
 
     const searchValue = searchParams.get("value");
     const searchCategory = searchParams.get("type") as CATEGORIES | null;
@@ -606,108 +615,11 @@ export const EmployeeList: React.FC = () => {
                 <EmployeeSkeleton />
             ) : (
                 <EmployeeListWrapperTable>
-                    {/* === Пункт 1: выбор по орг/департаменту === */}
+                    {/* === Пункт 1: выбор по орг/департаменту + начальное отображение === */}
                     {employeesList.length === 0 ? (
                         <div style={{ fontFamily: "Arial, sans-serif" }}>
-                            {/* Заголовок организации */}
-                            <div
-                                style={{
-                                    position: "sticky",
-                                    top: 0,
-                                    background: "#b2ddf6",
-                                    padding: "8px",
-                                    fontWeight: "bold",
-                                    borderBottom: "1px solid #ccc",
-                                    zIndex: 3,
-                                }}
-                            >
-                                Организация: {employeesTree.organizationName}
-                            </div>
-                            {/* Блоки департаментов */}
-                            {departments.map((dept) => (
-                                <div key={dept.departmentId}>
-                                    {/* Хлебные крошки с полным путём */}
-                                    <div
-                                        style={{
-                                            position: "sticky",
-                                            top: "36px",
-                                            background: "#F1F1F1",
-                                            padding: "6px",
-                                            fontWeight: 500,
-                                            borderBottom: "1px solid #ccc",
-                                            zIndex: 2,
-                                        }}
-                                    >
-                                        <EmployeeDepartmentPath
-                                            departmentId={dept.departmentId}
-                                        />
-                                    </div>
-                                    {/* Сотрудники департамента */}
-                                    {dept.employees.map((emp) => (
-                                        <EmployeeTableRowDiv
-                                            key={emp.id}
-                                            onClick={() =>
-                                                handleRowClick(
-                                                    emp.id,
-                                                    emp.organizationId
-                                                )
-                                            }
-                                        >
-                                            <img
-                                                src={
-                                                    emp.photo
-                                                        ? `data:image/jpeg;base64,${emp.photo}`
-                                                        : PhotoDefault
-                                                }
-                                                alt={emp.fullNameRus}
-                                                width="75px"
-                                                height="75px"
-                                            />
-                                            <div
-                                                style={{
-                                                    flex: 1,
-                                                    padding: "4px 8px",
-                                                }}
-                                            >
-                                                {emp.fullNameRus}
-                                            </div>
-                                            <div
-                                                style={{
-                                                    flex: 1,
-                                                    padding: "4px 8px",
-                                                }}
-                                            >
-                                                {emp.telephoneNumberCorp}
-                                            </div>
-                                            <div
-                                                style={{
-                                                    flex: 1,
-                                                    padding: "4px 8px",
-                                                }}
-                                            >
-                                                {emp.email}
-                                                {emp.email && (
-                                                    <CustomCopyButton
-                                                        size={13}
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            handleCopyClick(
-                                                                emp.email!
-                                                            );
-                                                        }}
-                                                    />
-                                                )}
-                                            </div>
-                                        </EmployeeTableRowDiv>
-                                    ))}
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        /* === Пункт 2: режим поиска === */
-                        <div style={{ fontFamily: "Arial, sans-serif" }}>
-                            {employeesList.map((org: EmployeesList) => (
-                                <div key={org.organizationId}>
+                            {departments.length > 0 && (
+                                <>
                                     <div
                                         style={{
                                             position: "sticky",
@@ -717,16 +629,45 @@ export const EmployeeList: React.FC = () => {
                                             fontWeight: "bold",
                                             borderBottom: "1px solid #ccc",
                                             zIndex: 3,
+                                            display: "flex",
                                         }}
                                     >
-                                        Организация: {org.organizationName}
+                                        <div style={{ minWidth: "80px" }}>
+                                            {" "}
+                                        </div>
+                                        <div style={{ flex: "1 1 0%" }}>
+                                            ФИО
+                                        </div>
+                                        <div style={{ flex: "1 1 0%" }}>
+                                            Номер телефона
+                                        </div>
+                                        <div style={{ flex: "1 1 0%" }}>
+                                            Email
+                                        </div>
                                     </div>
-                                    {org.departments.map((dept) => (
+                                    {/* Заголовок организации */}
+                                    <div
+                                        style={{
+                                            position: "sticky",
+                                            top: "35px",
+                                            background: "#b2ddf6",
+                                            padding: "8px",
+                                            fontWeight: "bold",
+                                            borderBottom: "1px solid #ccc",
+                                            zIndex: 3,
+                                        }}
+                                    >
+                                        Организация:{" "}
+                                        {employeesTree.organizationName}
+                                    </div>
+                                    {/* Блоки департаментов */}
+                                    {departments.map((dept) => (
                                         <div key={dept.departmentId}>
+                                            {/* Хлебные крошки с полным путём */}
                                             <div
                                                 style={{
                                                     position: "sticky",
-                                                    top: "36px",
+                                                    top: "69px",
                                                     background: "#F1F1F1",
                                                     padding: "6px",
                                                     fontWeight: 500,
@@ -741,6 +682,7 @@ export const EmployeeList: React.FC = () => {
                                                     }
                                                 />
                                             </div>
+                                            {/* Сотрудники департамента */}
                                             {dept.employees.map((emp) => (
                                                 <EmployeeTableRowDiv
                                                     key={emp.id}
@@ -768,6 +710,15 @@ export const EmployeeList: React.FC = () => {
                                                         }}
                                                     >
                                                         {emp.fullNameRus}
+                                                        <div
+                                                            style={{
+                                                                fontSize:
+                                                                    "14px",
+                                                                color: "grey",
+                                                            }}
+                                                        >
+                                                            {emp.positionTitle}
+                                                        </div>
                                                     </div>
                                                     <div
                                                         style={{
@@ -785,14 +736,205 @@ export const EmployeeList: React.FC = () => {
                                                             padding: "4px 8px",
                                                         }}
                                                     >
-                                                        {emp.email}
+                                                        {emp.email && (
+                                                            <>
+                                                                <CustomEmailLink
+                                                                    href={`mailto:${emp.email}`}
+                                                                    onClick={(
+                                                                        e
+                                                                    ) =>
+                                                                        e.stopPropagation()
+                                                                    }
+                                                                >
+                                                                    {emp.email}
+                                                                </CustomEmailLink>
+                                                                <CustomCopyButton
+                                                                    size={13}
+                                                                    onClick={(
+                                                                        e
+                                                                    ) => {
+                                                                        e.stopPropagation();
+                                                                        handleCopyClick(
+                                                                            emp.email!
+                                                                        );
+                                                                    }}
+                                                                />
+                                                            </>
+                                                        )}
                                                     </div>
                                                 </EmployeeTableRowDiv>
                                             ))}
                                         </div>
                                     ))}
+                                </>
+                            )}
+                            {departments.length === 0 && (
+                                <div style={{ textAlignLast: "center" }}>
+                                    {/* <img src={NotFound} /> */}
+                                    <img src={NotFoundIcon} />
+                                    <div>
+                                        <span>
+                                            По заданным критериям сотрудники не
+                                            найдены
+                                        </span>
+                                    </div>
                                 </div>
-                            ))}
+                            )}
+                        </div>
+                    ) : (
+                        /* === Пункт 2: режим поиска === */
+                        <div style={{ fontFamily: "Arial, sans-serif" }}>
+                            <div
+                                style={{
+                                    position: "sticky",
+                                    top: 0,
+                                    background: "#b2ddf6",
+                                    padding: "8px",
+                                    fontWeight: "bold",
+                                    borderBottom: "1px solid #ccc",
+                                    zIndex: 3,
+                                    display: "flex",
+                                }}
+                            >
+                                <div style={{ minWidth: "80px" }}> </div>
+                                <div style={{ flex: "1 1 0%" }}>ФИО</div>
+                                <div style={{ flex: "1 1 0%" }}>
+                                    Номер телефона
+                                </div>
+                                <div style={{ flex: "1 1 0%" }}>Email</div>
+                            </div>
+                            {employeesList.length > 0 &&
+                                employeesList.map((org: EmployeesList) => (
+                                    <div key={org.organizationId}>
+                                        <div
+                                            style={{
+                                                position: "sticky",
+                                                top: "35px",
+                                                background: "#b2ddf6",
+                                                padding: "8px",
+                                                fontWeight: "bold",
+                                                borderBottom: "1px solid #ccc",
+                                                zIndex: 3,
+                                            }}
+                                        >
+                                            Организация: {org.organizationName}
+                                        </div>
+                                        {org.departments.map((dept) => (
+                                            <div key={dept.departmentId}>
+                                                <div
+                                                    style={{
+                                                        position: "sticky",
+                                                        top: "69px",
+                                                        background: "#F1F1F1",
+                                                        padding: "6px",
+                                                        fontWeight: 500,
+                                                        borderBottom:
+                                                            "1px solid #ccc",
+                                                        zIndex: 2,
+                                                    }}
+                                                >
+                                                    <EmployeeDepartmentPath
+                                                        departmentId={
+                                                            dept.departmentId
+                                                        }
+                                                    />
+                                                </div>
+                                                {dept.employees.map((emp) => (
+                                                    <EmployeeTableRowDiv
+                                                        key={emp.id}
+                                                        onClick={() =>
+                                                            handleRowClick(
+                                                                emp.id,
+                                                                emp.organizationId
+                                                            )
+                                                        }
+                                                    >
+                                                        <img
+                                                            src={
+                                                                emp.photo
+                                                                    ? `data:image/jpeg;base64,${emp.photo}`
+                                                                    : PhotoDefault
+                                                            }
+                                                            alt={
+                                                                emp.fullNameRus
+                                                            }
+                                                            width="75px"
+                                                            height="75px"
+                                                        />
+                                                        <div
+                                                            style={{
+                                                                flex: 1,
+                                                                padding:
+                                                                    "4px 8px",
+                                                            }}
+                                                        >
+                                                            {emp.fullNameRus}
+                                                            <div
+                                                                style={{
+                                                                    fontSize:
+                                                                        "14px",
+                                                                    color: "grey",
+                                                                }}
+                                                            >
+                                                                {
+                                                                    emp.positionTitle
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            style={{
+                                                                flex: 1,
+                                                                padding:
+                                                                    "4px 8px",
+                                                            }}
+                                                        >
+                                                            {
+                                                                emp.telephoneNumberCorp
+                                                            }
+                                                        </div>
+                                                        <div
+                                                            style={{
+                                                                flex: 1,
+                                                                padding:
+                                                                    "4px 8px",
+                                                            }}
+                                                        >
+                                                            {emp.email && (
+                                                                <>
+                                                                    <CustomEmailLink
+                                                                        href={`mailto:${emp.email}`}
+                                                                        onClick={(
+                                                                            e
+                                                                        ) =>
+                                                                            e.stopPropagation()
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            emp.email
+                                                                        }
+                                                                    </CustomEmailLink>
+                                                                    <CustomCopyButton
+                                                                        size={
+                                                                            13
+                                                                        }
+                                                                        onClick={(
+                                                                            e
+                                                                        ) => {
+                                                                            e.stopPropagation();
+                                                                            handleCopyClick(
+                                                                                emp.email!
+                                                                            );
+                                                                        }}
+                                                                    />
+                                                                </>
+                                                            )}
+                                                        </div>
+                                                    </EmployeeTableRowDiv>
+                                                ))}
+                                            </div>
+                                        ))}
+                                    </div>
+                                ))}
                         </div>
                     )}
                 </EmployeeListWrapperTable>
