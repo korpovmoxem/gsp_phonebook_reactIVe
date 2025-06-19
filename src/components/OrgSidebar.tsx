@@ -74,7 +74,6 @@ export const OrgSidebar: React.FC = () => {
                 ? buildOrgIndexTreeId(organizations)
                 : buildOrgIndexId(organizations);
             setOrgMap(map);
-            console.log(treeId ? "CREATE MAP FOR TREEID" : "CREATE MAP FOR ID");
         }
     }, [organizations, treeId]);
 
@@ -83,11 +82,6 @@ export const OrgSidebar: React.FC = () => {
         const orgId = searchParams.get("organizationId");
         const depId = searchParams.get("departmentId");
         const treeId = searchParams.get("treeId");
-        console.log("-----------[searchParams, orgMap]-----------");
-        console.log(orgMap);
-        console.log(orgId);
-        console.log(depId);
-        console.log(treeId);
 
         if (!orgMap || orgMap.size === 0) return;
 
@@ -96,13 +90,9 @@ export const OrgSidebar: React.FC = () => {
         if (!id) return;
 
         // Найти путь по treeId (или другому ID)
-        console.log(treeId ? "SEARCH WITH TREEID" : "SEARCH WITH ID");
-        console.log(orgMap);
         const path = treeId
             ? getPathToNodeFast(treeId, buildOrgIndexTreeId(organizations))
             : getPathToNodeFast1(id, orgMap);
-        console.log("path");
-        console.log(path);
 
         if (!path) {
             console.warn(`Элемент с treeId=${treeId} не найден.`);
@@ -151,6 +141,7 @@ export const OrgSidebar: React.FC = () => {
                         style={{
                             margin: "0 15px 10px",
                             borderBottom: "0.5px solid #cfcfcf",
+                            lineHeight: "34px",
                         }}
                     >
                         Организации

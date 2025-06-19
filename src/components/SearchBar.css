@@ -46,13 +46,16 @@
   width: 100px;
   border-left: 1px solid #ccc;
   padding: 16px 20px;
-  background-color: #1d75bb;
+  background-color: #0d67a1;
   color: white;
   cursor: pointer;
 }
 
 .search-button:hover {
   background-color: #0056b3;
+  -webkit-box-shadow: 7px 0px 15px 0px rgba(73, 133, 178, 0.9);
+-moz-box-shadow: 7px 0px 15px 0px rgba(73, 133, 178, 0.9);
+box-shadow: 7px 0px 15px 0px rgba(73, 133, 178, 0.9);
 }
 
 .search-component:focus-within {

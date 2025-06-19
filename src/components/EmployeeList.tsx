@@ -451,6 +451,7 @@ import {
 } from "../types";
 import NotFound from "../materials/notFound.gif";
 import NotFoundIcon from "../materials/notFoundIcon.png";
+import { CustomCopyButton, CustomEmailLink } from "./components";
 
 const EmployeeListWrapperMain = styled.div`
     display: flex;
@@ -471,28 +472,15 @@ const EmployeeListWrapperTable = styled.div`
 `;
 
 const EmployeeTableRowDiv = styled.div`
+    font-family: Arial, sans-serif;
     display: flex;
     padding: 6px 8px;
-    height: 100px;
+    min-height: 100px;
     border-bottom: 1px solid rgb(235, 235, 235);
     align-items: center;
     cursor: pointer;
     &:hover {
         background-color: #f8f8ff;
-    }
-`;
-
-const CustomEmailLink = styled.a`
-    color: black;
-    &:hover {
-        color: grey;
-    }
-`;
-const CustomCopyButton = styled(CopyIcon)`
-    margin-left: 10px;
-    cursor: pointer;
-    &:hover {
-        color: grey;
     }
 `;
 
@@ -617,31 +605,56 @@ export const EmployeeList: React.FC = () => {
                 <EmployeeListWrapperTable>
                     {/* === Пункт 1: выбор по орг/департаменту + начальное отображение === */}
                     {employeesList.length === 0 ? (
-                        <div style={{ fontFamily: "Arial, sans-serif" }}>
+                        <div>
                             {departments.length > 0 && (
                                 <>
                                     <div
                                         style={{
                                             position: "sticky",
                                             top: 0,
-                                            background: "#b2ddf6",
+                                            // background: "#b2ddf6",
+                                            background: "#0d67a1",
                                             padding: "8px",
                                             fontWeight: "bold",
-                                            borderBottom: "1px solid #ccc",
+                                            borderBottom:
+                                                "1px solid rgb(255, 255, 255)",
                                             zIndex: 3,
                                             display: "flex",
+                                            borderTopLeftRadius: "10px",
+                                            borderTopRightRadius: "10px",
+                                            color: "white",
                                         }}
                                     >
-                                        <div style={{ minWidth: "80px" }}>
+                                        <div
+                                            style={{
+                                                minWidth: "80px",
+                                                fontWeight: "400",
+                                            }}
+                                        >
                                             {" "}
                                         </div>
-                                        <div style={{ flex: "1 1 0%" }}>
+                                        <div
+                                            style={{
+                                                flex: "1 1 0%",
+                                                fontWeight: "400",
+                                            }}
+                                        >
                                             ФИО
                                         </div>
-                                        <div style={{ flex: "1 1 0%" }}>
+                                        <div
+                                            style={{
+                                                flex: "1 1 0%",
+                                                fontWeight: "400",
+                                            }}
+                                        >
                                             Номер телефона
                                         </div>
-                                        <div style={{ flex: "1 1 0%" }}>
+                                        <div
+                                            style={{
+                                                flex: "1 1 0%",
+                                                fontWeight: "400",
+                                            }}
+                                        >
                                             Email
                                         </div>
                                     </div>
@@ -650,10 +663,10 @@ export const EmployeeList: React.FC = () => {
                                         style={{
                                             position: "sticky",
                                             top: "35px",
-                                            background: "#b2ddf6",
+                                            background: "#F1F1F1",
                                             padding: "8px",
                                             fontWeight: "bold",
-                                            borderBottom: "1px solid #ccc",
+                                            borderBottom: "1px solid #FFF",
                                             zIndex: 3,
                                         }}
                                     >
@@ -671,8 +684,7 @@ export const EmployeeList: React.FC = () => {
                                                     background: "#F1F1F1",
                                                     padding: "6px",
                                                     fontWeight: 500,
-                                                    borderBottom:
-                                                        "1px solid #ccc",
+
                                                     zIndex: 2,
                                                 }}
                                             >
@@ -770,8 +782,8 @@ export const EmployeeList: React.FC = () => {
                             )}
                             {departments.length === 0 && (
                                 <div style={{ textAlignLast: "center" }}>
-                                    {/* <img src={NotFound} /> */}
-                                    <img src={NotFoundIcon} />
+                                    <img src={NotFound} />
+                                    {/* <img src={NotFoundIcon} /> */}
                                     <div>
                                         <span>
                                             По заданным критериям сотрудники не
@@ -783,7 +795,7 @@ export const EmployeeList: React.FC = () => {
                         </div>
                     ) : (
                         /* === Пункт 2: режим поиска === */
-                        <div style={{ fontFamily: "Arial, sans-serif" }}>
+                        <div>
                             <div
                                 style={{
                                     position: "sticky",
@@ -794,6 +806,8 @@ export const EmployeeList: React.FC = () => {
                                     borderBottom: "1px solid #ccc",
                                     zIndex: 3,
                                     display: "flex",
+                                    borderTopLeftRadius: "10px",
+                                    borderTopRightRadius: "10px",
                                 }}
                             >
                                 <div style={{ minWidth: "80px" }}> </div>
@@ -810,7 +824,7 @@ export const EmployeeList: React.FC = () => {
                                             style={{
                                                 position: "sticky",
                                                 top: "35px",
-                                                background: "#b2ddf6",
+                                                background: "#F1F1F1",
                                                 padding: "8px",
                                                 fontWeight: "bold",
                                                 borderBottom: "1px solid #ccc",

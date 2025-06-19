@@ -66,10 +66,16 @@ export const EditInformationModal: React.FC = () => {
     );
     const saveEmployeeInfo = useOrgStore((state) => state.saveEmployeeInfo);
 
-    const [personalMobile, setPersonalMobile] = useState("");
-    const [cityPhone, setCityPhone] = useState("");
-    const [workPlace, setWorkPlace] = useState<number | null>(null);
-    const [address, setAddress] = useState("");
+    const [personalMobile, setPersonalMobile] = useState(
+        currentEmployeeInfo?.mobileNumberPersonal || ""
+    );
+    const [cityPhone, setCityPhone] = useState(
+        currentEmployeeInfo?.externalNumberCorp || ""
+    );
+    const [workPlace, setWorkPlace] = useState<number | null>(
+        currentEmployeeInfo?.workPlace || null
+    );
+    const [address, setAddress] = useState(currentEmployeeInfo?.address || "");
     const [code, setCode] = useState("");
 
     const [isCheckboxOn, setIsCheckboxOn] = useState(false);
@@ -103,6 +109,8 @@ export const EditInformationModal: React.FC = () => {
             document.removeEventListener("keydown", handleESCClick);
         };
     }, []);
+
+    console.log(currentEmployeeInfo);
 
     return (
         <>
@@ -189,11 +197,13 @@ export const EditInformationModal: React.FC = () => {
                                     onChange={(value) =>
                                         setPersonalMobile(value)
                                     }
+                                    defaultValue={personalMobile}
                                 />
                                 <CustomInputEditModal
                                     id={"cityPhone"}
                                     labelField={"Городской телефон"}
                                     onChange={(value) => setCityPhone(value)}
+                                    defaultValue={cityPhone}
                                 />
                                 <CustomInputEditModal
                                     id={"placeWork"}
@@ -201,11 +211,13 @@ export const EditInformationModal: React.FC = () => {
                                     onChange={(value) =>
                                         setWorkPlace(Number(value))
                                     }
+                                    defaultValue={workPlace}
                                 />
                                 <CustomInputEditModal
                                     id={"Adress"}
                                     labelField={"Адрес"}
                                     onChange={(value) => setAddress(value)}
+                                    defaultValue={address}
                                 />
                                 <div
                                     style={{
@@ -219,6 +231,7 @@ export const EditInformationModal: React.FC = () => {
                                         id={"code"}
                                         labelField={"Код проверки"}
                                         onChange={(value) => setCode(value)}
+                                        defaultValue={code}
                                     />
                                     {currentEmployeeInfo && (
                                         <CustomButton

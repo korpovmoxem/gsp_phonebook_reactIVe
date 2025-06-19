@@ -28,10 +28,38 @@ const ChevronRightButton = styled(SquareChevronRight)`
 export const ItemText = styled.span`
     user-select: none;
     margin-left: 10px;
-    letter-spacing: 0.57;
+    letter-spacing: 0.2px;
+
     &:hover {
         color: #00000070;
     }
+`;
+
+export const ItemRowSelected = styled(ItemText)`
+    background-color: #e6e7e9;
+    border-radius: 10px;
+    padding: 5px;
+`;
+
+interface RowProps {
+    selected?: boolean;
+}
+
+const ItemRow = styled.div<RowProps>`
+    cursor: pointer;
+    fontweight: normal;
+    display: flex;
+    flexdirection: row;
+    alignitems: center;
+    margintop: 7px;
+    lineheight: 1;
+    ${({ selected }) =>
+        selected &&
+        `
+        background-color: #e6e7e9;
+        border-radius: 10px;
+        padding: 5px;
+    `}
 `;
 
 const DEFAULT_EXPAND_ICON_SIZE = 18;
@@ -46,8 +74,6 @@ export const TreeNode = ({
 
     useEffect(() => {
         // Проверяем treeId, а не id
-        console.log("expandedIds");
-        console.log(expandedIds);
         setExpanded(expandedIds.includes(node.treeId));
     }, [expandedIds]);
 
@@ -58,7 +84,7 @@ export const TreeNode = ({
                 marginTop: 5,
             }}
         >
-            <div
+            <ItemRow
                 onClick={() => {
                     node.id === null
                         ? setExpanded((prev) => !prev)
@@ -73,6 +99,7 @@ export const TreeNode = ({
                     marginTop: "7px",
                     lineHeight: 1,
                 }}
+                selected={node.id === selectedId}
             >
                 {node.children.length > 0 && (
                     <span
@@ -94,7 +121,7 @@ export const TreeNode = ({
                 )}
 
                 <ItemText>{node.name}</ItemText>
-            </div>
+            </ItemRow>
 
             {expanded &&
                 node.children.map((child, index) => (

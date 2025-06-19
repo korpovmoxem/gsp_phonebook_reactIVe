@@ -1,3 +1,4 @@
+import { CopyIcon } from "lucide-react";
 import { styled } from "styled-components";
 
 export const ModalBackgroundTemplate = styled.div`
@@ -11,7 +12,7 @@ export const ModalBackgroundTemplate = styled.div`
     align-items: center;
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.25);
-    animation-came: appear;
+    animation-name: appear;
     animation-duration: 300ms;
     align-content: center;
 `;
@@ -27,13 +28,20 @@ export const Modal2Background = styled(ModalBackgroundTemplate)`
 export const ModalContainer = styled.div`
     background: #ffffff;
     max-width: 1000px;
+    width: 800px;
     margin: auto;
+    border-radius: 10px;
+    max-height: 90vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scroll-behavior: smooth;
+    scrollbar-color: rgb(199, 199, 199) transparent;
 `;
 
 export const ModalContent = styled.div`
     display: flex;
     flex-direction: column;
-    padding: 30px;
+    padding: 10px 30px;
 `;
 
 export const CloseButton = styled.button`
@@ -47,6 +55,9 @@ export const CloseButton = styled.button`
 
 export const ModalHeader = styled.div`
     display: flex;
+    position: sticky;
+    top: 10px;
+    background-color: #ffffff;
     flex-direction: row;
     justify-content: space-between;
 `;
@@ -65,9 +76,26 @@ export const CustomButton = styled.button<ButtonProps>`
 
     &:hover {
         background-color: rgb(6, 106, 187);
+        -webkit-box-shadow: 0px 0px 5px 0px rgba(34, 60, 80, 0.7);
+        -moz-box-shadow: 0px 0px 5px 0px rgba(34, 60, 80, 0.7);
+        box-shadow: 0px 0px 5px 0px rgba(34, 60, 80, 0.7);
     }
 
     &:disabled {
         opacity: 0.4 !important;
+    }
+`;
+
+export const CustomEmailLink = styled.a`
+    color: black;
+    &:hover {
+        color: grey;
+    }
+`;
+export const CustomCopyButton = styled(CopyIcon)`
+    margin-left: 10px;
+    cursor: pointer;
+    &:hover {
+        color: grey;
     }
 `;

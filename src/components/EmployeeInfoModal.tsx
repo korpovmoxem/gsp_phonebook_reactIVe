@@ -14,6 +14,9 @@ import {
 } from "./components";
 import { EditInformationModal } from "./EditInformationModal";
 import { useEffect, useRef } from "react";
+import Contact from "../materials/contactInfo.svg";
+import WorkPlace from "../materials/workPlace.svg";
+import { UsersRound } from "lucide-react";
 
 const PhotoAndInfo = styled.div`
     display: flex;
@@ -32,62 +35,86 @@ const PhotoBlock = styled.div`
     border-radius: 10px;
 `;
 
+const InfoBlockWrapper = styled.div`
+    padding: 0 20px 20px 20px;
+    width: 70%;
+    border-radius: 10px;
+    font-weight: 400;
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+        "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-feature-settings: normal;
+    font-variation-settings: normal;
+`;
+
 const InfoBlock = styled.div`
     padding: 20px;
-    width: 70%;
-    background-color: rgba(240, 240, 240, 0.49);
+    width: 94%;
+    border: 1px solid rgb(223, 223, 223);
     border-radius: 10px;
+    margin-bottom: 10px;
 `;
 
 const Fio = styled.h3`
     margin: 0;
 `;
 
-const FIELDS = [
+const INFORMATION_BLOCKS = [
     {
-        nameField: "Организация",
-        value: "organizationName",
-        isEditable: false,
+        nameBlock: "Контактная инфрмация",
+        icon: Contact,
+        fields: [
+            {
+                nameField: "Номер телефона",
+                value: "telephoneNumberCorp",
+                isEditable: false,
+            },
+            {
+                nameField: "Городской номер",
+                value: "telephoneNumberCorp",
+                isEditable: true,
+            },
+            {
+                nameField: "Мобильный (рабочий)",
+                value: "mobileNumberCorp",
+                isEditable: false,
+            },
+            {
+                nameField: "Мобильный (личный)",
+                value: "mobileNumberPersonal",
+                isEditable: true,
+            },
+            {
+                nameField: "Email",
+                value: "email",
+                isEditable: false,
+            },
+        ],
     },
     {
-        nameField: "Подразделение",
-        value: "departmentName",
-        isEditable: false,
-    },
-    {
-        nameField: "Номер телефона",
-        value: "telephoneNumberCorp",
-        isEditable: false,
-    },
-    {
-        nameField: "Городской номер",
-        value: "telephoneNumberCorp",
-        isEditable: true,
-    },
-    {
-        nameField: "Мобильный (рабочий)",
-        value: "mobileNumberCorp",
-        isEditable: false,
-    },
-    {
-        nameField: "Мобильный (личный)",
-        value: "mobileNumberPersonal",
-        isEditable: true,
-    },
-    {
-        nameField: "Email",
-        value: "email",
-        isEditable: false,
-    },
-    {
-        nameField: "Рабочее место",
-        value: "workPlace",
-        isEditable: true,
-    },
-    {
-        nameField: "Адрес",
-        value: "address",
-        isEditable: true,
+        nameBlock: "Место работы",
+        icon: WorkPlace,
+        fields: [
+            {
+                nameField: "Организация",
+                value: "organizationName",
+                isEditable: false,
+            },
+            {
+                nameField: "Подразделение",
+                value: "departmentName",
+                isEditable: false,
+            },
+            {
+                nameField: "Адрес",
+                value: "address",
+                isEditable: true,
+            },
+            {
+                nameField: "Рабочее место",
+                value: "workPlace",
+                isEditable: true,
+            },
+        ],
     },
 ];
 
@@ -182,6 +209,7 @@ export const EmployeeInfoModal: React.FC = () => {
                                                 !isEmployeeInfoModalOpen
                                             )
                                         }
+                                        style={{ fontSize: "16pt" }}
                                     >
                                         X
                                     </CloseButton>
@@ -201,7 +229,7 @@ export const EmployeeInfoModal: React.FC = () => {
                                                 width="200px"
                                             />
                                         </PhotoBlock>
-                                        <InfoBlock>
+                                        <InfoBlockWrapper>
                                             <Fio>
                                                 {
                                                     currentEmployeeInfo.fullNameRus
@@ -255,14 +283,27 @@ export const EmployeeInfoModal: React.FC = () => {
                                             {currentEmployeeInfo.assistants &&
                                                 currentEmployeeInfo.assistants
                                                     .length > 0 && (
-                                                    <>
-                                                        <h5
+                                                    <InfoBlock
+                                                        style={{
+                                                            marginTop: "10px",
+                                                        }}
+                                                    >
+                                                        <h4
                                                             style={{
-                                                                marginBottom: 0,
+                                                                margin: 0,
+                                                                marginBottom:
+                                                                    "10px",
                                                             }}
                                                         >
+                                                            <UsersRound
+                                                                size={16}
+                                                                style={{
+                                                                    marginRight:
+                                                                        "5px",
+                                                                }}
+                                                            />
                                                             Помощники
-                                                        </h5>
+                                                        </h4>
                                                         {currentEmployeeInfo.assistants.map(
                                                             (assistant) => (
                                                                 <>
@@ -293,23 +334,54 @@ export const EmployeeInfoModal: React.FC = () => {
                                                                 </>
                                                             )
                                                         )}
-                                                    </>
+                                                    </InfoBlock>
                                                 )}
                                             <div style={{ marginTop: "20px" }}>
-                                                {FIELDS.map((field) => (
-                                                    <ModalField
-                                                        nameField={
-                                                            field.nameField
-                                                        }
-                                                        value={
-                                                            currentEmployeeInfo[
-                                                                field.value
-                                                            ]
-                                                        }
-                                                    />
-                                                ))}
+                                                {INFORMATION_BLOCKS.map(
+                                                    (block) => (
+                                                        <InfoBlock>
+                                                            <>
+                                                                <h4
+                                                                    style={{
+                                                                        margin: 0,
+                                                                        marginBottom:
+                                                                            "10px",
+                                                                    }}
+                                                                >
+                                                                    <img
+                                                                        src={
+                                                                            block.icon
+                                                                        }
+                                                                        style={{
+                                                                            marginRight:
+                                                                                "5px",
+                                                                        }}
+                                                                    />
+                                                                    {
+                                                                        block.nameBlock
+                                                                    }
+                                                                </h4>
+                                                            </>
+                                                            {block.fields.map(
+                                                                (field) => (
+                                                                    <ModalField
+                                                                        nameField={
+                                                                            field.nameField
+                                                                        }
+                                                                        value={
+                                                                            currentEmployeeInfo[
+                                                                                field
+                                                                                    .value
+                                                                            ]
+                                                                        }
+                                                                    />
+                                                                )
+                                                            )}
+                                                        </InfoBlock>
+                                                    )
+                                                )}
                                             </div>
-                                        </InfoBlock>
+                                        </InfoBlockWrapper>
                                     </PhotoAndInfo>
                                 )}
                             </>

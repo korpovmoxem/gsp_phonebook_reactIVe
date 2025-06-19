@@ -46,6 +46,7 @@ interface Props {
     labelField: string;
     width?: string;
     onChange: (value: string) => void;
+    defaultValue?: string | number | null;
 }
 
 export const CustomInputEditModal = ({
@@ -53,7 +54,10 @@ export const CustomInputEditModal = ({
     labelField,
     width,
     onChange,
+    defaultValue,
 }: Props) => {
+    console.log("++++++++++++++++defaultValue+++++++++++++++++");
+    console.log(defaultValue);
     return (
         <>
             <CustomInputContainer>
@@ -65,6 +69,8 @@ export const CustomInputEditModal = ({
                         placeholder="Введите..."
                         onChange={(event) => onChange(event.target.value)}
                         autoComplete="off"
+                        value={defaultValue || ""}
+                        type={id === "code" ? "number" : "text"}
                     />
                 </CustomLabel>
             </CustomInputContainer>

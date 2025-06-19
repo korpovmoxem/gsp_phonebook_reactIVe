@@ -15,9 +15,16 @@ const CustomDatalist = styled.div`
     z-index: 10;
     margin-top: 5px;
     background-color: rgb(226, 226, 226);
-    -webkit-box-shadow: 0px 9px 8px 6px rgba(34, 60, 80, 0.2);
-    -moz-box-shadow: 0px 9px 8px 6px rgba(34, 60, 80, 0.2);
-    box-shadow: 0px 9px 8px 6px rgba(34, 60, 80, 0.2);
+    -webkit-box-shadow: 10px 15px 25px -15px rgba(34, 60, 80, 0.75);
+    -moz-box-shadow: 10px 15px 25px -15px rgba(34, 60, 80, 0.75);
+    box-shadow: 10px 15px 25px -15px rgba(34, 60, 80, 0.75);
+    :last-child {
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        margin-bottom: 0;
+    }
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 `;
 
 const CustomDatalistItem = styled.div`
@@ -43,6 +50,18 @@ const CustomDatalistItemText = styled.span`
     margin: 0 0 0 20px;
     font-size: 12px;
     color: grey;
+`;
+
+const CustomSelect = styled.select`
+    appearance: none; /* скрываем стандартную стрелочку */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'><polyline points='1,1 6,6 11,1' stroke='black' stroke-width='1' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    padding-right: 3em; /* отступ от стрелки */
+    background-repeat: no-repeat;
+    background-position: right 1em center;
+    background-size: 1em;
 `;
 
 interface Props {
@@ -332,7 +351,7 @@ export const SearchBar = ({ onSearch }: Props) => {
                     )}
                 </div>
 
-                <select
+                <CustomSelect
                     value={category}
                     onChange={(e) => setCategory(e.target.value as CATEGORIES)}
                     className="search-select"
@@ -341,8 +360,7 @@ export const SearchBar = ({ onSearch }: Props) => {
                     <option value="phone">Телефон</option>
                     <option value="email">Email</option>
                     <option value="position">Должность</option>
-                </select>
-
+                </CustomSelect>
                 <button className="search-button" onClick={handleSearch}>
                     Поиск
                 </button>

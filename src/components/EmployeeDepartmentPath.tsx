@@ -35,17 +35,15 @@ export const EmployeeDepartmentPath = ({ departmentId }: Props) => {
         ? getPathToNodeFast1(departmentId, orgMapId)
         : null;
     if (!pathIds) return null;
-
-    console.log("++++++++++++++++++ pathIds +++++++++++++++");
-    console.log(pathIds);
-
+    // console.log(pathIds);
     return (
         <div style={{ display: "flex", flexDirection: "row" }}>
             {pathIds
                 .reverse()
-                .slice(0, -1)
+                // .slice(0, -1)
                 .map((id, index) => {
                     const node = orgMapId.get(id)?.node;
+                    console.log(node);
                     if (!node) return null;
 
                     return (

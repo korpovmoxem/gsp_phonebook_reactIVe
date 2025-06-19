@@ -52,10 +52,11 @@ export interface EmployeeShort {
 export interface CurrentEmployeeInfo extends Employee {
     mobileNumberCorp: string,
     mobileNumberPersonal: string,
-    workPlace: string,
+    workPlace: number,
     address: string,
     assistants: EmployeeShort[],
     managers: EmployeeShort[],
+    externalNumberCorp: string,
     [key: string]: any | undefined,
 }
 
