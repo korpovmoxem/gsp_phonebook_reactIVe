@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react";
-import { Organization } from "../types";
+import { Organization } from "../../types";
 import styled from "styled-components";
-import { SquareChevronRight, SquareChevronDown } from "lucide-react";
+import {
+    ChevronDownButton,
+    ChevronRightButton,
+    ItemText,
+} from "./StyledComponent";
 
 interface Props {
     node: Organization;
@@ -9,37 +13,6 @@ interface Props {
     onSelect: (id: Organization) => void;
     expandedIds: string[];
 }
-const ChevronDownButton = styled(SquareChevronDown)`
-    cursor: pointer;
-    stroke: #1d75bb;
-    &:hover {
-        stroke: #1d74bb8a;
-    }
-`;
-
-const ChevronRightButton = styled(SquareChevronRight)`
-    cursor: pointer;
-    stroke: #1d75bb;
-    &:hover {
-        stroke: #1d74bb8a;
-    }
-`;
-
-export const ItemText = styled.span`
-    user-select: none;
-    margin-left: 10px;
-    letter-spacing: 0.2px;
-
-    &:hover {
-        color: #00000070;
-    }
-`;
-
-export const ItemRowSelected = styled(ItemText)`
-    background-color: #e6e7e9;
-    border-radius: 10px;
-    padding: 5px;
-`;
 
 interface RowProps {
     selected?: boolean;

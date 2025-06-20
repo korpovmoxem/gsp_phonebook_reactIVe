@@ -1,18 +1,10 @@
-import { useOrgStore } from "../store/organizationStore";
-import styled from "styled-components";
-import PhotoDefault from "../materials/photo.jpg";
-import { ModalField } from "./ModalField";
-import { CurrentEmployeeInfo } from "../types";
-import { SpinnerCircular } from "spinners-react";
 import {
     CloseButton,
-    CustomButton,
     ModalBackground,
     ModalContainer,
     ModalContent,
     ModalHeader,
-} from "./components";
-import { EditInformationModal } from "./EditInformationModal";
+} from "./StyledComponents";
 import { useEffect, useRef } from "react";
 
 interface Props {
@@ -44,6 +36,7 @@ export const HelpModal = ({ onClose }: Props) => {
             document.removeEventListener("mousedown", handleClickOutside);
             document.removeEventListener("keydown", handleESCClick);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

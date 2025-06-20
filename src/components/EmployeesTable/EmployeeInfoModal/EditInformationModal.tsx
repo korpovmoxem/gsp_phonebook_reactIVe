@@ -1,9 +1,4 @@
-import { useOrgStore } from "../store/organizationStore";
-import styled from "styled-components";
-import PhotoDefault from "../materials/photo.jpg";
-import { ModalField } from "./ModalField";
-import { CurrentEmployeeInfo } from "../types";
-import { SpinnerCircular } from "spinners-react";
+import { useOrgStore } from "../../../store/organizationStore";
 import {
     CloseButton,
     CustomButton,
@@ -11,47 +6,9 @@ import {
     ModalContainer,
     ModalContent,
     ModalHeader,
-} from "./components";
+} from "../../StyledComponents";
 import { CustomInputEditModal } from "./CustomInputEditModal";
 import { useEffect, useRef, useState } from "react";
-
-const CustomInputContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 70%;
-    padding: 5px;
-    background-color: rgb(220, 220, 220);
-    border-bottom: 3px solid rgb(138, 138, 138);
-    font-size: 12pt;
-
-    &:focus-within {
-        border-bottom: 3px solid #1d75bb;
-        transition: all 0.7s ease-in-out;
-    }
-`;
-
-const CustomLabel = styled.label`
-    color: rgb(155, 155, 155);
-    font-size: 10pt;
-
-    &:focus-within {
-        color: rgb(129, 129, 129);
-        transition: all 0.1s ease-in-out;
-    }
-`;
-
-const CustomInput = styled.input`
-    background-color: unset;
-    border: none;
-    line-height: 20px;
-    outline: none;
-    margin: 5px 0 0 10px;
-    padding: 0;
-
-    &::placeholder {
-        font-size: 12pt;
-    }
-`;
 
 export const EditInformationModal: React.FC = () => {
     const currentEmployeeInfo = useOrgStore(
@@ -72,8 +29,8 @@ export const EditInformationModal: React.FC = () => {
     const [cityPhone, setCityPhone] = useState(
         currentEmployeeInfo?.externalNumberCorp || ""
     );
-    const [workPlace, setWorkPlace] = useState<number | null>(
-        currentEmployeeInfo?.workPlace || null
+    const [workPlace, setWorkPlace] = useState<string | null>(
+        String(currentEmployeeInfo?.workPlace) || null
     );
     const [address, setAddress] = useState(currentEmployeeInfo?.address || "");
     const [code, setCode] = useState("");
@@ -81,7 +38,13 @@ export const EditInformationModal: React.FC = () => {
     const [isCheckboxOn, setIsCheckboxOn] = useState(false);
 
     const handleSendButton = () => {
-        saveEmployeeInfo(personalMobile, cityPhone, workPlace, address, code);
+        saveEmployeeInfo(
+            personalMobile,
+            cityPhone,
+            Number(workPlace),
+            address,
+            code
+        );
     };
 
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -108,9 +71,8 @@ export const EditInformationModal: React.FC = () => {
             document.removeEventListener("mousedown", handleClickOutside);
             document.removeEventListener("keydown", handleESCClick);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    console.log(currentEmployeeInfo);
 
     return (
         <>
@@ -208,9 +170,7 @@ export const EditInformationModal: React.FC = () => {
                                 <CustomInputEditModal
                                     id={"placeWork"}
                                     labelField={"Рабочее место"}
-                                    onChange={(value) =>
-                                        setWorkPlace(Number(value))
-                                    }
+                                    onChange={(value) => setWorkPlace(value)}
                                     defaultValue={workPlace}
                                 />
                                 <CustomInputEditModal

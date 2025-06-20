@@ -1,46 +1,28 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useOrgStore } from "../store/organizationStore";
-import { ItemText, TreeNode } from "./TreeNode";
-import { SidebarSkeleton } from "./SidebarSkeleton";
-import styled from "styled-components";
+import { useOrgStore } from "../../store/organizationStore";
+import { TreeNode } from "./TreeNode";
+
 import {
     buildOrgIndexId,
     buildOrgIndexTreeId,
     getPathToNodeFast,
     getPathToNodeFast1,
     OrgMap,
-} from "../utils/buildOrgIndex";
+} from "../../utils/buildOrgIndex";
 import { toast } from "react-toastify";
-import { Organization } from "../types";
+import { Organization } from "../../types";
 import { ExternalLink } from "lucide-react";
-
-const MainTreeWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    height: auto;
-    margin: 10px;
-    padding: 10px;
-    text-align: left;
-    width: 400px;
-    max-width: 400px;
-    background: white;
-    border-radius: 10px;
-`;
-
-const TreeWrapper = styled.div`
-    max-height: 90%;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scroll-behavior: smooth;
-    scrollbar-color: rgb(199, 199, 199) transparent;
-`;
-
-const CustomLink = styled.a`
-    text-decoration: none;
-    color: black;
-`;
+import { SidebarSkeleton } from "./SidebarSkeleton";
+import {
+    CustomLink,
+    ItemText,
+    MainTreeWrapper,
+    OrgSidebarHeader,
+    TreeItemsWrapper,
+    TreeWrapper,
+} from "./StyledComponent";
 
 export const OrgSidebar: React.FC = () => {
     const organizations = useOrgStore((state) => state.organizations);
@@ -55,27 +37,17 @@ export const OrgSidebar: React.FC = () => {
     const isExternalOrgLoading = useOrgStore(
         (state) => state.isExternalOrgLoading
     );
+    const orgMap = useOrgStore((state) => state.orgMap);
+
     const [searchParams, setSearchParams] = useSearchParams();
     const [expandedIds, setExpandedIds] = useState<string[]>([]);
-    const [orgMap, setOrgMap] = useState<OrgMap>(new Map());
 
     const navigate = useNavigate();
-    const treeId = searchParams.get("treeId");
     // Загружаем дерево
     useEffect(() => {
         fetchTree();
         fetchExternalTree();
     }, []);
-
-    // Строим индекс после загрузки
-    useEffect(() => {
-        if (organizations.length > 0) {
-            const map = treeId
-                ? buildOrgIndexTreeId(organizations)
-                : buildOrgIndexId(organizations);
-            setOrgMap(map);
-        }
-    }, [organizations, treeId]);
 
     // Выделение и раскрытие по ID из URL
     useEffect(() => {
@@ -137,15 +109,7 @@ export const OrgSidebar: React.FC = () => {
         <MainTreeWrapper>
             {!isOrgLoading ? (
                 <>
-                    <h3
-                        style={{
-                            margin: "0 15px 10px",
-                            borderBottom: "0.5px solid #cfcfcf",
-                            lineHeight: "34px",
-                        }}
-                    >
-                        Организации
-                    </h3>
+                    <OrgSidebarHeader>Организации</OrgSidebarHeader>
                     <TreeWrapper>
                         {organizations.map((org, index) => (
                             <TreeNode
@@ -157,7 +121,7 @@ export const OrgSidebar: React.FC = () => {
                             />
                         ))}
                         {!isExternalOrgLoading ? (
-                            <div style={{ marginTop: "10px" }}>
+                            <TreeItemsWrapper>
                                 {externalOrganizations.map((item) => (
                                     <div key={item.id}>
                                         <CustomLink
@@ -173,7 +137,7 @@ export const OrgSidebar: React.FC = () => {
                                         </CustomLink>
                                     </div>
                                 ))}
-                            </div>
+                            </TreeItemsWrapper>
                         ) : (
                             <SidebarSkeleton />
                         )}

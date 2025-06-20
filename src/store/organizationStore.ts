@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import {
   Organization,
-  Employee,
   ExternalOrganizations,
   CATEGORIES,
   EmployeesList,
@@ -11,6 +10,7 @@ import {
 import { toast } from 'react-toastify';
 import { buildOrgIndexId, buildOrgIndexTreeId } from '../utils/buildOrgIndex';
 import { OrgMap } from '../utils/buildOrgIndex';
+import axios from 'axios';
 
 interface OrgState {
     organizations: Organization[];
@@ -44,6 +44,11 @@ interface OrgState {
     fetchVerificatinCode: (idEmployee: string, idOrganization: string) => Promise<void>;
 
     saveEmployeeInfo: (personalMobile: string, cityPhone: string, workPlace: number | null, address: string, code: string) => Promise<void>; 
+
+    // Для SearchBar
+    fetchEmployeeForSearchBar: (searchValue: string, category: string) => Promise<void>;
+    isEmployeeForSearchBarLoading: boolean;
+    EmployeesListLimit: EmployeesList[]
 }
 
 export const useOrgStore = create<OrgState>((set, get) => ({
@@ -64,6 +69,8 @@ export const useOrgStore = create<OrgState>((set, get) => ({
     isCurrentEmployeeLoading: false,
     isEditInformation: false,
     isLoadingCode: false,
+    isEmployeeForSearchBarLoading: false,
+    EmployeesListLimit: [],
 
     fetchExternalTree: async () => {
         set({ isExternalOrgLoading: true });
@@ -85,23 +92,23 @@ export const useOrgStore = create<OrgState>((set, get) => ({
     fetchTree: async () => {
         set({ isOrgLoading: true });
         try {
-        const response = await fetch('http://172.16.153.53:8001/organization/tree');
-        if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
-        const data = await response.json();
+            const response = await fetch('http://172.16.153.53:8001/organization/tree');
+            if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+            const data = await response.json();
 
-        const builtOrgMap = buildOrgIndexTreeId(data.result);
-        const builtOrgMapId = buildOrgIndexId(data.result);
+            const builtOrgMap = buildOrgIndexTreeId(data.result);
+            const builtOrgMapId = buildOrgIndexId(data.result);
 
-        set({
-            organizations: data.result,
-            orgMap: builtOrgMap,
-            orgMapId: builtOrgMapId,
-            isOrgLoading: false,
-        });
+            set({
+                organizations: data.result,
+                orgMap: builtOrgMap,
+                orgMapId: builtOrgMapId,
+                isOrgLoading: false,
+            });
         } catch (error: any) {
-        console.error('Ошибка загрузки организаций:', error.message);
-        toast.error('Ошибка при загрузке организаций');
-        set({ isOrgLoading: false });
+            console.error('Ошибка загрузки организаций:', error.message);
+            toast.error('Ошибка при загрузке организаций');
+            set({ isOrgLoading: false });
         }
     },
 
@@ -266,5 +273,34 @@ export const useOrgStore = create<OrgState>((set, get) => ({
         } finally {
             set({ isLoadingCode: false });
         }
+    },
+
+    fetchEmployeeForSearchBar: async (value, category) => {
+        set({isEmployeeForSearchBarLoading: true})
+
+        if (value.length < 2) {
+            set({
+                EmployeesListLimit: [],
+            });
+        } else {
+            try {
+            const response = await axios.get(
+                `http://172.16.153.53:8001/employee/search?value=${value}&type=${category}&limit=10`
+            );
+            if (response.status !== 200 ) throw new Error(`HTTP error: ${response.status}`);
+
+            set({
+                EmployeesListLimit: response.data.result,
+            });
+            
+
+            } catch (error: any) {
+                console.error('Ошибка при получении списка найденных сотрудников', error);
+                toast.error('Ошибка при получении списка найденных сотрудников');
+            } finally {
+                set({ isEmployeeForSearchBarLoading: false });
+            }
+        }
+        
     },
 }));

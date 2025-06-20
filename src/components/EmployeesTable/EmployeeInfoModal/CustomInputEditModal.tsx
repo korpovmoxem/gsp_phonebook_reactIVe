@@ -1,4 +1,3 @@
-import { useOrgStore } from "../store/organizationStore";
 import styled from "styled-components";
 
 const CustomInputContainer = styled.div`
@@ -56,8 +55,6 @@ export const CustomInputEditModal = ({
     onChange,
     defaultValue,
 }: Props) => {
-    console.log("++++++++++++++++defaultValue+++++++++++++++++");
-    console.log(defaultValue);
     return (
         <>
             <CustomInputContainer>
@@ -70,7 +67,11 @@ export const CustomInputEditModal = ({
                         onChange={(event) => onChange(event.target.value)}
                         autoComplete="off"
                         value={defaultValue || ""}
-                        type={id === "code" ? "number" : "text"}
+                        type={
+                            id === "code" || id === "placeWork"
+                                ? "number"
+                                : "text"
+                        }
                     />
                 </CustomLabel>
             </CustomInputContainer>

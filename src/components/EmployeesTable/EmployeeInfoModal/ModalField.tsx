@@ -1,17 +1,6 @@
-import styled from "styled-components";
-import { CustomCopyButton, CustomEmailLink } from "./components";
+import { CustomCopyButton, CustomEmailLink } from "../../StyledComponents";
 import { toast } from "react-toastify";
-
-const FieldWrapper = styled.div`
-    margin-bottom: 10px;
-    display: flex;
-    flex-direction: column;
-`;
-
-const NameField = styled.label`
-    font-size: 10pt;
-    color: rgb(102, 102, 102);
-`;
+import { FieldWrapper, NameField } from "./StyledComponents";
 
 interface Props {
     nameField: string;

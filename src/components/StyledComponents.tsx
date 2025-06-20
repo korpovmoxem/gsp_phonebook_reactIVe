@@ -99,3 +99,38 @@ export const CustomCopyButton = styled(CopyIcon)`
         color: grey;
     }
 `;
+
+export const MainWrapper = styled.div`
+    margin: auto;
+    max-width: 85%;
+`;
+
+export const ContentWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    height: calc(100vh - 200px);
+`;
+
+export const SearchWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+`;
+
+export const FAB = styled.button`
+    cursor: pointer;
+    position: fixed;
+    bottom: 70px;
+    right: 70px;
+    width: 40px;
+    height: 40px;
+    border-radius: 45px;
+    border: none;
+    background: rgba(167, 167, 167, 0.51);
+    font-size: 25pt;
+    color: #ffffff;
+
+    &:hover {
+        background: rgba(167, 167, 167, 0.9);
+    }
+`;
