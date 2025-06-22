@@ -1,0 +1,652 @@
+[
+  {
+    "id": "03d42703-5128-47f9-bfdd-e45105696a6b",
+    "name": "ОАО «Брагина, Одинцов и Федоров»",
+    "treeId": "tree-03d42703-5128-47f9-bfdd-e45105696a6b",
+    "root": true,
+    "children": [
+      {
+        "id": "7ceb9abb-bec8-411d-ba2d-94a7eef1a90e",
+        "name": "Обеспечение передовых сетей",
+        "treeId": "tree-7ceb9abb-bec8-411d-ba2d-94a7eef1a90e",
+        "root": false,
+        "children": [],
+        "employees": [
+          {
+            "id": "6fd498e7-eabb-460f-8f25-12b8b48dadc2",
+            "fullNameRus": "Лазарь Харлампович Ефимов",
+            "email": "visheslav_1989@yahoo.com",
+            "telephoneNumberCorp": "+7 948 924 11 57",
+            "departmentId": "7ceb9abb-bec8-411d-ba2d-94a7eef1a90e",
+            "departmentName": "Обеспечение передовых сетей",
+            "organizationId": "03d42703-5128-47f9-bfdd-e45105696a6b",
+            "organizationName": "ОАО «Брагина, Одинцов и Федоров»",
+            "positionTitle": "Гранатомётчик"
+          },
+          {
+            "id": "3c66e114-df1e-47b1-9487-cf0e646a21d8",
+            "fullNameRus": "Лука Гертрудович Меркушев",
+            "email": "spiridon1987@oao.net",
+            "telephoneNumberCorp": "+7 160 975 3513",
+            "departmentId": "7ceb9abb-bec8-411d-ba2d-94a7eef1a90e",
+            "departmentName": "Обеспечение передовых сетей",
+            "organizationId": "03d42703-5128-47f9-bfdd-e45105696a6b",
+            "organizationName": "ОАО «Брагина, Одинцов и Федоров»",
+            "positionTitle": "Литейщик"
+          },
+          {
+            "id": "a5f69c8b-fbc3-467d-9404-cc6e396b0488",
+            "fullNameRus": "Меркушев Вячеслав Филатович",
+            "email": "filippovsimon@mail.ru",
+            "telephoneNumberCorp": "+7 484 185 83 98",
+            "departmentId": "7ceb9abb-bec8-411d-ba2d-94a7eef1a90e",
+            "departmentName": "Обеспечение передовых сетей",
+            "organizationId": "03d42703-5128-47f9-bfdd-e45105696a6b",
+            "organizationName": "ОАО «Брагина, Одинцов и Федоров»",
+            "positionTitle": "Нефролог"
+          },
+          {
+            "id": "22ef0c69-9498-44c7-829a-cde5864d5076",
+            "fullNameRus": "Эдуард Теймуразович Филиппов",
+            "email": "dobroslav32@gmail.com",
+            "telephoneNumberCorp": "84711220186",
+            "departmentId": "7ceb9abb-bec8-411d-ba2d-94a7eef1a90e",
+            "departmentName": "Обеспечение передовых сетей",
+            "organizationId": "03d42703-5128-47f9-bfdd-e45105696a6b",
+            "organizationName": "ОАО «Брагина, Одинцов и Федоров»",
+            "positionTitle": "Ювелир"
+          },
+          {
+            "id": "ace78d71-5bab-43a0-ac05-7ccb08329939",
+            "fullNameRus": "Измаил Григорьевич Самсонов",
+            "email": "radim75@ip.ru",
+            "telephoneNumberCorp": "8 (953) 304-13-52",
+            "departmentId": "7ceb9abb-bec8-411d-ba2d-94a7eef1a90e",
+            "departmentName": "Обеспечение передовых сетей",
+            "organizationId": "03d42703-5128-47f9-bfdd-e45105696a6b",
+            "organizationName": "ОАО «Брагина, Одинцов и Федоров»",
+            "positionTitle": "Портной"
+          }
+        ]
+      },
+      {
+        "id": "039286eb-0331-44bf-bf0e-43acbe1c6738",
+        "name": "Преображение фронт-энд взаимодействий",
+        "treeId": "tree-039286eb-0331-44bf-bf0e-43acbe1c6738",
+        "root": false,
+        "children": [],
+        "employees": [
+          {
+            "id": "a31f90e9-3575-466b-9c1a-3949f8e9a98d",
+            "fullNameRus": "Куликов Ефим Андреевич",
+            "email": "ilinaevdokija@yandex.ru",
+            "telephoneNumberCorp": "81615109032",
+            "departmentId": "039286eb-0331-44bf-bf0e-43acbe1c6738",
+            "departmentName": "Преображение фронт-энд взаимодействий",
+            "organizationId": "03d42703-5128-47f9-bfdd-e45105696a6b",
+            "organizationName": "ОАО «Брагина, Одинцов и Федоров»",
+            "positionTitle": "Дирижёр"
+          },
+          {
+            "id": "3842d3c8-0271-4d62-b115-723e53912325",
+            "fullNameRus": "Аркадий Адамович Некрасов",
+            "email": "shchukinkazimir@ao.org",
+            "telephoneNumberCorp": "+75620870916",
+            "departmentId": "039286eb-0331-44bf-bf0e-43acbe1c6738",
+            "departmentName": "Преображение фронт-энд взаимодействий",
+            "organizationId": "03d42703-5128-47f9-bfdd-e45105696a6b",
+            "organizationName": "ОАО «Брагина, Одинцов и Федоров»",
+            "positionTitle": "Кондитер"
+          }
+        ]
+      },
+      {
+        "id": "f3741881-c906-493d-9e93-730186e20dfc",
+        "name": "Обеспечение круглогодичных рынков",
+        "treeId": "tree-f3741881-c906-493d-9e93-730186e20dfc",
+        "root": false,
+        "children": [],
+        "employees": [
+          {
+            "id": "98bb4ca2-ebf2-4805-86fc-ef3e65af4720",
+            "fullNameRus": "Татьяна Викторовна Игнатова",
+            "email": "ustinovagalina@yahoo.com",
+            "telephoneNumberCorp": "8 841 972 0769",
+            "departmentId": "f3741881-c906-493d-9e93-730186e20dfc",
+            "departmentName": "Обеспечение круглогодичных рынков",
+            "organizationId": "03d42703-5128-47f9-bfdd-e45105696a6b",
+            "organizationName": "ОАО «Брагина, Одинцов и Федоров»",
+            "positionTitle": "Шифровальщик"
+          },
+          {
+            "id": "663cc3b4-4c74-474d-95bd-8f3a7ddbfd7c",
+            "fullNameRus": "Людмила Натановна Дьячкова",
+            "email": "shilovagap@ooo.ru",
+            "telephoneNumberCorp": "8 (423) 759-4599",
+            "departmentId": "f3741881-c906-493d-9e93-730186e20dfc",
+            "departmentName": "Обеспечение круглогодичных рынков",
+            "organizationId": "03d42703-5128-47f9-bfdd-e45105696a6b",
+            "organizationName": "ОАО «Брагина, Одинцов и Федоров»",
+            "positionTitle": "Жиловщик/Обвальщик"
+          },
+          {
+            "id": "815748a0-d27c-49cc-85eb-0aa56978e725",
+            "fullNameRus": "Колесникова Наина Артемовна",
+            "email": "markjakovlev@yahoo.com",
+            "telephoneNumberCorp": "+7 (769) 606-9602",
+            "departmentId": "f3741881-c906-493d-9e93-730186e20dfc",
+            "departmentName": "Обеспечение круглогодичных рынков",
+            "organizationId": "03d42703-5128-47f9-bfdd-e45105696a6b",
+            "organizationName": "ОАО «Брагина, Одинцов и Федоров»",
+            "positionTitle": "Териолог"
+          },
+          {
+            "id": "3e4fa467-cba8-4409-8508-49abce232711",
+            "fullNameRus": "Филатов Глеб Филатович",
+            "email": "ernest_2021@rao.biz",
+            "telephoneNumberCorp": "+77063812066",
+            "departmentId": "f3741881-c906-493d-9e93-730186e20dfc",
+            "departmentName": "Обеспечение круглогодичных рынков",
+            "organizationId": "03d42703-5128-47f9-bfdd-e45105696a6b",
+            "organizationName": "ОАО «Брагина, Одинцов и Федоров»",
+            "positionTitle": "Педиатр"
+          }
+        ]
+      }
+    ],
+    "employees": []
+  },
+  {
+    "id": "743509d7-92bf-4443-b4a4-f19260379268",
+    "name": "АО «Новиков»",
+    "treeId": "tree-743509d7-92bf-4443-b4a4-f19260379268",
+    "root": true,
+    "children": [
+      {
+        "id": "76a8b609-6dc2-458c-b24b-826dd2ed449e",
+        "name": "Шкалирование современных архитектур",
+        "treeId": "tree-76a8b609-6dc2-458c-b24b-826dd2ed449e",
+        "root": false,
+        "children": [],
+        "employees": [
+          {
+            "id": "cc26961b-8579-4ed0-aa41-7ec68bb6bcab",
+            "fullNameRus": "Светлана Юрьевна Комарова",
+            "email": "koshelevevstafi@hotmail.com",
+            "telephoneNumberCorp": "+72176104714",
+            "departmentId": "76a8b609-6dc2-458c-b24b-826dd2ed449e",
+            "departmentName": "Шкалирование современных архитектур",
+            "organizationId": "743509d7-92bf-4443-b4a4-f19260379268",
+            "organizationName": "АО «Новиков»",
+            "positionTitle": "Журналист"
+          },
+          {
+            "id": "5c9604da-595b-48d8-96fd-167677cedaca",
+            "fullNameRus": "Зыкова Любовь Вадимовна",
+            "email": "adam00@yahoo.com",
+            "telephoneNumberCorp": "+78559097765",
+            "departmentId": "76a8b609-6dc2-458c-b24b-826dd2ed449e",
+            "departmentName": "Шкалирование современных архитектур",
+            "organizationId": "743509d7-92bf-4443-b4a4-f19260379268",
+            "organizationName": "АО «Новиков»",
+            "positionTitle": "Кардиолог"
+          },
+          {
+            "id": "2a66ffff-abeb-457f-83ff-cf091f728e66",
+            "fullNameRus": "Сафонов Кузьма Августович",
+            "email": "dorofeevmarian@hotmail.com",
+            "telephoneNumberCorp": "8 159 004 2294",
+            "departmentId": "76a8b609-6dc2-458c-b24b-826dd2ed449e",
+            "departmentName": "Шкалирование современных архитектур",
+            "organizationId": "743509d7-92bf-4443-b4a4-f19260379268",
+            "organizationName": "АО «Новиков»",
+            "positionTitle": "Работник органов ЗАГСа"
+          },
+          {
+            "id": "64c21980-cdd3-4e05-bbf2-398aa818b82c",
+            "fullNameRus": "Трофим Васильевич Анисимов",
+            "email": "naina1986@gmail.com",
+            "telephoneNumberCorp": "+72814654611",
+            "departmentId": "76a8b609-6dc2-458c-b24b-826dd2ed449e",
+            "departmentName": "Шкалирование современных архитектур",
+            "organizationId": "743509d7-92bf-4443-b4a4-f19260379268",
+            "organizationName": "АО «Новиков»",
+            "positionTitle": "Финансист"
+          },
+          {
+            "id": "fc507e61-433f-4335-8c01-5293e9812f31",
+            "fullNameRus": "Мефодий Валерьевич Архипов",
+            "email": "parfen1972@hotmail.com",
+            "telephoneNumberCorp": "8 229 611 1330",
+            "departmentId": "76a8b609-6dc2-458c-b24b-826dd2ed449e",
+            "departmentName": "Шкалирование современных архитектур",
+            "organizationId": "743509d7-92bf-4443-b4a4-f19260379268",
+            "organizationName": "АО «Новиков»",
+            "positionTitle": "Санитар"
+          }
+        ]
+      },
+      {
+        "id": "c051ff28-d75c-4a83-9062-39e2e9c8f4cc",
+        "name": "Адаптация веб-ориентированных пользователей",
+        "treeId": "tree-c051ff28-d75c-4a83-9062-39e2e9c8f4cc",
+        "root": false,
+        "children": [],
+        "employees": [
+          {
+            "id": "70c55dd1-a40f-4813-9804-128593c8efc4",
+            "fullNameRus": "Калинина Нонна Рудольфовна",
+            "email": "xsergeev@yahoo.com",
+            "telephoneNumberCorp": "+79263511087",
+            "departmentId": "c051ff28-d75c-4a83-9062-39e2e9c8f4cc",
+            "departmentName": "Адаптация веб-ориентированных пользователей",
+            "organizationId": "743509d7-92bf-4443-b4a4-f19260379268",
+            "organizationName": "АО «Новиков»",
+            "positionTitle": "Кондуктор"
+          },
+          {
+            "id": "c3289ddb-1699-4e67-b4fa-c52742707383",
+            "fullNameRus": "Афанасьев Исай Глебович",
+            "email": "jaropolkkulikov@gmail.com",
+            "telephoneNumberCorp": "+7 (765) 821-9729",
+            "departmentId": "c051ff28-d75c-4a83-9062-39e2e9c8f4cc",
+            "departmentName": "Адаптация веб-ориентированных пользователей",
+            "organizationId": "743509d7-92bf-4443-b4a4-f19260379268",
+            "organizationName": "АО «Новиков»",
+            "positionTitle": "Сметчик"
+          },
+          {
+            "id": "3db621f5-aebf-4626-9ce6-98068fdb0262",
+            "fullNameRus": "Родионова Регина Святославовна",
+            "email": "sigizmund2013@fortum.net",
+            "telephoneNumberCorp": "83055508249",
+            "departmentId": "c051ff28-d75c-4a83-9062-39e2e9c8f4cc",
+            "departmentName": "Адаптация веб-ориентированных пользователей",
+            "organizationId": "743509d7-92bf-4443-b4a4-f19260379268",
+            "organizationName": "АО «Новиков»",
+            "positionTitle": "Инженер-конструктор"
+          },
+          {
+            "id": "cbac91c7-bf8f-477a-98de-5d133441a0d8",
+            "fullNameRus": "Фаина Кирилловна Терентьева",
+            "email": "lavrentevborislav@mishina.ru",
+            "telephoneNumberCorp": "+7 (204) 075-2275",
+            "departmentId": "c051ff28-d75c-4a83-9062-39e2e9c8f4cc",
+            "departmentName": "Адаптация веб-ориентированных пользователей",
+            "organizationId": "743509d7-92bf-4443-b4a4-f19260379268",
+            "organizationName": "АО «Новиков»",
+            "positionTitle": "Шахтёр"
+          },
+          {
+            "id": "8cb0dbb1-8c16-4927-aab7-ab9ee16e89a3",
+            "fullNameRus": "Тарас Юлианович Морозов",
+            "email": "svetlana_2010@gmail.com",
+            "telephoneNumberCorp": "8 348 967 69 93",
+            "departmentId": "c051ff28-d75c-4a83-9062-39e2e9c8f4cc",
+            "departmentName": "Адаптация веб-ориентированных пользователей",
+            "organizationId": "743509d7-92bf-4443-b4a4-f19260379268",
+            "organizationName": "АО «Новиков»",
+            "positionTitle": "Артист цирка"
+          }
+        ]
+      },
+      {
+        "id": "0b038521-780e-4516-a4af-a1fa293315ec",
+        "name": "Управление b2b интернет-услуг",
+        "treeId": "tree-0b038521-780e-4516-a4af-a1fa293315ec",
+        "root": false,
+        "children": [],
+        "employees": [
+          {
+            "id": "5eea6adc-2ec9-43f6-850f-dc2a6a01ce96",
+            "fullNameRus": "Филарет Дмитриевич Миронов",
+            "email": "kallistrat1990@mail.ru",
+            "telephoneNumberCorp": "8 602 234 50 07",
+            "departmentId": "0b038521-780e-4516-a4af-a1fa293315ec",
+            "departmentName": "Управление b2b интернет-услуг",
+            "organizationId": "743509d7-92bf-4443-b4a4-f19260379268",
+            "organizationName": "АО «Новиков»",
+            "positionTitle": "Столяр"
+          },
+          {
+            "id": "a6bc0632-8c89-452b-8dea-96dbd80b8b86",
+            "fullNameRus": "Белозеров Эраст Артурович",
+            "email": "ostap_09@mail.ru",
+            "telephoneNumberCorp": "8 701 720 09 92",
+            "departmentId": "0b038521-780e-4516-a4af-a1fa293315ec",
+            "departmentName": "Управление b2b интернет-услуг",
+            "organizationId": "743509d7-92bf-4443-b4a4-f19260379268",
+            "organizationName": "АО «Новиков»",
+            "positionTitle": "Плиточник"
+          },
+          {
+            "id": "2a531c23-ce02-411f-b797-9d4074e582c6",
+            "fullNameRus": "Хохлов Милан Георгиевич",
+            "email": "venedikt1974@rodionova.net",
+            "telephoneNumberCorp": "8 194 264 1830",
+            "departmentId": "0b038521-780e-4516-a4af-a1fa293315ec",
+            "departmentName": "Управление b2b интернет-услуг",
+            "organizationId": "743509d7-92bf-4443-b4a4-f19260379268",
+            "organizationName": "АО «Новиков»",
+            "positionTitle": "Священнослужитель"
+          },
+          {
+            "id": "4eb43f2b-1176-4393-a9b0-f991af3a6377",
+            "fullNameRus": "Евграф Филиппович Ефимов",
+            "email": "mjasnikovaalina@mail.ru",
+            "telephoneNumberCorp": "+70899331886",
+            "departmentId": "0b038521-780e-4516-a4af-a1fa293315ec",
+            "departmentName": "Управление b2b интернет-услуг",
+            "organizationId": "743509d7-92bf-4443-b4a4-f19260379268",
+            "organizationName": "АО «Новиков»",
+            "positionTitle": "Швея"
+          }
+        ]
+      },
+      {
+        "id": "bef9c57c-0b6c-42f3-ac47-09bd455ffed8",
+        "name": "Освоение вертикальных интернет-магазинов",
+        "treeId": "tree-bef9c57c-0b6c-42f3-ac47-09bd455ffed8",
+        "root": false,
+        "children": [],
+        "employees": [
+          {
+            "id": "1ab36cb4-55f7-447c-920d-ba71b7f79e2c",
+            "fullNameRus": "Феофан Федосьевич Стрелков",
+            "email": "aksenovarseni@gmail.com",
+            "telephoneNumberCorp": "8 207 660 75 41",
+            "departmentId": "bef9c57c-0b6c-42f3-ac47-09bd455ffed8",
+            "departmentName": "Освоение вертикальных интернет-магазинов",
+            "organizationId": "743509d7-92bf-4443-b4a4-f19260379268",
+            "organizationName": "АО «Новиков»",
+            "positionTitle": "Профпатолог"
+          },
+          {
+            "id": "2d8061fc-d269-48e0-80d3-7bd3dda233a8",
+            "fullNameRus": "Ефимов Амвросий Изотович",
+            "email": "kuznetsovignati@rao.com",
+            "telephoneNumberCorp": "+7 (031) 045-0932",
+            "departmentId": "bef9c57c-0b6c-42f3-ac47-09bd455ffed8",
+            "departmentName": "Освоение вертикальных интернет-магазинов",
+            "organizationId": "743509d7-92bf-4443-b4a4-f19260379268",
+            "organizationName": "АО «Новиков»",
+            "positionTitle": "Кинооператор"
+          },
+          {
+            "id": "91b82aed-76f0-447c-a3d4-96427ed8148a",
+            "fullNameRus": "Самсон Изотович Рогов",
+            "email": "novikovemeljan@ip.biz",
+            "telephoneNumberCorp": "+78529118942",
+            "departmentId": "bef9c57c-0b6c-42f3-ac47-09bd455ffed8",
+            "departmentName": "Освоение вертикальных интернет-магазинов",
+            "organizationId": "743509d7-92bf-4443-b4a4-f19260379268",
+            "organizationName": "АО «Новиков»",
+            "positionTitle": "Релайтер"
+          },
+          {
+            "id": "fa7e053c-040d-4c46-953f-220fa66b7c8f",
+            "fullNameRus": "Василиса Дмитриевна Веселова",
+            "email": "dobroslavkalinin@hotmail.com",
+            "telephoneNumberCorp": "8 029 061 12 64",
+            "departmentId": "bef9c57c-0b6c-42f3-ac47-09bd455ffed8",
+            "departmentName": "Освоение вертикальных интернет-магазинов",
+            "organizationId": "743509d7-92bf-4443-b4a4-f19260379268",
+            "organizationName": "АО «Новиков»",
+            "positionTitle": "Стилист"
+          },
+          {
+            "id": "cc9f1b47-7914-4c46-ad7b-dda3966aeecc",
+            "fullNameRus": "Баранова Феврония Олеговна",
+            "email": "borislav_37@elko.org",
+            "telephoneNumberCorp": "8 (066) 065-7354",
+            "departmentId": "bef9c57c-0b6c-42f3-ac47-09bd455ffed8",
+            "departmentName": "Освоение вертикальных интернет-магазинов",
+            "organizationId": "743509d7-92bf-4443-b4a4-f19260379268",
+            "organizationName": "АО «Новиков»",
+            "positionTitle": "Фальцовщик"
+          }
+        ]
+      }
+    ],
+    "employees": []
+  },
+  {
+    "id": "d79c50af-6062-4a05-be8d-19dbfdc66ad3",
+    "name": "АО «Горбачева»",
+    "treeId": "tree-d79c50af-6062-4a05-be8d-19dbfdc66ad3",
+    "root": true,
+    "children": [
+      {
+        "id": "083397f0-e724-41b7-ac45-4ca1f1bfbc0a",
+        "name": "Интеграция интуитивных инициатив",
+        "treeId": "tree-083397f0-e724-41b7-ac45-4ca1f1bfbc0a",
+        "root": false,
+        "children": [],
+        "employees": [
+          {
+            "id": "9e436374-c571-43c8-b5e2-9b1cb27dda6f",
+            "fullNameRus": "Пахомова Виктория Петровна",
+            "email": "komissarovpantelemon@ao.biz",
+            "telephoneNumberCorp": "8 (257) 173-4079",
+            "departmentId": "083397f0-e724-41b7-ac45-4ca1f1bfbc0a",
+            "departmentName": "Интеграция интуитивных инициатив",
+            "organizationId": "d79c50af-6062-4a05-be8d-19dbfdc66ad3",
+            "organizationName": "АО «Горбачева»",
+            "positionTitle": "Трейдер"
+          },
+          {
+            "id": "15934a76-b630-4c2e-89f3-5c6de1de3874",
+            "fullNameRus": "Петухов Викентий Ефимьевич",
+            "email": "wkudrjashova@mail.ru",
+            "telephoneNumberCorp": "+7 738 640 14 00",
+            "departmentId": "083397f0-e724-41b7-ac45-4ca1f1bfbc0a",
+            "departmentName": "Интеграция интуитивных инициатив",
+            "organizationId": "d79c50af-6062-4a05-be8d-19dbfdc66ad3",
+            "organizationName": "АО «Горбачева»",
+            "positionTitle": "Метрдотель"
+          },
+          {
+            "id": "b0f8ebf7-b2cb-4619-8d01-73a2cfc01b3b",
+            "fullNameRus": "Фома Тихонович Зуев",
+            "email": "mina43@yandex.ru",
+            "telephoneNumberCorp": "+7 014 485 18 32",
+            "departmentId": "083397f0-e724-41b7-ac45-4ca1f1bfbc0a",
+            "departmentName": "Интеграция интуитивных инициатив",
+            "organizationId": "d79c50af-6062-4a05-be8d-19dbfdc66ad3",
+            "organizationName": "АО «Горбачева»",
+            "positionTitle": "Военный консультант"
+          }
+        ]
+      },
+      {
+        "id": "3b384933-d4b0-4c84-91ab-288fc1b0d399",
+        "name": "Переход эффективных моделей",
+        "treeId": "tree-3b384933-d4b0-4c84-91ab-288fc1b0d399",
+        "root": false,
+        "children": [],
+        "employees": [
+          {
+            "id": "aa306fc8-3b4b-4901-9b3e-dbe109ea9fde",
+            "fullNameRus": "Всеволод Глебович Лукин",
+            "email": "okolobova@yandex.ru",
+            "telephoneNumberCorp": "8 447 592 21 16",
+            "departmentId": "3b384933-d4b0-4c84-91ab-288fc1b0d399",
+            "departmentName": "Переход эффективных моделей",
+            "organizationId": "d79c50af-6062-4a05-be8d-19dbfdc66ad3",
+            "organizationName": "АО «Горбачева»",
+            "positionTitle": "Скотник"
+          },
+          {
+            "id": "89d9dda9-ec88-4950-a775-7ccc157f2ad0",
+            "fullNameRus": "Кудрявцева Тамара Кузьминична",
+            "email": "oktjabrina1998@npo.net",
+            "telephoneNumberCorp": "8 707 427 0930",
+            "departmentId": "3b384933-d4b0-4c84-91ab-288fc1b0d399",
+            "departmentName": "Переход эффективных моделей",
+            "organizationId": "d79c50af-6062-4a05-be8d-19dbfdc66ad3",
+            "organizationName": "АО «Горбачева»",
+            "positionTitle": "Психолог"
+          },
+          {
+            "id": "571ae5e6-194d-4ec4-a4a6-bd96e4a4c970",
+            "fullNameRus": "Автоном Арсеньевич Зимин",
+            "email": "xpopov@gmail.com",
+            "telephoneNumberCorp": "+7 904 432 94 31",
+            "departmentId": "3b384933-d4b0-4c84-91ab-288fc1b0d399",
+            "departmentName": "Переход эффективных моделей",
+            "organizationId": "d79c50af-6062-4a05-be8d-19dbfdc66ad3",
+            "organizationName": "АО «Горбачева»",
+            "positionTitle": "Таможенник"
+          }
+        ]
+      },
+      {
+        "id": "ff7acac9-b5cb-442b-92b9-b3e2a83122a8",
+        "name": "Продление сетевых отношений",
+        "treeId": "tree-ff7acac9-b5cb-442b-92b9-b3e2a83122a8",
+        "root": false,
+        "children": [],
+        "employees": [
+          {
+            "id": "6c6173f4-533b-4cec-abb8-221725f9759a",
+            "fullNameRus": "Максимильян Федосеевич Юдин",
+            "email": "tretjakovgedeon@evdokimov.com",
+            "telephoneNumberCorp": "+7 (756) 676-33-73",
+            "departmentId": "ff7acac9-b5cb-442b-92b9-b3e2a83122a8",
+            "departmentName": "Продление сетевых отношений",
+            "organizationId": "d79c50af-6062-4a05-be8d-19dbfdc66ad3",
+            "organizationName": "АО «Горбачева»",
+            "positionTitle": "Брейдер"
+          },
+          {
+            "id": "211b2ee1-6ab2-4ed9-b71c-1ff495a6feeb",
+            "fullNameRus": "Александра Евгеньевна Калашникова",
+            "email": "gromovarefi@rambler.ru",
+            "telephoneNumberCorp": "+7 (394) 918-45-67",
+            "departmentId": "ff7acac9-b5cb-442b-92b9-b3e2a83122a8",
+            "departmentName": "Продление сетевых отношений",
+            "organizationId": "d79c50af-6062-4a05-be8d-19dbfdc66ad3",
+            "organizationName": "АО «Горбачева»",
+            "positionTitle": "Веб-интегратор"
+          },
+          {
+            "id": "3e93eb64-b74c-4b23-a130-7d2075b74030",
+            "fullNameRus": "Михеева Таисия Оскаровна",
+            "email": "irakli2017@ao.ru",
+            "telephoneNumberCorp": "+7 250 402 1639",
+            "departmentId": "ff7acac9-b5cb-442b-92b9-b3e2a83122a8",
+            "departmentName": "Продление сетевых отношений",
+            "organizationId": "d79c50af-6062-4a05-be8d-19dbfdc66ad3",
+            "organizationName": "АО «Горбачева»",
+            "positionTitle": "Серпентолог"
+          },
+          {
+            "id": "96f97072-837e-440e-87b0-6d9f6d83bafc",
+            "fullNameRus": "Полякова Оксана Георгиевна",
+            "email": "koshelevborislav@ip.biz",
+            "telephoneNumberCorp": "+70803513853",
+            "departmentId": "ff7acac9-b5cb-442b-92b9-b3e2a83122a8",
+            "departmentName": "Продление сетевых отношений",
+            "organizationId": "d79c50af-6062-4a05-be8d-19dbfdc66ad3",
+            "organizationName": "АО «Горбачева»",
+            "positionTitle": "Кондуктор"
+          }
+        ]
+      }
+    ],
+    "employees": []
+  },
+  {
+    "id": "7e1b1c01-27da-4911-bbc7-939eb10946b1",
+    "name": "ООО «Трофимова-Горшкова»",
+    "treeId": "tree-7e1b1c01-27da-4911-bbc7-939eb10946b1",
+    "root": true,
+    "children": [
+      {
+        "id": "b395aa77-b037-4d56-9ca4-da067a753b8f",
+        "name": "Освоение корпоративных систем снабжения",
+        "treeId": "tree-b395aa77-b037-4d56-9ca4-da067a753b8f",
+        "root": false,
+        "children": [],
+        "employees": [
+          {
+            "id": "d540a53e-0368-4e28-81dc-fd0c61b47bc5",
+            "fullNameRus": "Зоя Романовна Коновалова",
+            "email": "timofeevataisija@gmail.com",
+            "telephoneNumberCorp": "+7 777 067 7711",
+            "departmentId": "b395aa77-b037-4d56-9ca4-da067a753b8f",
+            "departmentName": "Освоение корпоративных систем снабжения",
+            "organizationId": "7e1b1c01-27da-4911-bbc7-939eb10946b1",
+            "organizationName": "ООО «Трофимова-Горшкова»",
+            "positionTitle": "Врач функциональной диагностики"
+          },
+          {
+            "id": "8afea4a0-e662-4b55-9f5e-92783362c0a6",
+            "fullNameRus": "Шарапов Герасим Фадеевич",
+            "email": "juli1975@mail.ru",
+            "telephoneNumberCorp": "8 (602) 373-2455",
+            "departmentId": "b395aa77-b037-4d56-9ca4-da067a753b8f",
+            "departmentName": "Освоение корпоративных систем снабжения",
+            "organizationId": "7e1b1c01-27da-4911-bbc7-939eb10946b1",
+            "organizationName": "ООО «Трофимова-Горшкова»",
+            "positionTitle": "Танатолог"
+          }
+        ]
+      },
+      {
+        "id": "086fff56-40c7-4d4b-9670-5730ca4e4f32",
+        "name": "Интеграция престижных моделей",
+        "treeId": "tree-086fff56-40c7-4d4b-9670-5730ca4e4f32",
+        "root": false,
+        "children": [],
+        "employees": [
+          {
+            "id": "e3d57171-1baf-409f-8612-e4a5f51f4f95",
+            "fullNameRus": "Устинова Евпраксия Кирилловна",
+            "email": "ernest_2001@kalinina.biz",
+            "telephoneNumberCorp": "+7 (019) 126-3340",
+            "departmentId": "086fff56-40c7-4d4b-9670-5730ca4e4f32",
+            "departmentName": "Интеграция престижных моделей",
+            "organizationId": "7e1b1c01-27da-4911-bbc7-939eb10946b1",
+            "organizationName": "ООО «Трофимова-Горшкова»",
+            "positionTitle": "Экономист"
+          },
+          {
+            "id": "436eb0b5-b640-40e9-b3dc-94cfb4a725f8",
+            "fullNameRus": "Антип Валерьевич Блинов",
+            "email": "litkinfeofan@ao.org",
+            "telephoneNumberCorp": "8 (433) 184-5357",
+            "departmentId": "086fff56-40c7-4d4b-9670-5730ca4e4f32",
+            "departmentName": "Интеграция престижных моделей",
+            "organizationId": "7e1b1c01-27da-4911-bbc7-939eb10946b1",
+            "organizationName": "ООО «Трофимова-Горшкова»",
+            "positionTitle": "Неонатолог"
+          },
+          {
+            "id": "9915e129-8227-4a5b-b01c-5b7053757cce",
+            "fullNameRus": "Кудрявцева Агафья Тимуровна",
+            "email": "foti_02@ao.ru",
+            "telephoneNumberCorp": "+7 (379) 332-36-59",
+            "departmentId": "086fff56-40c7-4d4b-9670-5730ca4e4f32",
+            "departmentName": "Интеграция престижных моделей",
+            "organizationId": "7e1b1c01-27da-4911-bbc7-939eb10946b1",
+            "organizationName": "ООО «Трофимова-Горшкова»",
+            "positionTitle": "Жиловщик/Обвальщик"
+          },
+          {
+            "id": "d6b34fd4-2a01-491d-b928-5c22b03f5941",
+            "fullNameRus": "Мясникова Валентина Юрьевна",
+            "email": "eduard_1994@mail.ru",
+            "telephoneNumberCorp": "8 (403) 827-78-51",
+            "departmentId": "086fff56-40c7-4d4b-9670-5730ca4e4f32",
+            "departmentName": "Интеграция престижных моделей",
+            "organizationId": "7e1b1c01-27da-4911-bbc7-939eb10946b1",
+            "organizationName": "ООО «Трофимова-Горшкова»",
+            "positionTitle": "Механик-Водитель"
+          }
+        ]
+      }
+    ],
+    "employees": []
+  }
+]

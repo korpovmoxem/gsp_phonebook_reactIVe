@@ -1,15 +1,14 @@
 const express = require('express');
+const cors = require('cors');
+const apiRoutes = require('./routes/api');
+
 const app = express();
-const PORT = 6666;
+const PORT = 5000;
 
-// Middleware для парсинга JSON
+app.use(cors());
 app.use(express.json());
+app.use('', apiRoutes); // <-- 👈 Без префикса
 
-// Подключаем маршруты
-const usersRouter = require('./routes/users');
-app.use('/api/users', usersRouter);
-
-// Запуск сервера
 app.listen(PORT, () => {
-  console.log(`Mock сервер запущен на http://localhost:${PORT}`);
+  console.log(`✅ Мок сервер запущен: http://localhost:${PORT}`);
 });

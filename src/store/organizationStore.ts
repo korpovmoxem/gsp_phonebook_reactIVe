@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import getAvailableApiBase from "../utils/apiClient";
 import {
   Organization,
   ExternalOrganizations,
@@ -75,7 +76,8 @@ export const useOrgStore = create<OrgState>((set, get) => ({
     fetchExternalTree: async () => {
         set({ isExternalOrgLoading: true });
         try {
-            const response = await fetch('http://172.16.153.53:8001/external/phonebook');
+            const base = await getAvailableApiBase();
+            const response = await fetch(`${base}/external/phonebook`);
             if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
                 const data = await response.json();
             set({
@@ -92,7 +94,8 @@ export const useOrgStore = create<OrgState>((set, get) => ({
     fetchTree: async () => {
         set({ isOrgLoading: true });
         try {
-            const response = await fetch('http://172.16.153.53:8001/organization/tree');
+            const base = await getAvailableApiBase();
+            const response = await fetch(`${base}/organization/tree`);
             if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
             const data = await response.json();
 
@@ -118,25 +121,26 @@ export const useOrgStore = create<OrgState>((set, get) => ({
         set({ selectedOrgId: targetId, isEmpLoading: true });
 
         try {
-        const url = new URL('http://172.16.153.53:8001/employee');
-        
-        if (departmentId) url.searchParams.append('departmentId', departmentId);
-        if (withChildren) {
-            url.searchParams.append('withChildren', withChildren);
-        }
-        url.searchParams.append('organizationId', organizationId);
-        const response = await fetch(url.toString());
-        if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
-        const data = await response.json();
+            const base = await getAvailableApiBase();
+            const url = new URL(`${base}/employee`);
+            
+            if (departmentId) url.searchParams.append('departmentId', departmentId);
+            if (withChildren) {
+                url.searchParams.append('withChildren', withChildren);
+            }
+            url.searchParams.append('organizationId', organizationId);
+            const response = await fetch(url.toString());
+            if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+            const data = await response.json();
 
-        set({
-            employees: data.result,
-            isEmpLoading: false,
-        });
+            set({
+                employees: data.result,
+                isEmpLoading: false,
+            });
         } catch (error: any) {
-        console.error('Ошибка загрузки сотрудников:', error.message);
-        toast.error('Ошибка при загрузке сотрудников');
-        set({ isEmpLoading: false });
+            console.error('Ошибка загрузки сотрудников:', error.message);
+            toast.error('Ошибка при загрузке сотрудников');
+            set({ isEmpLoading: false });
         }
     },
 
@@ -144,7 +148,8 @@ export const useOrgStore = create<OrgState>((set, get) => ({
         set({ isEmpLoading: true, employeesList: [] });
 
         try {
-            const response = await fetch('http://172.16.153.53:8001/employee');
+            const base = await getAvailableApiBase();
+            const response = await fetch(`${base}/employee`);
             
             if (!response.ok) {
                 throw new Error(`Ошибка HTTP! Код статуса: ${response.status}`);
@@ -168,20 +173,21 @@ export const useOrgStore = create<OrgState>((set, get) => ({
         set({ isEmpLoading: true, employeesList: [], selectedOrgId: null, employees: undefined });
 
         try {
-        const response = await fetch(
-        ` http://172.16.153.53:8001/employee/search?value=${value}&type=${category}`
-        );
-        if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
-        const data = await response.json();
+            const base = await getAvailableApiBase();
+            const response = await fetch(
+            `${base}/employee/search?value=${value}&type=${category}`
+            );
+            if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+            const data = await response.json();
 
-        set({
-            employeesList: data.result,
-            isEmpLoading: false,
-        });
+            set({
+                employeesList: data.result,
+                isEmpLoading: false,
+            });
         } catch (error: any) {
-        console.error('Ошибка поиска сотрудников:', error.message);
-        toast.error('Ошибка при поиске сотрудников');
-        set({ isEmpLoading: false });
+            console.error('Ошибка поиска сотрудников:', error.message);
+            toast.error('Ошибка при поиске сотрудников');
+            set({ isEmpLoading: false });
         }
     },
 
@@ -197,19 +203,19 @@ export const useOrgStore = create<OrgState>((set, get) => ({
         set({isCurrentEmployeeLoading: true})
 
         try {
-        const response = await fetch(
-        `http://172.16.153.53:8001/employee/detail?id=${idEmployee}&organizationId=${idOrganization}`
-        );
-        if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
-        const data = await response.json();
+            const base = await getAvailableApiBase();
+            const response = await fetch(
+            `${base}/employee/detail?id=${idEmployee}&organizationId=${idOrganization}`
+            );
+            if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+            const data = await response.json();
 
-        set({
-            currentEmployeeInfo: data.result,
-        });
+            set({
+                currentEmployeeInfo: data.result,
+            });
         } catch (error: any) {
-        console.error('Ошибка получения информации о сотруднике:', error.message);
-        toast.error('Ошибка получения информации о сотруднике. Поробуйте позже');
-        
+            console.error('Ошибка получения информации о сотруднике:', error.message);
+            toast.error('Ошибка получения информации о сотруднике. Поробуйте позже');
         } finally {
             set({ isCurrentEmployeeLoading: false });
         }
@@ -219,7 +225,8 @@ export const useOrgStore = create<OrgState>((set, get) => ({
         set({isLoadingCode: true})
 
         try {
-            const response = await fetch('http://172.16.153.53:8001/employee/verification', {
+            const base = await getAvailableApiBase();
+            const response = await fetch(`${base}/employee/verification`, {
                 method: 'POST',  
                 headers: { 'Content-Type': 'application/json' },  
                 body: JSON.stringify({
@@ -246,7 +253,8 @@ export const useOrgStore = create<OrgState>((set, get) => ({
         const organizationId = get().currentEmployeeInfo?.organizationId
 
         try {
-            const response = await fetch(`http://172.16.153.53:8001/employee/edit?verification_code=${code}`, {
+            const base = await getAvailableApiBase();
+            const response = await fetch(`${base}/employee/edit?verification_code=${code}`, {
                 method: 'PATCH',  
                 headers: { 'Content-Type': 'application/json', 'accept': 'application/json' },  
                 body: JSON.stringify({
@@ -284,14 +292,15 @@ export const useOrgStore = create<OrgState>((set, get) => ({
             });
         } else {
             try {
-            const response = await axios.get(
-                `http://172.16.153.53:8001/employee/search?value=${value}&type=${category}&limit=10`
-            );
-            if (response.status !== 200 ) throw new Error(`HTTP error: ${response.status}`);
+                const base = await getAvailableApiBase();
+                const response = await axios.get(
+                    `${base}/employee/search?value=${value}&type=${category}&limit=10`
+                );
+                if (response.status !== 200 ) throw new Error(`HTTP error: ${response.status}`);
 
-            set({
-                EmployeesListLimit: response.data.result,
-            });
+                set({
+                    EmployeesListLimit: response.data.result,
+                });
             
 
             } catch (error: any) {

@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import axios from "axios";
-import { CATEGORIES, Employee, EmployeesList } from "../../types";
+import { CATEGORIES, Employee } from "../../types";
 import Highlighter from "react-highlight-words";
 import { useOrgStore } from "../../store/organizationStore";
 import { useNavigate, useSearchParams } from "react-router-dom";
