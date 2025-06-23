@@ -13,6 +13,7 @@ export const TreeItemsWrapper = styled.div`
 
 export const MainTreeWrapper = styled.div`
     display: flex;
+    flex: 1 1 0%;
     flex-direction: column;
     height: auto;
     margin: 10px;

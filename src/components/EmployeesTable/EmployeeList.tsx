@@ -13,7 +13,11 @@ import {
 } from "../../types";
 import NotFound from "../../materials/notFound.gif";
 import NotFoundIcon from "../../materials/notFoundIcon.png";
-import { CustomCopyButton, CustomEmailLink } from "../StyledComponents";
+import {
+    CustomCopyButton,
+    CustomEmailLink,
+    SearchWrapper,
+} from "../StyledComponents";
 import {
     CellWrapper,
     ThirdHeader,
@@ -27,6 +31,8 @@ import {
     SecondHeader,
 } from "./StyledComponents";
 import Highlighter from "react-highlight-words";
+import { SearchBar } from "../SearchBar/SearchBar";
+import { ClipboardCopy } from "lucide-react";
 
 // Функция для рекурсивного сбора всех сотрудников из дерева
 const getAllEmployees = (tree: EmployeesListTree): Employee[] => {
@@ -157,133 +163,67 @@ export const EmployeeList: React.FC = () => {
     }, [isDefaultRoute]);
 
     return (
-        <EmployeeListWrapperMain>
-            {isEmpLoading ? (
-                <EmployeeSkeleton />
-            ) : (
-                <EmployeeListWrapperTable>
-                    {/* === Пункт 1: выбор по орг/департаменту + начальное отображение === */}
-                    {employeesList.length === 0 ? (
-                        <div>
-                            {departments.length > 0 && (
-                                <>
-                                    <FirstHeader>
-                                        <EmptyHeadColumn> </EmptyHeadColumn>
-                                        <HeadColumn>ФИО</HeadColumn>
-                                        <HeadColumn>Номер телефона</HeadColumn>
-                                        <HeadColumn>Email</HeadColumn>
-                                    </FirstHeader>
-                                    {/* Заголовок организации */}
-                                    <SecondHeader>
-                                        Организация:{" "}
-                                        {employeesTree.organizationName}
-                                    </SecondHeader>
-                                    {/* Блоки департаментов */}
-                                    {departments.map((dept) => (
-                                        <div key={dept.departmentId}>
-                                            {/* Хлебные крошки с полным путём */}
-                                            <ThirdHeader>
-                                                <EmployeeDepartmentPath
-                                                    departmentId={
-                                                        dept.departmentId
-                                                    }
-                                                />
-                                            </ThirdHeader>
-                                            {/* Сотрудники департамента */}
-                                            {dept.employees.map((emp) => (
-                                                <EmployeeTableRowDiv
-                                                    key={emp.id}
-                                                    onClick={() =>
-                                                        handleRowClick(
-                                                            emp.id,
-                                                            emp.organizationId
-                                                        )
-                                                    }
-                                                >
-                                                    <img
-                                                        src={
-                                                            emp.photo
-                                                                ? `data:image/jpeg;base64,${emp.photo}`
-                                                                : PhotoDefault
-                                                        }
-                                                        alt={emp.fullNameRus}
-                                                        width="75px"
-                                                        height="75px"
-                                                    />
-                                                    <CellWrapper>
-                                                        {emp.fullNameRus}
-                                                        <PositionWrapper>
-                                                            {emp.positionTitle}
-                                                        </PositionWrapper>
-                                                    </CellWrapper>
-                                                    <CellWrapper>
-                                                        {emp.telephoneNumberCorp ||
-                                                            "Не указан"}
-                                                    </CellWrapper>
-                                                    <CellWrapper>
-                                                        {emp.email && (
-                                                            <>
-                                                                <CustomEmailLink
-                                                                    href={`mailto:${emp.email}`}
-                                                                    onClick={(
-                                                                        e
-                                                                    ) =>
-                                                                        e.stopPropagation()
-                                                                    }
-                                                                >
-                                                                    {emp.email ||
-                                                                        "Не указан"}
-                                                                </CustomEmailLink>
-                                                                <CustomCopyButton
-                                                                    size={13}
-                                                                    onClick={(
-                                                                        e
-                                                                    ) => {
-                                                                        e.stopPropagation();
-                                                                        handleCopyClick(
-                                                                            emp.email!
-                                                                        );
-                                                                    }}
-                                                                />
-                                                            </>
-                                                        )}
-                                                    </CellWrapper>
-                                                </EmployeeTableRowDiv>
-                                            ))}
-                                        </div>
-                                    ))}
-                                </>
-                            )}
-                            {departments.length === 0 && (
-                                <div style={{ textAlignLast: "center" }}>
-                                    {/* <img src={NotFound} alt="Не найдено" /> */}
-                                    <img src={NotFoundIcon} alt="Не найдено" />
-                                    <div>
-                                        <span>
-                                            По заданным критериям сотрудники не
-                                            найдены
-                                        </span>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    ) : (
-                        /* === Пункт 2: режим поиска === */
-                        <div>
-                            <FirstHeader>
-                                <EmptyHeadColumn> </EmptyHeadColumn>
-                                <HeadColumn>ФИО</HeadColumn>
-                                <HeadColumn>Номер телефона</HeadColumn>
-                                <HeadColumn>Email</HeadColumn>
-                            </FirstHeader>
-                            {employeesList.length > 0 &&
-                                employeesList.map((org: EmployeesList) => (
-                                    <div key={org.organizationId}>
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                flex: "5 5 0%",
+                height: "100%",
+            }}
+        >
+            <div>
+                <SearchWrapper>
+                    <SearchBar />
+                </SearchWrapper>
+                <span
+                    style={{
+                        justifySelf: "end",
+                        cursor: "pointer",
+                        display: "flex",
+                        margin: "5px 10px 0 0",
+                    }}
+                    title="Скопировать Email всех найденных сотрудников"
+                >
+                    <ClipboardCopy size={20} stroke="grey" />
+                </span>
+            </div>
+            <EmployeeListWrapperMain>
+                {isEmpLoading ? (
+                    <EmployeeSkeleton />
+                ) : (
+                    <EmployeeListWrapperTable>
+                        {/* === Пункт 1: выбор по орг/департаменту + начальное отображение === */}
+                        {employeesList.length === 0 ? (
+                            <div>
+                                {departments.length > 0 && (
+                                    <>
+                                        <FirstHeader>
+                                            <EmptyHeadColumn> </EmptyHeadColumn>
+                                            <HeadColumn
+                                                style={{ flex: "3 3 0%" }}
+                                            >
+                                                ФИО
+                                            </HeadColumn>
+                                            <HeadColumn
+                                                style={{ flex: "1 1 0%" }}
+                                            >
+                                                Номер телефона
+                                            </HeadColumn>
+                                            <HeadColumn
+                                                style={{ flex: "1 1 0%" }}
+                                            >
+                                                Email
+                                            </HeadColumn>
+                                        </FirstHeader>
+                                        {/* Заголовок организации */}
                                         <SecondHeader>
-                                            Организация: {org.organizationName}
+                                            Организация:{" "}
+                                            {employeesTree.organizationName}
                                         </SecondHeader>
-                                        {org.departments.map((dept) => (
+                                        {/* Блоки департаментов */}
+                                        {departments.map((dept) => (
                                             <div key={dept.departmentId}>
+                                                {/* Хлебные крошки с полным путём */}
                                                 <ThirdHeader>
                                                     <EmployeeDepartmentPath
                                                         departmentId={
@@ -291,6 +231,7 @@ export const EmployeeList: React.FC = () => {
                                                         }
                                                     />
                                                 </ThirdHeader>
+                                                {/* Сотрудники департамента */}
                                                 {dept.employees.map((emp) => (
                                                     <EmployeeTableRowDiv
                                                         key={emp.id}
@@ -313,46 +254,29 @@ export const EmployeeList: React.FC = () => {
                                                             width="75px"
                                                             height="75px"
                                                         />
-                                                        <CellWrapper>
-                                                            <Highlighter
-                                                                searchWords={[
-                                                                    searchValue ||
-                                                                        "",
-                                                                ]}
-                                                                autoEscape={
-                                                                    true
-                                                                }
-                                                                textToHighlight={`${emp.fullNameRus}`}
-                                                                highlightStyle={{
-                                                                    backgroundColor:
-                                                                        HIGHLIGHTER_COLOR,
+                                                        <CellWrapper
+                                                            style={{
+                                                                flex: "3 3 0%",
+                                                            }}
+                                                        >
+                                                            {emp.fullNameRus}
+                                                            <PositionWrapper
+                                                                style={{
+                                                                    flex: "1 1 0%",
                                                                 }}
-                                                            />
-
-                                                            <PositionWrapper>
+                                                            >
                                                                 {
                                                                     emp.positionTitle
                                                                 }
                                                             </PositionWrapper>
                                                         </CellWrapper>
-                                                        <CellWrapper>
-                                                            <Highlighter
-                                                                searchWords={[
-                                                                    searchValue ||
-                                                                        "",
-                                                                ]}
-                                                                autoEscape={
-                                                                    true
-                                                                }
-                                                                textToHighlight={`${
-                                                                    emp.telephoneNumberCorp ||
-                                                                    "Не указан"
-                                                                }`}
-                                                                highlightStyle={{
-                                                                    backgroundColor:
-                                                                        HIGHLIGHTER_COLOR,
-                                                                }}
-                                                            />
+                                                        <CellWrapper
+                                                            style={{
+                                                                flex: "1 1 0%",
+                                                            }}
+                                                        >
+                                                            {emp.telephoneNumberCorp ||
+                                                                "Не указан"}
                                                         </CellWrapper>
                                                         <CellWrapper>
                                                             {emp.email && (
@@ -388,12 +312,185 @@ export const EmployeeList: React.FC = () => {
                                                 ))}
                                             </div>
                                         ))}
+                                    </>
+                                )}
+                                {departments.length === 0 && (
+                                    <div style={{ textAlignLast: "center" }}>
+                                        {/* <img src={NotFound} alt="Не найдено" /> */}
+                                        <img
+                                            src={NotFoundIcon}
+                                            alt="Не найдено"
+                                        />
+                                        <div>
+                                            <span>
+                                                По заданным критериям сотрудники
+                                                не найдены
+                                            </span>
+                                        </div>
                                     </div>
-                                ))}
-                        </div>
-                    )}
-                </EmployeeListWrapperTable>
-            )}
-        </EmployeeListWrapperMain>
+                                )}
+                            </div>
+                        ) : (
+                            /* === Пункт 2: режим поиска === */
+                            <div>
+                                <FirstHeader>
+                                    <EmptyHeadColumn> </EmptyHeadColumn>
+                                    <HeadColumn
+                                        style={{
+                                            flex: "3 3 0%",
+                                        }}
+                                    >
+                                        ФИО
+                                    </HeadColumn>
+                                    <HeadColumn
+                                        style={{
+                                            flex: "1 1 0%",
+                                        }}
+                                    >
+                                        Номер телефона
+                                    </HeadColumn>
+                                    <HeadColumn
+                                        style={{
+                                            flex: "1 1 0%",
+                                        }}
+                                    >
+                                        Email
+                                    </HeadColumn>
+                                </FirstHeader>
+                                {employeesList.length > 0 &&
+                                    employeesList.map((org: EmployeesList) => (
+                                        <div key={org.organizationId}>
+                                            <SecondHeader>
+                                                Организация:{" "}
+                                                {org.organizationName}
+                                            </SecondHeader>
+                                            {org.departments.map((dept) => (
+                                                <div key={dept.departmentId}>
+                                                    <ThirdHeader>
+                                                        <EmployeeDepartmentPath
+                                                            departmentId={
+                                                                dept.departmentId
+                                                            }
+                                                        />
+                                                    </ThirdHeader>
+                                                    {dept.employees.map(
+                                                        (emp) => (
+                                                            <EmployeeTableRowDiv
+                                                                key={emp.id}
+                                                                onClick={() =>
+                                                                    handleRowClick(
+                                                                        emp.id,
+                                                                        emp.organizationId
+                                                                    )
+                                                                }
+                                                            >
+                                                                <img
+                                                                    src={
+                                                                        emp.photo
+                                                                            ? `data:image/jpeg;base64,${emp.photo}`
+                                                                            : PhotoDefault
+                                                                    }
+                                                                    alt={
+                                                                        emp.fullNameRus
+                                                                    }
+                                                                    width="75px"
+                                                                    height="75px"
+                                                                />
+                                                                <CellWrapper
+                                                                    style={{
+                                                                        flex: "3 3 0%",
+                                                                    }}
+                                                                >
+                                                                    <Highlighter
+                                                                        searchWords={[
+                                                                            searchValue ||
+                                                                                "",
+                                                                        ]}
+                                                                        autoEscape={
+                                                                            true
+                                                                        }
+                                                                        textToHighlight={`${emp.fullNameRus}`}
+                                                                        highlightStyle={{
+                                                                            backgroundColor:
+                                                                                HIGHLIGHTER_COLOR,
+                                                                        }}
+                                                                    />
+
+                                                                    <PositionWrapper>
+                                                                        {
+                                                                            emp.positionTitle
+                                                                        }
+                                                                    </PositionWrapper>
+                                                                </CellWrapper>
+                                                                <CellWrapper
+                                                                    style={{
+                                                                        flex: "1 1 0%",
+                                                                    }}
+                                                                >
+                                                                    <Highlighter
+                                                                        searchWords={[
+                                                                            searchValue ||
+                                                                                "",
+                                                                        ]}
+                                                                        autoEscape={
+                                                                            true
+                                                                        }
+                                                                        textToHighlight={`${
+                                                                            emp.telephoneNumberCorp ||
+                                                                            "Не указан"
+                                                                        }`}
+                                                                        highlightStyle={{
+                                                                            backgroundColor:
+                                                                                HIGHLIGHTER_COLOR,
+                                                                        }}
+                                                                    />
+                                                                </CellWrapper>
+                                                                <CellWrapper
+                                                                    style={{
+                                                                        flex: "1 1 0%",
+                                                                    }}
+                                                                >
+                                                                    {emp.email && (
+                                                                        <>
+                                                                            <CustomEmailLink
+                                                                                href={`mailto:${emp.email}`}
+                                                                                onClick={(
+                                                                                    e
+                                                                                ) =>
+                                                                                    e.stopPropagation()
+                                                                                }
+                                                                            >
+                                                                                {emp.email ||
+                                                                                    "Не указан"}
+                                                                            </CustomEmailLink>
+                                                                            <CustomCopyButton
+                                                                                size={
+                                                                                    13
+                                                                                }
+                                                                                onClick={(
+                                                                                    e
+                                                                                ) => {
+                                                                                    e.stopPropagation();
+                                                                                    handleCopyClick(
+                                                                                        emp.email!
+                                                                                    );
+                                                                                }}
+                                                                            />
+                                                                        </>
+                                                                    )}
+                                                                </CellWrapper>
+                                                            </EmployeeTableRowDiv>
+                                                        )
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ))}
+                            </div>
+                        )}
+                    </EmployeeListWrapperTable>
+                )}
+            </EmployeeListWrapperMain>
+        </div>
     );
 };

@@ -5,7 +5,8 @@ export const SearchComponent = styled.div`
     display: flex;
     width: 100%;
     align-items: center;
-    border: 1px solid #eeeeee;
+    background: rgb(13, 103, 161);
+    place-items: stretch;
     border-radius: 10px;
     overflow: hidden;
     font-family: sans-serif;
@@ -61,9 +62,8 @@ export const CustomSelect = styled(SearchSelect)`
 `;
 
 export const SearchButton = styled.button`
-    border: none;
+    border: 1px solid #0d67a1;
     width: 100px;
-    border-left: 1px solid #ccc;
     padding: 16px 20px;
     background-color: #0d67a1;
     color: white;

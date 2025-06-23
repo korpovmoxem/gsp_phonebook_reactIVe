@@ -174,14 +174,18 @@ export const SearchBar = () => {
 
     return (
         <>
-            <SearchComponent>
+            <SearchComponent
+                style={{
+                    border: "2px solid #0d67a1",
+                }}
+            >
                 <SearchInputWrapper>
-                    <div>
+                    <div style={{ background: "white", height: "100%" }}>
                         <SearchInput
                             type="text"
                             value={query}
                             onChange={(e) => handleInputChange(e.target.value)}
-                            placeholder="Введите..."
+                            placeholder="Введите запрос..."
                             list="searchList"
                             onFocus={handleFocus}
                             ref={inputRef}
@@ -325,7 +329,7 @@ export const SearchBar = () => {
                 </CustomSelect>
                 <SearchButton onClick={handleSearch}>Поиск</SearchButton>
             </SearchComponent>
-            <span
+            {/* <span
                 style={{
                     alignSelf: "center",
                     cursor: "pointer",
@@ -335,8 +339,8 @@ export const SearchBar = () => {
                 onClick={() => handleClickCopyEmails()}
             >
                 <ClipboardCopy size={30} stroke="#1d75bb" />
-            </span>
-            <span
+            </span> */}
+            {/* <span
                 title="Перейти в архивный справочник"
                 style={{
                     alignSelf: "center",
@@ -355,7 +359,7 @@ export const SearchBar = () => {
                 >
                     <ExternalLink size={30} />
                 </a>
-            </span>
+            </span> */}
         </>
     );
 };

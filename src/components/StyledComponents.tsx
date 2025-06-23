@@ -109,7 +109,7 @@ export const MainWrapper = styled.div`
 export const ContentWrapper = styled.div`
     display: flex;
     flex-direction: row;
-    height: calc(100vh - 200px);
+    height: calc(100vh - 150px);
 `;
 
 export const SearchWrapper = styled.div`

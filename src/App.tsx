@@ -32,39 +32,45 @@ function App() {
         <>
             <BrowserRouter>
                 <MainWrapper>
-                    <HeaderMain />
+                    {/* <HeaderMain />
                     <SearchWrapper>
                         <SearchBar />
                     </SearchWrapper>
                     <ContentWrapper>
                         <OrgSidebar />
                         <EmployeeList />
+                    </ContentWrapper> */}
+
+                    <HeaderMain />
+                    <ContentWrapper>
+                        <OrgSidebar />
+                        <EmployeeList />
                     </ContentWrapper>
-                    <div style={{ placeItems: "center", margin: 0 }}>
-                        <hr
-                            style={{
-                                color: "grey",
-                                width: "90%",
-                                margin: 0,
-                            }}
-                        />
-                        <span
-                            style={{
-                                color: "grey",
-                                fontSize: "10pt",
-                            }}
-                        >
-                            © Разработано{" "}
-                            <a
-                                href="https://www.gsp-center.ru/"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                ООО "ГСП-ЦЕНТР"
-                            </a>
-                        </span>
-                    </div>
                 </MainWrapper>
+                <div style={{ placeItems: "center", margin: 0 }}>
+                    <hr
+                        style={{
+                            color: "grey",
+                            width: "90%",
+                            margin: 0,
+                        }}
+                    />
+                    <span
+                        style={{
+                            color: "grey",
+                            fontSize: "10pt",
+                        }}
+                    >
+                        © Разработано{" "}
+                        <a
+                            href="https://www.gsp-center.ru/"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            ООО "ГСП-ЦЕНТР"
+                        </a>
+                    </span>
+                </div>
                 <ToastContainer
                     position="top-right"
                     autoClose={5000}
