@@ -69,7 +69,7 @@ export const TreeNode = ({
                     display: "flex",
                     flexDirection: "row",
                     alignItems: "center",
-                    marginTop: "7px",
+                    marginTop: "15px",
                     lineHeight: 1,
                 }}
                 selected={node.id === selectedId}

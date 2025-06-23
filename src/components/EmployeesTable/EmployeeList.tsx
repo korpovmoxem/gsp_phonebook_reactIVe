@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { useOrgStore } from "../../store/organizationStore";
 import { EmployeeSkeleton } from "./EmployeeSkeleton";
 import PhotoDefault from "../../materials/photo.jpg";
@@ -12,6 +12,7 @@ import {
     EmployeesList,
 } from "../../types";
 import NotFound from "../../materials/notFound.gif";
+import NotFoundIcon from "../../materials/notFoundIcon.png";
 import { CustomCopyButton, CustomEmailLink } from "../StyledComponents";
 import {
     CellWrapper,
@@ -25,6 +26,7 @@ import {
     PositionWrapper,
     SecondHeader,
 } from "./StyledComponents";
+import Highlighter from "react-highlight-words";
 
 // Функция для рекурсивного сбора всех сотрудников из дерева
 const getAllEmployees = (tree: EmployeesListTree): Employee[] => {
@@ -44,6 +46,8 @@ const emptyEmployeesTree: EmployeesListTree = {
     employees: [],
     children: [],
 };
+
+const HIGHLIGHTER_COLOR = "#b2dff7";
 
 export const EmployeeList: React.FC = () => {
     const [searchParams] = useSearchParams();
@@ -138,6 +142,20 @@ export const EmployeeList: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const location = useLocation();
+    const isDefaultRoute =
+        location.pathname === "/" && ![...searchParams].length;
+
+    useEffect(() => {
+        if (isDefaultRoute) {
+            selectOrg(
+                "7842155505",
+                "9c685cfe-e9a0-11e8-90f2-0050569026ba",
+                "false"
+            );
+        }
+    }, [isDefaultRoute]);
+
     return (
         <EmployeeListWrapperMain>
             {isEmpLoading ? (
@@ -199,9 +217,8 @@ export const EmployeeList: React.FC = () => {
                                                         </PositionWrapper>
                                                     </CellWrapper>
                                                     <CellWrapper>
-                                                        {
-                                                            emp.telephoneNumberCorp
-                                                        }
+                                                        {emp.telephoneNumberCorp ||
+                                                            "Не указан"}
                                                     </CellWrapper>
                                                     <CellWrapper>
                                                         {emp.email && (
@@ -214,7 +231,8 @@ export const EmployeeList: React.FC = () => {
                                                                         e.stopPropagation()
                                                                     }
                                                                 >
-                                                                    {emp.email}
+                                                                    {emp.email ||
+                                                                        "Не указан"}
                                                                 </CustomEmailLink>
                                                                 <CustomCopyButton
                                                                     size={13}
@@ -238,8 +256,8 @@ export const EmployeeList: React.FC = () => {
                             )}
                             {departments.length === 0 && (
                                 <div style={{ textAlignLast: "center" }}>
-                                    <img src={NotFound} alt="Не найдено" />
-                                    {/* <img src={NotFoundIcon} alt='Не найдено' /> */}
+                                    {/* <img src={NotFound} alt="Не найдено" /> */}
+                                    <img src={NotFoundIcon} alt="Не найдено" />
                                     <div>
                                         <span>
                                             По заданным критериям сотрудники не
@@ -296,7 +314,21 @@ export const EmployeeList: React.FC = () => {
                                                             height="75px"
                                                         />
                                                         <CellWrapper>
-                                                            {emp.fullNameRus}
+                                                            <Highlighter
+                                                                searchWords={[
+                                                                    searchValue ||
+                                                                        "",
+                                                                ]}
+                                                                autoEscape={
+                                                                    true
+                                                                }
+                                                                textToHighlight={`${emp.fullNameRus}`}
+                                                                highlightStyle={{
+                                                                    backgroundColor:
+                                                                        HIGHLIGHTER_COLOR,
+                                                                }}
+                                                            />
+
                                                             <PositionWrapper>
                                                                 {
                                                                     emp.positionTitle
@@ -304,9 +336,23 @@ export const EmployeeList: React.FC = () => {
                                                             </PositionWrapper>
                                                         </CellWrapper>
                                                         <CellWrapper>
-                                                            {
-                                                                emp.telephoneNumberCorp
-                                                            }
+                                                            <Highlighter
+                                                                searchWords={[
+                                                                    searchValue ||
+                                                                        "",
+                                                                ]}
+                                                                autoEscape={
+                                                                    true
+                                                                }
+                                                                textToHighlight={`${
+                                                                    emp.telephoneNumberCorp ||
+                                                                    "Не указан"
+                                                                }`}
+                                                                highlightStyle={{
+                                                                    backgroundColor:
+                                                                        HIGHLIGHTER_COLOR,
+                                                                }}
+                                                            />
                                                         </CellWrapper>
                                                         <CellWrapper>
                                                             {emp.email && (
@@ -319,9 +365,8 @@ export const EmployeeList: React.FC = () => {
                                                                             e.stopPropagation()
                                                                         }
                                                                     >
-                                                                        {
-                                                                            emp.email
-                                                                        }
+                                                                        {emp.email ||
+                                                                            "Не указан"}
                                                                     </CustomEmailLink>
                                                                     <CustomCopyButton
                                                                         size={

@@ -35,6 +35,13 @@ export const InfoBlock = styled.div`
     margin-bottom: 10px;
 `;
 
+export const InfoBlockContent = styled.div`
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 колонки */
+    grid-template-rows: repeat(3, auto); /* 3 строки */
+    gap: 15px; /* расстояние между элементами */
+`;
+
 export const Fio = styled.h3`
     margin: 0;
 `;

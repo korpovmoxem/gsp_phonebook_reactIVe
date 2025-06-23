@@ -17,6 +17,7 @@ import { UsersRound } from "lucide-react";
 import {
     Fio,
     InfoBlock,
+    InfoBlockContent,
     InfoBlockWrapper,
     PhotoAndInfo,
     PhotoBlock,
@@ -24,7 +25,7 @@ import {
 
 const INFORMATION_BLOCKS = [
     {
-        nameBlock: "Контактная инфрмация",
+        nameBlock: "Контактная информация",
         icon: Contact,
         fields: [
             {
@@ -34,7 +35,7 @@ const INFORMATION_BLOCKS = [
             },
             {
                 nameField: "Городской номер",
-                value: "telephoneNumberCorp",
+                value: "externalNumberCorp",
                 isEditable: true,
             },
             {
@@ -328,21 +329,23 @@ export const EmployeeInfoModal: React.FC = () => {
                                                                     }
                                                                 </h4>
                                                             </>
-                                                            {block.fields.map(
-                                                                (field) => (
-                                                                    <ModalField
-                                                                        nameField={
-                                                                            field.nameField
-                                                                        }
-                                                                        value={
-                                                                            currentEmployeeInfo[
-                                                                                field
-                                                                                    .value
-                                                                            ]
-                                                                        }
-                                                                    />
-                                                                )
-                                                            )}
+                                                            <InfoBlockContent>
+                                                                {block.fields.map(
+                                                                    (field) => (
+                                                                        <ModalField
+                                                                            nameField={
+                                                                                field.nameField
+                                                                            }
+                                                                            value={
+                                                                                currentEmployeeInfo[
+                                                                                    field
+                                                                                        .value
+                                                                                ]
+                                                                            }
+                                                                        />
+                                                                    )
+                                                                )}
+                                                            </InfoBlockContent>
                                                         </InfoBlock>
                                                     )
                                                 )}

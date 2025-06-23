@@ -61,18 +61,5 @@
     "@types/react-highlight-words": "^0.20.0",
     "concurrently": "^9.1.2",
     "nodemon": "^3.1.10"
-  },
-  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/korpovmoxem/gsp_phonebook_reactIVe.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/korpovmoxem/gsp_phonebook_reactIVe/issues"
-  },
-  "homepage": "https://github.com/korpovmoxem/gsp_phonebook_reactIVe#readme"
+  }
 }

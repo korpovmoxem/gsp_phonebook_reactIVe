@@ -85,6 +85,7 @@ export const EditInformationModal: React.FC = () => {
                                 onClick={() =>
                                     setIsEditInformation(!isEditInformation)
                                 }
+                                style={{ fontSize: "16pt" }}
                             >
                                 X
                             </CloseButton>

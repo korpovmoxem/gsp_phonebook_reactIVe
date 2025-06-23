@@ -1,37 +1,97 @@
 import { CustomCopyButton, CustomEmailLink } from "../../StyledComponents";
 import { toast } from "react-toastify";
 import { FieldWrapper, NameField } from "./StyledComponents";
+import { useOrgStore } from "../../../store/organizationStore";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import styled from "styled-components";
 
 interface Props {
     nameField: string;
     value: string;
 }
 
+const LinkSpan = styled.span`
+    cursor: pointer;
+    text-decoration: underline;
+`;
+
+const SPECIAL_FIELDS = ["Email", "Подразделение", "Организация"];
+
 export const ModalField = ({ nameField, value }: Props) => {
+    const [searchParams, setSearchParams] = useSearchParams();
+    // const selectOrg = useOrgStore((state) => state.selectOrg);
+    const setIsEmployeeInfoModalOpen = useOrgStore(
+        (state) => state.setIsEmployeeInfoModalOpen
+    );
+    const navigate = useNavigate();
+    const currentEmployeeInfo = useOrgStore(
+        (state) => state.currentEmployeeInfo
+    );
     const handleCopyClick = (text: string) => {
         navigator.clipboard.writeText(text);
         toast.info("Скопировано в буфер обмена", { position: "top-right" });
     };
 
+    const orgMapId = useOrgStore((state) => state.orgMapId);
+    const node = orgMapId.get(currentEmployeeInfo?.departmentId || "")?.node;
+
     return (
         <FieldWrapper>
             <NameField>{nameField}</NameField>
-            {nameField === "Email" ? (
-                <div>
-                    <CustomEmailLink
-                        href={`mailto:${value}`}
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        {value}
-                    </CustomEmailLink>
-                    <CustomCopyButton
-                        size={13}
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            handleCopyClick(value!);
-                        }}
-                    />
-                </div>
+            {SPECIAL_FIELDS.includes(nameField) ? (
+                <>
+                    {nameField === "Email" && (
+                        <div>
+                            <CustomEmailLink
+                                href={`mailto:${value}`}
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                {value}
+                            </CustomEmailLink>
+                            <CustomCopyButton
+                                size={13}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleCopyClick(value!);
+                                }}
+                            />
+                        </div>
+                    )}
+                    {nameField === "Организация" && (
+                        <LinkSpan
+                            onClick={() => {
+                                setSearchParams({
+                                    organizationId:
+                                        currentEmployeeInfo?.organizationId ||
+                                        "",
+                                    treeId: node?.treeId || "",
+                                    limit: "100",
+                                });
+                                setIsEmployeeInfoModalOpen(false);
+                            }}
+                        >
+                            {value || "Не указано"}
+                        </LinkSpan>
+                    )}
+                    {nameField === "Подразделение" && (
+                        <LinkSpan
+                            onClick={() => {
+                                setSearchParams({
+                                    organizationId:
+                                        currentEmployeeInfo?.organizationId ||
+                                        "",
+                                    departmentId:
+                                        currentEmployeeInfo?.departmentId || "",
+                                    treeId: node?.treeId || "",
+                                    limit: "100",
+                                });
+                                setIsEmployeeInfoModalOpen(false);
+                            }}
+                        >
+                            {value || "Не указано"}
+                        </LinkSpan>
+                    )}
+                </>
             ) : (
                 <span>{value || "Не указано"}</span>
             )}

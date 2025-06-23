@@ -13,7 +13,7 @@ const CustomInputContainer = styled.div`
 
     &:focus-within {
         border-bottom: 3px solid #1d75bb;
-        transition: all 0.7s ease-in-out;
+        transition: all 0.3s ease-in-out;
     }
 `;
 

@@ -63,7 +63,7 @@ export const OrgSidebar: React.FC = () => {
 
         // Найти путь по treeId (или другому ID)
         const path = treeId
-            ? getPathToNodeFast(treeId, buildOrgIndexTreeId(organizations))
+            ? getPathToNodeFast(treeId, orgMap)
             : getPathToNodeFast1(id, orgMap);
 
         if (!path) {
@@ -93,6 +93,7 @@ export const OrgSidebar: React.FC = () => {
         }
     }, [searchParams, orgMap]);
 
+    // В OrgSidebar.tsx
     const handleSelect = (node: Organization) => {
         if (node.root) {
             setSearchParams({ organizationId: node.id, treeId: node.treeId });
@@ -103,6 +104,16 @@ export const OrgSidebar: React.FC = () => {
                 treeId: node.treeId,
             });
         }
+
+        // Открываем/закрываем только этот узел
+        setExpandedIds((prev) => {
+            const isAlreadyExpanded = prev.includes(node.treeId);
+            if (isAlreadyExpanded) {
+                return prev.filter((id) => id !== node.treeId);
+            } else {
+                return [node.treeId];
+            }
+        });
     };
 
     return (
@@ -121,9 +132,12 @@ export const OrgSidebar: React.FC = () => {
                             />
                         ))}
                         {!isExternalOrgLoading ? (
-                            <TreeItemsWrapper>
+                            <TreeItemsWrapper style={{ marginTop: "15px" }}>
                                 {externalOrganizations.map((item) => (
-                                    <div key={item.id}>
+                                    <div
+                                        key={item.id}
+                                        style={{ marginTop: "15px" }}
+                                    >
                                         <CustomLink
                                             href={item.url}
                                             target="_blank"

@@ -1,6 +1,6 @@
 
 const PROD_API = "https://api.company.com";
-const TEST_API = "https://test-api.company.com";
+const TEST_API = "http://172.16.153.53:8001";
 const MOCK_API = "http://localhost:5000";
 
 /**

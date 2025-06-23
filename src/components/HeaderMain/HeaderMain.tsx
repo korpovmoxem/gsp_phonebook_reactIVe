@@ -14,19 +14,19 @@ export const HeaderMain = () => {
     return (
         <>
             <HeaderWrapper>
-                <Link to="/">
+                <Link to="/#">
                     <>
                         <MainLogo src={MainLogoImg} alt="ГазСтройПром" />
                         <SubLogo src={AdressBookImg} alt="ГазСтройПром" />
                     </>
                 </Link>
-                <SubLogoArchive
+                {/* <SubLogoArchive
                     href="https://intranet.gsprom.ru/phone-archive/"
                     target="_blank"
                     rel="noreferrer"
                 >
                     Перейти в архивный справочник <ExternalLink size={15} />
-                </SubLogoArchive>
+                </SubLogoArchive> */}
             </HeaderWrapper>
         </>
     );

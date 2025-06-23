@@ -28,7 +28,7 @@ export const Modal2Background = styled(ModalBackgroundTemplate)`
 export const ModalContainer = styled.div`
     background: #ffffff;
     max-width: 1000px;
-    width: 800px;
+    width: 900px;
     margin: auto;
     border-radius: 10px;
     max-height: 90vh;
@@ -73,6 +73,7 @@ export const CustomButton = styled.button<ButtonProps>`
     background-color: #1d75bb;
     color: #ffffff;
     cursor: pointer;
+    border-radius: 5px;
 
     &:hover {
         background-color: rgb(6, 106, 187);
