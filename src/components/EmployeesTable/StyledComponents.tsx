@@ -7,7 +7,7 @@ export const EmployeeListWrapperMain = styled.div`
     padding: 10px;
     background: white;
     border-radius: 10px;
-    height: 85%;
+    height: calc(100% - 138px);
 `;
 
 export const EmployeeListWrapperTable = styled.div`

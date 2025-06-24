@@ -103,7 +103,7 @@ export const CustomCopyButton = styled(CopyIcon)`
 
 export const MainWrapper = styled.div`
     margin: auto;
-    max-width: 85%;
+    max-width: 90%;
 `;
 
 export const ContentWrapper = styled.div`

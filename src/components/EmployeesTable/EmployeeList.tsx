@@ -152,6 +152,31 @@ export const EmployeeList: React.FC = () => {
     const isDefaultRoute =
         location.pathname === "/" && ![...searchParams].length;
 
+    const handleClickCopyEmails = () => {
+        let emails = "";
+        if (employeesList.length > 0) {
+            employeesList.forEach((organization) => {
+                organization.departments.forEach((department) => {
+                    department.employees.forEach((employee) => {
+                        if (employee.email) {
+                            emails += ` ${employee.email}`;
+                        }
+                    });
+                });
+            });
+        } else {
+            employees?.employees.forEach((employee) => {
+                if (employee.email) {
+                    emails += ` ${employee.email}`;
+                }
+            });
+        }
+        navigator.clipboard.writeText(emails);
+        toast.info("Скопировано в буфер обмена", {
+            position: "top-right",
+        });
+    };
+
     useEffect(() => {
         if (isDefaultRoute) {
             selectOrg(
@@ -183,6 +208,7 @@ export const EmployeeList: React.FC = () => {
                         margin: "5px 10px 0 0",
                     }}
                     title="Скопировать Email всех найденных сотрудников"
+                    onClick={handleClickCopyEmails}
                 >
                     <ClipboardCopy size={20} stroke="grey" />
                 </span>
@@ -229,6 +255,7 @@ export const EmployeeList: React.FC = () => {
                                                         departmentId={
                                                             dept.departmentId
                                                         }
+                                                        dept={dept}
                                                     />
                                                 </ThirdHeader>
                                                 {/* Сотрудники департамента */}
@@ -324,7 +351,9 @@ export const EmployeeList: React.FC = () => {
                                         <div>
                                             <span>
                                                 По заданным критериям сотрудники
-                                                не найдены
+                                                не найдены. <br />
+                                                Проверьте правильность введенных
+                                                данных или выбранный фильтр
                                             </span>
                                         </div>
                                     </div>
@@ -371,6 +400,7 @@ export const EmployeeList: React.FC = () => {
                                                             departmentId={
                                                                 dept.departmentId
                                                             }
+                                                            dept={dept}
                                                         />
                                                     </ThirdHeader>
                                                     {dept.employees.map(

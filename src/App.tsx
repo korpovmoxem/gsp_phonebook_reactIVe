@@ -51,7 +51,7 @@ function App() {
                     <hr
                         style={{
                             color: "grey",
-                            width: "90%",
+                            width: "99%",
                             margin: 0,
                         }}
                     />

@@ -128,31 +128,6 @@ export const SearchBar = () => {
         }
     };
 
-    const handleClickCopyEmails = () => {
-        let emails = "";
-        if (employeesList.length > 0) {
-            employeesList.forEach((organization) => {
-                organization.departments.forEach((department) => {
-                    department.employees.forEach((employee) => {
-                        if (employee.email) {
-                            emails += ` ${employee.email}`;
-                        }
-                    });
-                });
-            });
-        } else {
-            employees?.employees.forEach((employee) => {
-                if (employee.email) {
-                    emails += ` ${employee.email}`;
-                }
-            });
-        }
-        navigator.clipboard.writeText(emails);
-        toast.info("Скопировано в буфер обмена", {
-            position: "top-right",
-        });
-    };
-
     // Закрытие результатов поиска при клике вне контейнера
     const handleClickOutside = (event: MouseEvent) => {
         if (
@@ -180,7 +155,13 @@ export const SearchBar = () => {
                 }}
             >
                 <SearchInputWrapper>
-                    <div style={{ background: "white", height: "100%" }}>
+                    <div
+                        style={{
+                            background: "white",
+                            height: "100%",
+                            alignContent: "center",
+                        }}
+                    >
                         <SearchInput
                             type="text"
                             value={query}
