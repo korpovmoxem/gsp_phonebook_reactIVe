@@ -152,24 +152,37 @@ export const EmployeeList: React.FC = () => {
     const isDefaultRoute =
         location.pathname === "/" && ![...searchParams].length;
 
+    function getAllEmails(data: EmployeesListTree): (string | null)[] {
+        const emails: (string | null)[] = [
+            ...data.employees.map((emp) => emp.email),
+        ];
+
+        for (const child of data.children) {
+            emails.push(...getAllEmails(child));
+        }
+
+        return emails;
+    }
+
     const handleClickCopyEmails = () => {
         let emails = "";
+        console.log("handleClickCopyEmails");
+        console.log(employeesList);
+        console.log(employees);
         if (employeesList.length > 0) {
             employeesList.forEach((organization) => {
                 organization.departments.forEach((department) => {
                     department.employees.forEach((employee) => {
                         if (employee.email) {
-                            emails += ` ${employee.email}`;
+                            emails += `${employee.email} `;
                         }
                     });
                 });
             });
         } else {
-            employees?.employees.forEach((employee) => {
-                if (employee.email) {
-                    emails += ` ${employee.email}`;
-                }
-            });
+            if (employees) {
+                emails = getAllEmails(employees).join(" ");
+            }
         }
         navigator.clipboard.writeText(emails);
         toast.info("Скопировано в буфер обмена", {
@@ -306,7 +319,7 @@ export const EmployeeList: React.FC = () => {
                                                                 "Не указан"}
                                                         </CellWrapper>
                                                         <CellWrapper>
-                                                            {emp.email && (
+                                                            {emp.email ? (
                                                                 <>
                                                                     <CustomEmailLink
                                                                         href={`mailto:${emp.email}`}
@@ -333,6 +346,8 @@ export const EmployeeList: React.FC = () => {
                                                                         }}
                                                                     />
                                                                 </>
+                                                            ) : (
+                                                                "Не указан"
                                                             )}
                                                         </CellWrapper>
                                                     </EmployeeTableRowDiv>
@@ -480,7 +495,7 @@ export const EmployeeList: React.FC = () => {
                                                                         flex: "1 1 0%",
                                                                     }}
                                                                 >
-                                                                    {emp.email && (
+                                                                    {emp.email ? (
                                                                         <>
                                                                             <CustomEmailLink
                                                                                 href={`mailto:${emp.email}`}
@@ -507,6 +522,8 @@ export const EmployeeList: React.FC = () => {
                                                                                 }}
                                                                             />
                                                                         </>
+                                                                    ) : (
+                                                                        "Не указан"
                                                                     )}
                                                                 </CellWrapper>
                                                             </EmployeeTableRowDiv>

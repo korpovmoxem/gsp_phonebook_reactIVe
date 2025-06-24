@@ -42,19 +42,25 @@ export const ModalField = ({ nameField, value }: Props) => {
                 <>
                     {nameField === "Email" && (
                         <div>
-                            <CustomEmailLink
-                                href={`mailto:${value}`}
-                                onClick={(e) => e.stopPropagation()}
-                            >
-                                {value}
-                            </CustomEmailLink>
-                            <CustomCopyButton
-                                size={13}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleCopyClick(value!);
-                                }}
-                            />
+                            {value ? (
+                                <>
+                                    <CustomEmailLink
+                                        href={`mailto:${value}`}
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
+                                        {value}
+                                    </CustomEmailLink>
+                                    <CustomCopyButton
+                                        size={13}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleCopyClick(value!);
+                                        }}
+                                    />
+                                </>
+                            ) : (
+                                "Не указан"
+                            )}
                         </div>
                     )}
                     {nameField === "Организация" && (
@@ -70,7 +76,7 @@ export const ModalField = ({ nameField, value }: Props) => {
                                 setIsEmployeeInfoModalOpen(false);
                             }}
                         >
-                            {value || "Не указано"}
+                            {value || "Не указан"}
                         </LinkSpan>
                     )}
                     {nameField === "Подразделение" && (
@@ -88,12 +94,12 @@ export const ModalField = ({ nameField, value }: Props) => {
                                 setIsEmployeeInfoModalOpen(false);
                             }}
                         >
-                            {value || "Не указано"}
+                            {value || "Не указан"}
                         </LinkSpan>
                     )}
                 </>
             ) : (
-                <span>{value || "Не указано"}</span>
+                <span>{value || "Не указан"}</span>
             )}
         </FieldWrapper>
     );

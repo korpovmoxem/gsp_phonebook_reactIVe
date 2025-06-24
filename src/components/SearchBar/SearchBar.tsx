@@ -211,7 +211,7 @@ export const SearchBar = () => {
                                                                                     textToHighlight={`${employee.fullNameRus}`}
                                                                                     highlightStyle={{
                                                                                         backgroundColor:
-                                                                                            "#38b6b2",
+                                                                                            "#b2dff7",
                                                                                     }}
                                                                                 />
                                                                             ) : (
@@ -235,7 +235,7 @@ export const SearchBar = () => {
                                                                                         textToHighlight={`, ${employee.email}`}
                                                                                         highlightStyle={{
                                                                                             backgroundColor:
-                                                                                                "#38b6b2",
+                                                                                                "#b2dff7",
                                                                                         }}
                                                                                     />
                                                                                 )}
@@ -252,7 +252,7 @@ export const SearchBar = () => {
                                                                                         textToHighlight={`, ${employee.telephoneNumberCorp}`}
                                                                                         highlightStyle={{
                                                                                             backgroundColor:
-                                                                                                "#38b6b2",
+                                                                                                "#b2dff7",
                                                                                         }}
                                                                                     />
                                                                                 )}
@@ -269,7 +269,7 @@ export const SearchBar = () => {
                                                                                         textToHighlight={`, ${employee.positionTitle}`}
                                                                                         highlightStyle={{
                                                                                             backgroundColor:
-                                                                                                "#38b6b2",
+                                                                                                "#b2dff7",
                                                                                         }}
                                                                                     />
                                                                                 )}
