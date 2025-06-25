@@ -1,5 +1,5 @@
-import AdressBookImg from "../../materials/adressBook.svg";
-import MainLogoImg from "../../materials/logo.svg";
+import AdressBookImg from "../../assets/adressBook.svg";
+import MainLogoImg from "../../assets/logo.svg";
 import { ExternalLink } from "lucide-react";
 
 import { Link } from "react-router-dom";

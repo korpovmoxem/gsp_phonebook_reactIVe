@@ -2,7 +2,7 @@ import { useEffect, useMemo } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { useOrgStore } from "../../store/organizationStore";
 import { EmployeeSkeleton } from "./EmployeeSkeleton";
-import PhotoDefault from "../../materials/photo.jpg";
+import PhotoDefault from "../../assets/photo.jpg";
 import { toast } from "react-toastify";
 import { EmployeeDepartmentPath } from "./EmployeeDepartmentPath";
 import {
@@ -11,8 +11,8 @@ import {
     EmployeesListTree,
     EmployeesList,
 } from "../../types";
-import NotFound from "../../materials/notFound.gif";
-import NotFoundIcon from "../../materials/notFoundIcon.png";
+import NotFound from "../../assets/notFound.gif";
+import NotFoundIcon from "../../assets/notFoundIcon.png";
 import {
     CustomCopyButton,
     CustomEmailLink,

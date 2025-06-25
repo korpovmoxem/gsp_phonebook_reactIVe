@@ -1,5 +1,5 @@
 
-const PROD_API = "https://api.company.com";
+const PROD_API = __APP_ENV__.API_URL;
 const TEST_API = "http://172.16.153.53:8001";
 const MOCK_API = "http://localhost:5000";
 

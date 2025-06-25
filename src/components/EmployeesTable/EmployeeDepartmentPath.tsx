@@ -29,7 +29,6 @@ export const EmployeeDepartmentPath = ({ departmentId, dept }: Props) => {
             {pathIds
                 .filter((item) => isNaN(Number(item)))
                 .reverse()
-                .reverse()
                 .map((id, index) => {
                     const node = orgMapId.get(id)?.node;
                     if (!node) return null;

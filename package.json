@@ -1,65 +1,34 @@
 {
-  "name": "phonebook_test",
-  "version": "0.1.0",
+  "name": "my-ts-react-webpack",
+  "version": "1.0.0",
   "private": true,
+  "scripts": {
+    "start": "webpack serve --open",
+    "build": "webpack"
+  },
   "dependencies": {
-    "@testing-library/dom": "^10.4.0",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.3.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.126",
-    "@types/react": "^19.1.6",
-    "@types/react-dom": "^19.1.5",
-    "@types/styled-components": "^5.1.34",
-    "axios": "^1.9.0",
-    "cors": "^2.8.5",
-    "express": "^5.1.0",
-    "lucide-react": "^0.511.0",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
+    "axios": "^1.10.0",
+    "lucide-react": "^0.523.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.2.0",
     "react-highlight-words": "^0.21.0",
     "react-loading-skeleton": "^3.5.0",
-    "react-router-dom": "^7.6.1",
-    "react-scripts": "5.0.1",
+    "react-router-dom": "^7.6.2",
     "react-toastify": "^11.0.5",
-    "shepherd.js": "^14.5.0",
     "spinners-react": "^1.0.11",
-    "styled-components": "^6.1.18",
-    "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4",
+    "styled-components": "^6.1.19",
     "zustand": "^5.0.5"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "server": "node server.js",
-    "dev-server": "nodemon server.js",
-    "mock": "npm run dev-server",
-    "start:app": "npm start",
-    "start:mock": "npm run mock",
-    "dev": "concurrently \"npm:start:app\" \"npm:start:mock\""
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   },
   "devDependencies": {
     "@types/react-highlight-words": "^0.20.0",
-    "concurrently": "^9.1.2",
-    "nodemon": "^3.1.10"
+    "css-loader": "^6.8.1",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.5.3",
+    "style-loader": "^3.3.2",
+    "ts-loader": "^9.4.2",
+    "typescript": "^5.3.3",
+    "webpack": "^5.99.9",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.13.3"
   }
 }

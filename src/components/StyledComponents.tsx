@@ -104,6 +104,7 @@ export const CustomCopyButton = styled(CopyIcon)`
 export const MainWrapper = styled.div`
     margin: auto;
     max-width: 90%;
+    height: 100vh;
 `;
 
 export const ContentWrapper = styled.div`
@@ -122,7 +123,7 @@ export const FAB = styled.button`
     cursor: pointer;
     position: fixed;
     bottom: 70px;
-    right: 70px;
+    right: 50px;
     width: 40px;
     height: 40px;
     border-radius: 45px;

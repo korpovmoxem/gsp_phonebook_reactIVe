@@ -149,11 +149,7 @@ export const SearchBar = () => {
 
     return (
         <>
-            <SearchComponent
-                style={{
-                    border: "2px solid #0d67a1",
-                }}
-            >
+            <SearchComponent>
                 <SearchInputWrapper>
                     <div
                         style={{
