@@ -57,6 +57,7 @@ export interface CurrentEmployeeInfo extends Employee {
     assistants: EmployeeShort[],
     managers: EmployeeShort[],
     externalNumberCorp: string,
+    isEditAvailable: boolean;
     [key: string]: any | undefined,
 }
 

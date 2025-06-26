@@ -53,7 +53,7 @@ export const FirstHeader = styled.div`
     padding: 8px;
     font-weight: bold;
     border-bottom: 1px solid rgb(255, 255, 255);
-    z-index: 3;
+    z-index: 4;
     display: flex;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;

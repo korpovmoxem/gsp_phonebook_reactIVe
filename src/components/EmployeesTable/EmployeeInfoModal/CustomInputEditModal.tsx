@@ -34,9 +34,21 @@ const CustomInput = styled.input`
     outline: none;
     margin: 5px 0 0 10px;
     padding: 0;
+    width: 90%;
 
     &::placeholder {
         font-size: 12pt;
+    }
+
+    &[type="number"] {
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            appearance: none;Add commentMore actions
+            margin: 0;
+        }
+
+        -moz-appearance: textfield;
     }
 `;
 

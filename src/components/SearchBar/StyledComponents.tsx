@@ -10,6 +10,7 @@ export const SearchComponent = styled.div`
     border-radius: 10px;
     overflow: hidden;
     font-family: sans-serif;
+    border: 2px solid #0d67a1;
     margin: 10px;
     :focus-within {
         border-color: #007bff;
@@ -80,7 +81,7 @@ export const SearchButton = styled.button`
 
 export const CustomDatalist = styled.div`
     position: fixed;
-    width: 50%;
+    width: 60%;
     z-index: 10;
     margin-top: 5px;
     background-color: rgb(226, 226, 226);

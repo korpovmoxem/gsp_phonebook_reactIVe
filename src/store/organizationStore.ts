@@ -60,7 +60,7 @@ export const useOrgStore = create<OrgState>((set, get) => ({
     isOrgLoading: false,
     isExternalOrgLoading: false,
     isEmpLoading: true,
-    categories: 'fullName',
+    categories: 'fullName' as CATEGORIES,
     search: '',
     employeesList: [],
     orgMap: new Map(),

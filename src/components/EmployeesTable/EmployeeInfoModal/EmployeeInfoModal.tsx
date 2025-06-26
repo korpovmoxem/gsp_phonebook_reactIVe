@@ -25,30 +25,36 @@ import {
 
 const INFORMATION_BLOCKS = [
     {
+        id: "inf_block_0",
         nameBlock: "Контактная информация",
         icon: Contact,
         fields: [
             {
+                id: "inf_block_0_0",
                 nameField: "Номер телефона",
                 value: "telephoneNumberCorp",
                 isEditable: false,
             },
             {
+                id: "inf_block_0_1",
                 nameField: "Городской номер",
                 value: "externalNumberCorp",
                 isEditable: true,
             },
             {
+                id: "inf_block_0_2",
                 nameField: "Мобильный (рабочий)",
                 value: "mobileNumberCorp",
                 isEditable: false,
             },
             {
+                id: "inf_block_0_3",
                 nameField: "Мобильный (личный)",
                 value: "mobileNumberPersonal",
                 isEditable: true,
             },
             {
+                id: "inf_block_0_4",
                 nameField: "Email",
                 value: "email",
                 isEditable: false,
@@ -56,25 +62,30 @@ const INFORMATION_BLOCKS = [
         ],
     },
     {
+        id: "inf_block_1",
         nameBlock: "Место работы",
         icon: WorkPlace,
         fields: [
             {
+                id: "inf_block_1_0",
                 nameField: "Организация",
                 value: "organizationName",
                 isEditable: false,
             },
             {
+                id: "inf_block_1_1",
                 nameField: "Подразделение",
                 value: "departmentName",
                 isEditable: false,
             },
             {
+                id: "inf_block_1_2",
                 nameField: "Адрес",
                 value: "address",
                 isEditable: true,
             },
             {
+                id: "inf_block_1_3",
                 nameField: "Рабочее место",
                 value: "workPlace",
                 isEditable: true,
@@ -305,7 +316,9 @@ export const EmployeeInfoModal: React.FC = () => {
                                             <div style={{ marginTop: "20px" }}>
                                                 {INFORMATION_BLOCKS.map(
                                                     (block) => (
-                                                        <InfoBlock>
+                                                        <InfoBlock
+                                                            key={block.id}
+                                                        >
                                                             <>
                                                                 <h4
                                                                     style={{
@@ -333,6 +346,9 @@ export const EmployeeInfoModal: React.FC = () => {
                                                                 {block.fields.map(
                                                                     (field) => (
                                                                         <ModalField
+                                                                            key={
+                                                                                field.id
+                                                                            }
                                                                             nameField={
                                                                                 field.nameField
                                                                             }

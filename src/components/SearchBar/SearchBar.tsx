@@ -99,7 +99,7 @@ export const SearchBar = () => {
 
     const handleClickItem = (item: Employee) => {
         setIsOpen(false);
-        setQuery(item.fullNameRus);
+        // setQuery(item.fullNameRus);
         setIsEmployeeInfoModalOpen(!isEmployeeInfoModalOpen);
         fetchCurrentEmployeeInfo(item.id, item.organizationId);
     };
@@ -141,6 +141,12 @@ export const SearchBar = () => {
     };
 
     useEffect(() => {
+        if (!searchParams.get("value")) {
+            clearInput();
+        }
+    }, [searchParams]);
+
+    useEffect(() => {
         document.addEventListener("mousedown", handleClickOutside);
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
@@ -149,11 +155,7 @@ export const SearchBar = () => {
 
     return (
         <>
-            <SearchComponent
-                style={{
-                    border: "2px solid #0d67a1",
-                }}
-            >
+            <SearchComponent>
                 <SearchInputWrapper>
                     <div
                         style={{

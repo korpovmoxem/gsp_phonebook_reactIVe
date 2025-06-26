@@ -1,103 +1,89 @@
-import { BrowserRouter } from "react-router-dom";
+import React, { useEffect } from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
 import { OrgSidebar } from "./components/OrgSidebar/OrgSidebar";
-import styled from "styled-components";
-
 import { EmployeeList } from "./components/EmployeesTable/EmployeeList";
-import { ToastContainer, Bounce } from "react-toastify";
-import { SearchBar } from "./components/SearchBar/SearchBar";
-
-import { useState } from "react";
+import { ToastContainer } from "react-toastify";
+import { HeaderMain } from "./components/HeaderMain/HeaderMain";
+import {
+    MainWrapper,
+    ContentWrapper,
+    FAB,
+} from "./components/StyledComponents";
+import { ErrorPage } from "./components/ErrorPage/ErrorPage";
+import { Footer } from "./components/Footer/Footer";
 import { useOrgStore } from "./store/organizationStore";
 import { EmployeeInfoModal } from "./components/EmployeesTable/EmployeeInfoModal/EmployeeInfoModal";
 import { EditInformationModal } from "./components/EmployeesTable/EmployeeInfoModal/EditInformationModal";
 import { HelpModal } from "./components/HelpModal";
-import { HeaderMain } from "./components/HeaderMain/HeaderMain";
-import {
-    MainWrapper,
-    SearchWrapper,
-    ContentWrapper,
-    FAB,
-} from "./components/StyledComponents";
+import { SearchBar } from "./components/SearchBar/SearchBar";
 
 function App() {
-    const [isHelpOpen, setIsHelpOpen] = useState(false);
-
+    const [isHelpOpen, setIsHelpOpen] = React.useState(false);
     const isEmployeeInfoModalOpen = useOrgStore(
         (state) => state.isEmployeeInfoModalOpen
     );
-
     const isEditInformation = useOrgStore((state) => state.isEditInformation);
 
-    return (
-        <>
-            <BrowserRouter>
-                <MainWrapper>
-                    {/* <HeaderMain />
-                    <SearchWrapper>
-                        <SearchBar />
-                    </SearchWrapper>
-                    <ContentWrapper>
-                        <OrgSidebar />
-                        <EmployeeList />
-                    </ContentWrapper> */}
+    // Функция для отображения ErrorPage
+    const showCustomErrorPage = () => {
+        const rootElement = document.getElementById("root");
+        if (!rootElement) return;
 
-                    <HeaderMain />
-                    <ContentWrapper>
-                        <OrgSidebar />
-                        <EmployeeList />
-                    </ContentWrapper>
-                </MainWrapper>
-                <div style={{ placeItems: "center", margin: 0 }}>
-                    <hr
-                        style={{
-                            color: "grey",
-                            width: "99%",
-                            margin: 0,
-                        }}
+        const errorRoot = document.createElement("div");
+        errorRoot.id = "error-root";
+        rootElement.innerHTML = "";
+        rootElement.appendChild(errorRoot);
+
+        const root = ReactDOM.createRoot(errorRoot);
+        root.render(<ErrorPage />);
+    };
+
+    // При появлении ошибок реакта переходть на страницу с ошибкой
+    window.onerror = function (message, source, lineno, colno, error) {
+        // Перейти на страницу ошибки
+        window.location.href = "/err";
+    };
+    window.addEventListener("unhandledrejection", function (event) {
+        // Перейти на страницу ошибки при Promise-ошибках
+        window.location.href = "/err";
+    });
+
+    return (
+        <BrowserRouter>
+            <MainWrapper>
+                <HeaderMain />
+
+                <Routes>
+                    <Route
+                        path="/*"
+                        element={
+                            <ContentWrapper>
+                                <OrgSidebar />
+                                <EmployeeList />
+                            </ContentWrapper>
+                        }
                     />
-                    <span
-                        style={{
-                            color: "grey",
-                            fontSize: "10pt",
-                        }}
-                    >
-                        © Разработано{" "}
-                        <a
-                            href="https://www.gsp-center.ru/"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            ООО "ГСП-ЦЕНТР"
-                        </a>
-                    </span>
-                </div>
+                    <Route path="/err" element={<ErrorPage />} />
+                </Routes>
+
+                <Footer />
+                <FAB title="Помощь" onClick={() => setIsHelpOpen(true)}>
+                    ?
+                </FAB>
                 <ToastContainer
                     position="top-right"
                     autoClose={5000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
                     theme="light"
-                    transition={Bounce}
                 />
                 {isEmployeeInfoModalOpen && <EmployeeInfoModal />}
                 {isEditInformation && <EditInformationModal />}
                 {isHelpOpen && (
-                    <HelpModal
-                        onClose={() => {
-                            setIsHelpOpen(false);
-                        }}
-                    />
+                    <HelpModal onClose={() => setIsHelpOpen(false)} />
                 )}
-            </BrowserRouter>
-            <FAB title="Помощь" onClick={() => setIsHelpOpen(true)}>
-                ?
-            </FAB>
-        </>
+            </MainWrapper>
+        </BrowserRouter>
     );
 }
 
