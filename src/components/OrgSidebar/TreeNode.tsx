@@ -48,6 +48,7 @@ export const TreeNode = ({
     useEffect(() => {
         // Проверяем treeId, а не id
         setExpanded(expandedIds.includes(node.treeId));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [expandedIds]);
 
     return (

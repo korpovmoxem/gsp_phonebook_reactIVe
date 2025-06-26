@@ -3,8 +3,6 @@ import { CATEGORIES, Employee } from "../../types";
 import Highlighter from "react-highlight-words";
 import { useOrgStore } from "../../store/organizationStore";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ClipboardCopy, ExternalLink } from "lucide-react";
-import { toast } from "react-toastify";
 import {
     ClearButton,
     CustomDatalist,

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import background from "../../assets/Err.png";
 import { CustomButton } from "../StyledComponents";
 import { useNavigate } from "react-router-dom";
 
@@ -16,7 +15,6 @@ const ErrorPageWrapper = styled.div`
 `;
 
 export const ErrorPage = () => {
-    console.log("Error Page render");
     const navigate = useNavigate();
     return (
         <ErrorPageWrapper>

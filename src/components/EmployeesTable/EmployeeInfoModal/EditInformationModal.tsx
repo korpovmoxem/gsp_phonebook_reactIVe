@@ -1,4 +1,4 @@
-import { ArrowLeft, StepBackIcon } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useOrgStore } from "../../../store/organizationStore";
 import {
     CloseButton,

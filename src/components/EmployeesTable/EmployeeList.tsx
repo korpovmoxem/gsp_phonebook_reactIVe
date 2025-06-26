@@ -11,7 +11,7 @@ import {
     EmployeesListTree,
     EmployeesList,
 } from "../../types";
-import NotFound from "../../materials/notFound.gif";
+// import NotFound from "../../materials/notFound.gif";
 import NotFoundIcon from "../../materials/notFoundIcon.png";
 import {
     CustomCopyButton,
@@ -166,9 +166,6 @@ export const EmployeeList: React.FC = () => {
 
     const handleClickCopyEmails = () => {
         let emails = "";
-        console.log("handleClickCopyEmails");
-        console.log(employeesList);
-        console.log(employees);
         if (employeesList.length > 0) {
             employeesList.forEach((organization) => {
                 organization.departments.forEach((department) => {
@@ -198,6 +195,7 @@ export const EmployeeList: React.FC = () => {
                 "false"
             );
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isDefaultRoute]);
 
     return (
