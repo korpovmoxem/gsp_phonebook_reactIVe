@@ -65,14 +65,17 @@ export const TreeNode = ({
                 }}
                 style={{
                     cursor: "pointer",
-                    fontWeight: node.id === selectedId ? "bold" : "normal",
+                    fontWeight:
+                        node.id === selectedId && selectedId !== null
+                            ? "bold"
+                            : "normal",
                     display: "flex",
                     flexDirection: "row",
                     alignItems: "center",
                     marginTop: "15px",
                     lineHeight: 1,
                 }}
-                selected={node.id === selectedId}
+                selected={node.id === selectedId && selectedId !== null}
             >
                 {node.children.length > 0 && (
                     <span

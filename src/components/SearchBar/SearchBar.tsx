@@ -43,8 +43,6 @@ export const SearchBar = () => {
     const fetchCurrentEmployeeInfo = useOrgStore(
         (state) => state.fetchCurrentEmployeeInfo
     );
-    const employees = useOrgStore((state) => state.employees);
-    const employeesList = useOrgStore((state) => state.employeesList);
 
     const isEmployeeForSearchBarLoading = useOrgStore(
         (state) => state.isEmployeeForSearchBarLoading

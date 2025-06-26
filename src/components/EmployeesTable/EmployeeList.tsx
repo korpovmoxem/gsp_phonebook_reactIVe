@@ -318,7 +318,11 @@ export const EmployeeList: React.FC = () => {
                                                             {emp.telephoneNumberCorp ||
                                                                 "Не указан"}
                                                         </CellWrapper>
-                                                        <CellWrapper>
+                                                        <CellWrapper
+                                                            style={{
+                                                                display: "flex",
+                                                            }}
+                                                        >
                                                             {emp.email ? (
                                                                 <>
                                                                     <CustomEmailLink
@@ -362,6 +366,8 @@ export const EmployeeList: React.FC = () => {
                                         <img
                                             src={NotFoundIcon}
                                             alt="Не найдено"
+                                            width={150}
+                                            style={{ margin: "15% 0 40px" }}
                                         />
                                         <div>
                                             <span>
@@ -493,6 +499,8 @@ export const EmployeeList: React.FC = () => {
                                                                 <CellWrapper
                                                                     style={{
                                                                         flex: "1 1 0%",
+                                                                        display:
+                                                                            "flex",
                                                                     }}
                                                                 >
                                                                     {emp.email ? (

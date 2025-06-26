@@ -32,6 +32,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "build": "react-scripts build",
     "server": "node server.js",
     "dev-server": "nodemon server.js",
     "mock": "npm run dev-server",
