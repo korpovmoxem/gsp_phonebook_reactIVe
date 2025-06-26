@@ -125,29 +125,6 @@ export const EmployeeList: React.FC = () => {
         return Object.values(map);
     }, [flatEmployees]);
 
-    useEffect(() => {
-        // При пустых параметрах — выбираем дефолтную орг. и департамент
-        if (
-            !searchValue &&
-            !searchCategory &&
-            !organizationId &&
-            !departmentId
-        ) {
-            selectOrg(
-                "7842155505",
-                "9c685cfe-e9a0-11e8-90f2-0050569026ba",
-                "false"
-            );
-        } else if (searchValue && searchCategory) {
-            // Режим поиска
-            fetchEmployeesWithParams(searchValue, searchCategory);
-        } else if (organizationId) {
-            // Клик по организации/департаменту через URL
-            selectOrg(organizationId, departmentId ?? null, "false");
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     const location = useLocation();
     const isDefaultRoute =
         location.pathname === "/" && ![...searchParams].length;
@@ -186,6 +163,29 @@ export const EmployeeList: React.FC = () => {
             position: "top-right",
         });
     };
+
+    useEffect(() => {
+        // При пустых параметрах — выбираем дефолтную орг. и департамент
+        if (
+            !searchValue &&
+            !searchCategory &&
+            !organizationId &&
+            !departmentId
+        ) {
+            selectOrg(
+                "7842155505",
+                "9c685cfe-e9a0-11e8-90f2-0050569026ba",
+                "false"
+            );
+        } else if (searchValue && searchCategory) {
+            // Режим поиска
+            fetchEmployeesWithParams(searchValue, searchCategory);
+        } else if (organizationId) {
+            // Клик по организации/департаменту через URL
+            selectOrg(organizationId, departmentId ?? null);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
         if (isDefaultRoute) {

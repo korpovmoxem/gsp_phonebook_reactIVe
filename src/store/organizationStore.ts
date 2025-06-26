@@ -93,21 +93,49 @@ export const useOrgStore = create<OrgState>((set, get) => ({
 
     fetchTree: async () => {
         set({ isOrgLoading: true });
+
+
+        const STORAGE_KEY = 'lastVisitDate';
+        const ORGANIZATIONS_LIST = 'orgList';
+
+        const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+        const storedDate = localStorage.getItem(STORAGE_KEY);
+
+        if (!storedDate) {
+            // Дата не сохранена — просто запоминаем текущую
+            localStorage.setItem(STORAGE_KEY, today);
+        } else if (storedDate !== today) {
+            // Даты не совпадают → очищаем localStorage
+            localStorage.clear();
+            localStorage.setItem(STORAGE_KEY, today);
+            console.log('localStorage очищен — новый день');
+        }
+
         try {
-            const base = await getAvailableApiBase();
-            const response = await fetch(`${base}/organization/tree`);
-            if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
-            const data = await response.json();
+            const savedOrgList = localStorage.getItem(ORGANIZATIONS_LIST);
+            if (!savedOrgList) {
+                const base = await getAvailableApiBase();
+                const response = await fetch(`${base}/organization/tree`);
+                if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+                const data = await response.json();
+                localStorage.setItem(ORGANIZATIONS_LIST, JSON.stringify(data.result));
+            } else {
+                const builtOrgMap = buildOrgIndexTreeId(JSON.parse(savedOrgList));
+                const builtOrgMapId = buildOrgIndexId(JSON.parse(savedOrgList));
+                set({
+                    organizations: JSON.parse(savedOrgList),
+                    orgMap: builtOrgMap,
+                    orgMapId: builtOrgMapId,
+                    isOrgLoading: false,
+                });
+            }
+            
 
-            const builtOrgMap = buildOrgIndexTreeId(data.result);
-            const builtOrgMapId = buildOrgIndexId(data.result);
+            
 
-            set({
-                organizations: data.result,
-                orgMap: builtOrgMap,
-                orgMapId: builtOrgMapId,
-                isOrgLoading: false,
-            });
+           
+
+            
         } catch (error: any) {
             console.error('Ошибка загрузки организаций:', error.message);
             toast.error('Ошибка при загрузке организаций');
@@ -116,6 +144,8 @@ export const useOrgStore = create<OrgState>((set, get) => ({
     },
 
     selectOrg: async (organizationId, departmentId, withChildren) => {
+        console.log('selectOrg')
+        console.log(withChildren)
         set({employeesList: []})
         const targetId = departmentId || organizationId;
         set({ selectedOrgId: targetId, isEmpLoading: true });
