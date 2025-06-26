@@ -40,68 +40,51 @@ function App() {
         root.render(<ErrorPage />);
     };
 
-    // Глобальная обработка ошибок
-    useEffect(() => {
-        const handleError = (event: ErrorEvent | PromiseRejectionEvent) => {
-            event.preventDefault(); // Предотвращаем стандартное поведение
-            console.error("Ошибка перехвачена, показываем ErrorPage", event);
-            showCustomErrorPage();
-        };
+    // При появлении ошибок реакта переходть на страницу с ошибкой
+    window.onerror = function (message, source, lineno, colno, error) {
+        // Перейти на страницу ошибки
+        window.location.href = "/err";
+    };
+    window.addEventListener("unhandledrejection", function (event) {
+        // Перейти на страницу ошибки при Promise-ошибках
+        window.location.href = "/err";
+    });
 
-        // Обработка обычных ошибок
-        window.onerror = (message, source, lineno, colno, error) => {
-            handleError({ preventDefault: () => {} } as ErrorEvent);
-            return true; // предотвращаем дальнейшее распространение
-        };
+    return (
+        <BrowserRouter>
+            <MainWrapper>
+                <HeaderMain />
 
-        // Обработка unhandledrejection
-        window.onunhandledrejection = handleError;
-
-        return () => {
-            window.onerror = null;
-            window.onunhandledrejection = null;
-        };
-    }, []);
-
-    try {
-        return (
-            <BrowserRouter>
-                <MainWrapper>
-                    <HeaderMain />
-
-                    <Routes>
-                        <Route
-                            path="/*"
-                            element={
-                                <ContentWrapper>
-                                    <OrgSidebar />
-                                    <EmployeeList />
-                                </ContentWrapper>
-                            }
-                        />
-                        <Route path="/err" element={<ErrorPage />} />
-                    </Routes>
-
-                    <Footer />
-                    <FAB title="Помощь" onClick={() => setIsHelpOpen(true)}>
-                        ?
-                    </FAB>
-                    <ToastContainer
-                        position="top-right"
-                        autoClose={5000}
-                        theme="light"
+                <Routes>
+                    <Route
+                        path="/*"
+                        element={
+                            <ContentWrapper>
+                                <OrgSidebar />
+                                <EmployeeList />
+                            </ContentWrapper>
+                        }
                     />
-                    {isEmployeeInfoModalOpen && <EmployeeInfoModal />}
-                    {isEditInformation && <EditInformationModal />}
-                    {isHelpOpen && (
-                        <HelpModal onClose={() => setIsHelpOpen(false)} />
-                    )}
-                </MainWrapper>
-            </BrowserRouter>
-        );
-    } catch {
-        return <ErrorPage />;
-    }
+                    <Route path="/err" element={<ErrorPage />} />
+                </Routes>
+
+                <Footer />
+                <FAB title="Помощь" onClick={() => setIsHelpOpen(true)}>
+                    ?
+                </FAB>
+                <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    theme="light"
+                />
+                {isEmployeeInfoModalOpen && <EmployeeInfoModal />}
+                {isEditInformation && <EditInformationModal />}
+                {isHelpOpen && (
+                    <HelpModal onClose={() => setIsHelpOpen(false)} />
+                )}
+            </MainWrapper>
+        </BrowserRouter>
+    );
 }
 
 export default App;

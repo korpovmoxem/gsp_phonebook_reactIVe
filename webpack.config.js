@@ -53,5 +53,15 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     clean: true,
     assetModuleFilename: 'assets/[name][ext]',
+    publicPath: '/',
   },
+  devServer: {
+  static: './dist',
+  hot: true,
+  open: true,
+  client: {
+    overlay: false  // ⛔️ Отключает красный экран
+  },
+  historyApiFallback: true  // ⛔️ Для React Router, чтобы не было 404
+},
 };

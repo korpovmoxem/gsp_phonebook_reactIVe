@@ -204,6 +204,7 @@ export const EmployeeInfoModal: React.FC = () => {
                                                     currentEmployeeInfo.fullNameRus
                                                 }
                                                 width="200px"
+                                                loading="lazy"
                                             />
                                         </PhotoBlock>
                                         <InfoBlockWrapper>

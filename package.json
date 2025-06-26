@@ -2,6 +2,7 @@
   "name": "my-ts-react-webpack",
   "version": "1.0.0",
   "private": true,
+  "homepage": ".",
   "scripts": {
     "start": "webpack serve --open",
     "build": "webpack"

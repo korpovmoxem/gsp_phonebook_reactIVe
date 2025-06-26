@@ -90,7 +90,8 @@ export const EditInformationModal: React.FC = () => {
                                 X
                             </CloseButton>
                         </ModalHeader>
-                        {currentEmployeeInfo?.email ? (
+                        {currentEmployeeInfo?.email &&
+                        currentEmployeeInfo?.isEditAvailable ? (
                             <>
                                 <div>
                                     <span>
@@ -117,18 +118,22 @@ export const EditInformationModal: React.FC = () => {
                             </>
                         ) : (
                             <>
-                                <span>
-                                    Электронная почта отсутствует. Изменение
-                                    данных невозможно
-                                </span>
-                                <br />
+                                {currentEmployeeInfo?.isEditAvailable && (
+                                    <>
+                                        <span>
+                                            Электронная почта отсутствует.
+                                            Изменение данных невозможно
+                                        </span>
+                                        <br />
+                                    </>
+                                )}
                             </>
                         )}
 
                         <div>
                             <span>
                                 Если ФИО, должность или подразделение сотрудника
-                                указан не верно, необходимо обратиться к своему
+                                указаны неверно, необходимо обратиться к своему
                                 кадровому работнику (куратору) для внесения
                                 изменений в карточке 1С: ЗУП.
                             </span>
@@ -151,105 +156,110 @@ export const EditInformationModal: React.FC = () => {
                                 </a>
                             </span>
                         </div>
-                        {currentEmployeeInfo?.email && (
-                            <>
-                                <h3>{currentEmployeeInfo?.fullNameRus}</h3>
-                                <CustomInputEditModal
-                                    id={"mobilePersonal"}
-                                    labelField={"Мобильный телефон(личный)"}
-                                    onChange={(value) =>
-                                        setPersonalMobile(value)
-                                    }
-                                    defaultValue={personalMobile}
-                                />
-                                <CustomInputEditModal
-                                    id={"cityPhone"}
-                                    labelField={"Городской телефон"}
-                                    onChange={(value) => setCityPhone(value)}
-                                    defaultValue={cityPhone}
-                                />
-                                <CustomInputEditModal
-                                    id={"placeWork"}
-                                    labelField={"Рабочее место"}
-                                    onChange={(value) => setWorkPlace(value)}
-                                    defaultValue={workPlace}
-                                />
-                                <CustomInputEditModal
-                                    id={"Adress"}
-                                    labelField={"Адрес"}
-                                    onChange={(value) => setAddress(value)}
-                                    defaultValue={address}
-                                />
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        width: "70%",
-                                        alignSelf: "anchor-center",
-                                    }}
-                                >
+                        {currentEmployeeInfo?.email &&
+                            currentEmployeeInfo?.isEditAvailable && (
+                                <>
+                                    <h3>{currentEmployeeInfo?.fullNameRus}</h3>
                                     <CustomInputEditModal
-                                        id={"code"}
-                                        labelField={"Код проверки"}
-                                        onChange={(value) => setCode(value)}
-                                        defaultValue={code}
-                                    />
-                                    {currentEmployeeInfo && (
-                                        <CustomButton
-                                            onClick={() => {
-                                                fetchVerificatinCode(
-                                                    currentEmployeeInfo?.id,
-                                                    currentEmployeeInfo?.organizationId
-                                                );
-                                            }}
-                                            height="53px"
-                                        >
-                                            Отправить код проверки
-                                        </CustomButton>
-                                    )}
-                                </div>
-                                <div style={{ margin: "20px 0" }}>
-                                    <input
-                                        type="checkbox"
-                                        value=""
-                                        id="flexCheckDefault"
-                                        onClick={() =>
-                                            setIsCheckboxOn(!isCheckboxOn)
+                                        id={"mobilePersonal"}
+                                        labelField={"Мобильный телефон(личный)"}
+                                        onChange={(value) =>
+                                            setPersonalMobile(value)
                                         }
+                                        defaultValue={personalMobile}
                                     />
-                                    <label htmlFor="flexCheckDefault">
-                                        Нажимая на кнопку, я соглашаюсь с{" "}
-                                        <a
-                                            href="https://www.gsprom.ru/politic/"
-                                            target="_blank"
-                                            rel="noreferrer"
-                                        >
-                                            Политикой обработки персональных
-                                            данных
-                                        </a>{" "}
-                                        и даю согласие на{" "}
-                                        <a
-                                            href="https://www.gsprom.ru/politic/"
-                                            target="_blank"
-                                            rel="noreferrer"
-                                        >
-                                            обработку персональных данных
-                                        </a>
-                                    </label>
-                                </div>
-                                <div style={{ alignSelf: "center" }}>
-                                    <CustomButton
-                                        disabled={
-                                            !isCheckboxOn || code.length < 6
+                                    <CustomInputEditModal
+                                        id={"cityPhone"}
+                                        labelField={"Городской телефон"}
+                                        onChange={(value) =>
+                                            setCityPhone(value)
                                         }
-                                        onClick={() => handleSendButton()}
-                                        height="40px"
+                                        defaultValue={cityPhone}
+                                    />
+                                    <CustomInputEditModal
+                                        id={"placeWork"}
+                                        labelField={"Рабочее место"}
+                                        onChange={(value) =>
+                                            setWorkPlace(value)
+                                        }
+                                        defaultValue={workPlace}
+                                    />
+                                    <CustomInputEditModal
+                                        id={"Adress"}
+                                        labelField={"Адрес"}
+                                        onChange={(value) => setAddress(value)}
+                                        defaultValue={address}
+                                    />
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            flexDirection: "row",
+                                            width: "70%",
+                                            alignSelf: "anchor-center",
+                                        }}
                                     >
-                                        Сохранить
-                                    </CustomButton>
-                                </div>
-                            </>
-                        )}
+                                        <CustomInputEditModal
+                                            id={"code"}
+                                            labelField={"Код проверки"}
+                                            onChange={(value) => setCode(value)}
+                                            defaultValue={code}
+                                        />
+                                        {currentEmployeeInfo && (
+                                            <CustomButton
+                                                onClick={() => {
+                                                    fetchVerificatinCode(
+                                                        currentEmployeeInfo?.id,
+                                                        currentEmployeeInfo?.organizationId
+                                                    );
+                                                }}
+                                                height="53px"
+                                            >
+                                                Отправить код проверки
+                                            </CustomButton>
+                                        )}
+                                    </div>
+                                    <div style={{ margin: "20px 0" }}>
+                                        <input
+                                            type="checkbox"
+                                            value=""
+                                            id="flexCheckDefault"
+                                            onClick={() =>
+                                                setIsCheckboxOn(!isCheckboxOn)
+                                            }
+                                        />
+                                        <label htmlFor="flexCheckDefault">
+                                            Нажимая на кнопку, я соглашаюсь с{" "}
+                                            <a
+                                                href="https://www.gsprom.ru/politic/"
+                                                target="_blank"
+                                                rel="noreferrer"
+                                            >
+                                                Политикой обработки персональных
+                                                данных
+                                            </a>{" "}
+                                            и даю согласие на{" "}
+                                            <a
+                                                href="https://www.gsprom.ru/politic/"
+                                                target="_blank"
+                                                rel="noreferrer"
+                                            >
+                                                обработку персональных данных
+                                            </a>
+                                        </label>
+                                    </div>
+                                    <div style={{ alignSelf: "center" }}>
+                                        <CustomButton
+                                            disabled={
+                                                !isCheckboxOn || code.length < 6
+                                            }
+                                            onClick={() => handleSendButton()}
+                                            height="40px"
+                                        >
+                                            Сохранить
+                                        </CustomButton>
+                                    </div>
+                                </>
+                            )}
                     </ModalContent>
                 </ModalContainer>
             </Modal2Background>

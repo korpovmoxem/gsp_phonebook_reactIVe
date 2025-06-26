@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import background from "../../assets/Err.png";
+import { CustomButton } from "../StyledComponents";
+import { useNavigate } from "react-router-dom";
 
 const HeaderErr = styled.div`
     padding-top: 5%;
@@ -15,12 +17,16 @@ const ErrorPageWrapper = styled.div`
 
 export const ErrorPage = () => {
     console.log("Error Page render");
+    const navigate = useNavigate();
     return (
         <ErrorPageWrapper>
             <div>
                 <HeaderErr>
                     <h1>Произошла ошибка</h1>
                     <h3>Мы уже в курсе проблемы и занимаемся её решением</h3>
+                    <CustomButton height="40px" onClick={() => navigate("/")}>
+                        Вернуться на главную
+                    </CustomButton>
                 </HeaderErr>
             </div>
         </ErrorPageWrapper>

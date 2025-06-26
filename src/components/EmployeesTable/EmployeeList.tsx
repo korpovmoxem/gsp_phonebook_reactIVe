@@ -293,6 +293,7 @@ export const EmployeeList: React.FC = () => {
                                                             }
                                                             width="75px"
                                                             height="75px"
+                                                            loading="lazy"
                                                         />
                                                         <CellWrapper
                                                             style={{
@@ -440,6 +441,7 @@ export const EmployeeList: React.FC = () => {
                                                                     }
                                                                     width="75px"
                                                                     height="75px"
+                                                                    loading="lazy"
                                                                 />
                                                                 <CellWrapper
                                                                     style={{

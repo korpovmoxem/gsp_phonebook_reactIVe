@@ -147,6 +147,12 @@ export const SearchBar = () => {
         };
     }, []);
 
+    useEffect(() => {
+        if (!searchParams.get("value")) {
+            clearInput();
+        }
+    }, [searchParams]);
+
     return (
         <>
             <SearchComponent>
