@@ -13,6 +13,7 @@ import { buildOrgIndexId, buildOrgIndexTreeId } from '../utils/buildOrgIndex';
 import { OrgMap } from '../utils/buildOrgIndex';
 import axios from 'axios';
 
+
 interface OrgState {
     organizations: Organization[];
     externalOrganizations: ExternalOrganizations[];
@@ -31,6 +32,7 @@ interface OrgState {
     isCurrentEmployeeLoading: boolean,
     isEditInformation: boolean,
     isLoadingCode: boolean,
+    
 
     fetchTree: () => Promise<void>;
     fetchExternalTree: () => Promise<void>;
@@ -119,6 +121,15 @@ export const useOrgStore = create<OrgState>((set, get) => ({
                 if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
                 const data = await response.json();
                 localStorage.setItem(ORGANIZATIONS_LIST, JSON.stringify(data.result));
+
+                const builtOrgMap = buildOrgIndexTreeId(data.result);
+                const builtOrgMapId = buildOrgIndexId(data.result);
+                set({
+                    organizations: data.result,
+                    orgMap: builtOrgMap,
+                    orgMapId: builtOrgMapId,
+                    isOrgLoading: false,
+                });
             } else {
                 const builtOrgMap = buildOrgIndexTreeId(JSON.parse(savedOrgList));
                 const builtOrgMapId = buildOrgIndexId(JSON.parse(savedOrgList));
@@ -129,13 +140,6 @@ export const useOrgStore = create<OrgState>((set, get) => ({
                     isOrgLoading: false,
                 });
             }
-            
-
-            
-
-           
-
-            
         } catch (error: any) {
             console.error('Ошибка загрузки организаций:', error.message);
             toast.error('Ошибка при загрузке организаций');

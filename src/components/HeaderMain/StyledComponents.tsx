@@ -1,10 +1,16 @@
 import styled from "styled-components";
 
-export const HeaderWrapper = styled.div`
+export const LogoWrapper = styled.div`
     padding: 10px;
     display: flex;
     flex-direction: column;
     max-width: 250px;
+`;
+
+export const HeaderWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 `;
 
 export const MainLogo = styled.img`

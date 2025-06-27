@@ -10,6 +10,7 @@ import {
     CustomDatalistItemHeader,
     CustomDatalistItemText,
     CustomSelect,
+    InputWrapper,
     SearchButton,
     SearchComponent,
     SearchInput,
@@ -153,13 +154,7 @@ export const SearchBar = () => {
         <>
             <SearchComponent>
                 <SearchInputWrapper>
-                    <div
-                        style={{
-                            background: "white",
-                            height: "100%",
-                            alignContent: "center",
-                        }}
-                    >
+                    <InputWrapper>
                         <SearchInput
                             type="text"
                             value={query}
@@ -293,7 +288,7 @@ export const SearchBar = () => {
                                 </CustomDatalist>
                             </>
                         )}
-                    </div>
+                    </InputWrapper>
                     {query && <ClearButton onClick={clearInput}>×</ClearButton>}
                 </SearchInputWrapper>
 

@@ -5,7 +5,7 @@ export const SearchComponent = styled.div`
     display: flex;
     width: 100%;
     align-items: center;
-    background: rgb(13, 103, 161);
+    background: #0d67a1;
     place-items: stretch;
     border-radius: 10px;
     overflow: hidden;
@@ -27,6 +27,8 @@ export const SearchInput = styled.input`
     padding: 15px 40px 15px 15px;
     border: none;
     outline: none;
+    background: ${(props) => props.theme.backgroundSearh};
+    transition: all 0.5s ease;
 `;
 
 export const ClearButton = styled.button`
@@ -45,7 +47,9 @@ export const SearchSelect = styled.select`
     border: none;
     border-left: 1px solid #ccc;
     padding: 15px;
-    background: #ffffff;
+    background: ${(props) => props.theme.backgroundSearh};
+    color: ${(props) => props.theme.mainTextColor};
+    transition: all 0.5s ease;
     cursor: pointer;
 `;
 
@@ -120,4 +124,11 @@ export const CustomDatalistItemText = styled.span`
     margin: 0 0 0 20px;
     font-size: 12px;
     color: grey;
+`;
+
+export const InputWrapper = styled.div`
+    background: ${(props) => props.theme.backgroundSearh};
+    transition: all 0.5s ease;
+    height: 100%;
+    align-content: center;
 `;

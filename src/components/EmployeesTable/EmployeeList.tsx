@@ -29,6 +29,7 @@ import {
     HeadColumn,
     PositionWrapper,
     SecondHeader,
+    EmployeeListWrapper,
 } from "./StyledComponents";
 import Highlighter from "react-highlight-words";
 import { SearchBar } from "../SearchBar/SearchBar";
@@ -199,14 +200,7 @@ export const EmployeeList: React.FC = () => {
     }, [isDefaultRoute]);
 
     return (
-        <div
-            style={{
-                display: "flex",
-                flexDirection: "column",
-                flex: "5 5 0%",
-                height: "100%",
-            }}
-        >
+        <EmployeeListWrapper>
             <div>
                 <SearchWrapper>
                     <SearchBar />
@@ -544,6 +538,6 @@ export const EmployeeList: React.FC = () => {
                     </EmployeeListWrapperTable>
                 )}
             </EmployeeListWrapperMain>
-        </div>
+        </EmployeeListWrapper>
     );
 };

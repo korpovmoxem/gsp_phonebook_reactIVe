@@ -1,0 +1,43 @@
+// Определяем структуру темы
+export type AppTheme = {
+    background: string;
+    backgroundBlock: string
+    mainTextColor: string
+    toggleColor: string
+    backgroundSearh: string
+    hoverItemText: string
+    backgroundSubHeader: string
+    borderColor: string
+    subHeaderColor: string
+    backgroundRowHover: string
+}
+
+const WHITE = '#ffffff'
+const BLACK = '#000000'
+const dark_grey_1 = '#333333'
+
+export const lightTheme: AppTheme = {
+    background: '#f7f7f7',
+    backgroundBlock: WHITE,
+    mainTextColor: BLACK,
+    toggleColor: '#999999',
+    backgroundSearh: WHITE,
+    hoverItemText: "#00000070",
+    backgroundSubHeader: "#f1f1f1",
+    borderColor: WHITE,
+    subHeaderColor: BLACK,
+    backgroundRowHover: '#f8f8ff',
+};
+
+export const darkTheme: AppTheme = {
+    background: '#252525',
+    backgroundBlock: '#333333',
+    mainTextColor: WHITE,
+    toggleColor: WHITE,
+    backgroundSearh: dark_grey_1,
+    hoverItemText: "#ffffff9c",
+    backgroundSubHeader: "#404040",
+    borderColor: '#9b9b9b',
+    subHeaderColor: "#ffffff9c",
+    backgroundRowHover: '#272727',
+};

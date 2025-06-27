@@ -21,8 +21,11 @@ export const MainTreeWrapper = styled.div`
     text-align: left;
     width: 400px;
     max-width: 400px;
-    background: white;
+    min-width: 240px;
+    background-color: ${(props) => props.theme.backgroundBlock};
+    color: ${(props) => props.theme.mainTextColor};
     border-radius: 10px;
+    transition: all 0.5s ease;
 `;
 
 export const TreeWrapper = styled.div`
@@ -35,7 +38,8 @@ export const TreeWrapper = styled.div`
 
 export const CustomLink = styled.a`
     text-decoration: none;
-    color: black;
+    color: ${(props) => props.theme.mainTextColor};
+    transition: all 0.5s ease;
 `;
 
 export const ChevronDownButton = styled(SquareChevronDown)`
@@ -60,7 +64,7 @@ export const ItemText = styled.span`
     letter-spacing: 0.2px;
 
     &:hover {
-        color: #00000070;
+        color: ${(props) => props.theme.hoverItemText};
     }
 `;
 

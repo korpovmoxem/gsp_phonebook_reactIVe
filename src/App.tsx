@@ -10,6 +10,7 @@ import {
     MainWrapper,
     ContentWrapper,
     FAB,
+    RootWrapper,
 } from "./components/StyledComponents";
 import { ErrorPage } from "./components/ErrorPage/ErrorPage";
 import { Footer } from "./components/Footer/Footer";
@@ -17,6 +18,9 @@ import { useOrgStore } from "./store/organizationStore";
 import { EmployeeInfoModal } from "./components/EmployeesTable/EmployeeInfoModal/EmployeeInfoModal";
 import { EditInformationModal } from "./components/EmployeesTable/EmployeeInfoModal/EditInformationModal";
 import { HelpModal } from "./components/HelpModal";
+import { ThemeProvider } from "styled-components";
+import { darkTheme, lightTheme } from "./theme/themes";
+import { useThemeStore } from "./store/useThemeStore";
 
 function App() {
     const [isHelpOpen, setIsHelpOpen] = React.useState(false);
@@ -25,39 +29,46 @@ function App() {
     );
     const isEditInformation = useOrgStore((state) => state.isEditInformation);
 
+    const { theme } = useThemeStore();
+    const currentTheme = theme === "light" ? lightTheme : darkTheme;
+
     return (
         <BrowserRouter>
-            <MainWrapper>
-                <HeaderMain />
+            <ThemeProvider theme={currentTheme}>
+                <RootWrapper>
+                    <MainWrapper>
+                        <HeaderMain />
 
-                <Routes>
-                    <Route
-                        path="/*"
-                        element={
-                            <ContentWrapper>
-                                <OrgSidebar />
-                                <EmployeeList />
-                            </ContentWrapper>
-                        }
-                    />
-                    <Route path="/err" element={<ErrorPage />} />
-                </Routes>
+                        <Routes>
+                            <Route
+                                path="/*"
+                                element={
+                                    <ContentWrapper>
+                                        <OrgSidebar />
+                                        <EmployeeList />
+                                    </ContentWrapper>
+                                }
+                            />
+                            <Route path="/err" element={<ErrorPage />} />
+                        </Routes>
 
-                <Footer />
-                <FAB title="Помощь" onClick={() => setIsHelpOpen(true)}>
-                    ?
-                </FAB>
-                <ToastContainer
-                    position="top-right"
-                    autoClose={5000}
-                    theme="light"
-                />
-                {isEmployeeInfoModalOpen && <EmployeeInfoModal />}
-                {isEditInformation && <EditInformationModal />}
-                {isHelpOpen && (
-                    <HelpModal onClose={() => setIsHelpOpen(false)} />
-                )}
-            </MainWrapper>
+                        <Footer />
+                        <FAB title="Помощь" onClick={() => setIsHelpOpen(true)}>
+                            ?
+                        </FAB>
+                        <ToastContainer
+                            position="top-right"
+                            autoClose={5000}
+                            theme="light"
+                        />
+                        {isEmployeeInfoModalOpen && <EmployeeInfoModal />}
+                        {isEditInformation && <EditInformationModal />}
+                        {isHelpOpen && (
+                            <HelpModal onClose={() => setIsHelpOpen(false)} />
+                        )}
+                    </MainWrapper>
+                </RootWrapper>
+            </ThemeProvider>
         </BrowserRouter>
     );
 }
