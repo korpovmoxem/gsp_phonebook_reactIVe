@@ -60,10 +60,14 @@ export const HelpModal = ({ onClose }: Props) => {
                             <br />
                             Справочник обновляется ежедневно с 7:00 до 7:30 для
                             получения данных из следующих систем:
-                            <br />
-                            Фото, email, номера телефонов - ActiveDirectory
-                            <br />
-                            Остальная информация - 1С:ЗУП
+                            <ul>
+                                <li>
+                                    Фото, email, номера телефонов -
+                                    ActiveDirectory
+                                </li>
+                                <br />
+                                <li>Остальная информация - 1С:ЗУП</li>
+                            </ul>
                         </div>
                     </ModalContent>
                 </ModalContainer>

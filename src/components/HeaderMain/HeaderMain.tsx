@@ -39,10 +39,16 @@ export const HeaderMain = () => {
         <HeaderWrapper>
             <LogoWrapper>
                 <Link to="/#">
-                    <>
+                    <div
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            margin: 0,
+                        }}
+                    >
                         <MainLogo src={MainLogoImg} alt="ГазСтройПром" />
                         <SubLogo src={AdressBookImg} alt="ГазСтройПром" />
-                    </>
+                    </div>
                 </Link>
             </LogoWrapper>
             <CustomToggle

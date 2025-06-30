@@ -10,6 +10,11 @@ export type AppTheme = {
     borderColor: string
     subHeaderColor: string
     backgroundRowHover: string
+    greyHeader: string
+    shadowColor: string
+    BackgroundDatalist: string
+    backgroundModalEditInput: string
+    modalBlurColor: string
 }
 
 const WHITE = '#ffffff'
@@ -27,6 +32,11 @@ export const lightTheme: AppTheme = {
     borderColor: WHITE,
     subHeaderColor: BLACK,
     backgroundRowHover: '#f8f8ff',
+    greyHeader: '#666666',
+    shadowColor: 'rgba(34, 60, 80, 0.75)',
+    BackgroundDatalist: WHITE,
+    backgroundModalEditInput: 'rgba(240, 240, 240, 0.5)',
+    modalBlurColor: 'rgba(0, 0, 0, 0.25)',
 };
 
 export const darkTheme: AppTheme = {
@@ -40,4 +50,9 @@ export const darkTheme: AppTheme = {
     borderColor: '#9b9b9b',
     subHeaderColor: "#ffffff9c",
     backgroundRowHover: '#272727',
+    greyHeader: '#959595',
+    shadowColor: 'rgba(175, 198, 216, 0.75)',
+    BackgroundDatalist: '#252525',
+    backgroundModalEditInput: 'rgba(29, 29, 29, 0.5)',
+    modalBlurColor: 'rgba(255, 255, 255, 0.25)',
 };

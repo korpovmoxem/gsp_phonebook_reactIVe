@@ -12,7 +12,7 @@ async function getAvailableApiBase(): Promise<string> {
   }
 
   try {
-    const ping = await fetch(`${TEST_API}/ping`, { method: "GET" });
+    const ping = await fetch(`${TEST_API}/status`, { method: "GET" });
     if (ping.ok) {
       console.info("Используется тестовый API");
       return TEST_API;

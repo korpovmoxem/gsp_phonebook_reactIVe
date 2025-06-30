@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { Organization } from "../../types";
-import styled from "styled-components";
+import styled, { DefaultTheme } from "styled-components";
 import {
     ChevronDownButton,
     ChevronRightButton,
     ItemText,
+    SquareDotButton,
 } from "./StyledComponent";
 
 interface Props {
@@ -26,12 +27,14 @@ const ItemRow = styled.div<RowProps>`
     alignitems: center;
     margintop: 7px;
     lineheight: 1;
-    ${({ selected }) =>
+    ${({ selected, theme }) =>
         selected &&
         `
-        background-color: #e6e7e9;
+        // background-color: #e6e7e9;
+        background-color: ${theme.backgroundSubHeader};
         border-radius: 10px;
-        padding: 5px;
+        margin-left: -5px;
+        padding: 5px 5px 5px 5px;
     `}
 `;
 
@@ -78,7 +81,7 @@ export const TreeNode = ({
                 }}
                 selected={node.id === selectedId && selectedId !== null}
             >
-                {node.children.length > 0 && (
+                {node.children.length > 0 ? (
                     <span
                         onClick={(e) => {
                             e.stopPropagation();
@@ -95,6 +98,12 @@ export const TreeNode = ({
                             />
                         )}
                     </span>
+                ) : (
+                    <span>
+                        <SquareDotButton size={DEFAULT_EXPAND_ICON_SIZE} />
+                        {/* <SquareMinusButSton size={DEFAULT_EXPAND_ICON_SIZE} /> */}
+                    </span>
+                    // <span style={{ width: DEFAULT_EXPAND_ICON_SIZE }}></span>
                 )}
 
                 <ItemText>{node.name}</ItemText>

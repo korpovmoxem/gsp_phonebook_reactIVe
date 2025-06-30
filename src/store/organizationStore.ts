@@ -32,6 +32,8 @@ interface OrgState {
     isCurrentEmployeeLoading: boolean,
     isEditInformation: boolean,
     isLoadingCode: boolean,
+
+    getCodeResponse: string;
     
 
     fetchTree: () => Promise<void>;
@@ -74,6 +76,7 @@ export const useOrgStore = create<OrgState>((set, get) => ({
     isLoadingCode: false,
     isEmployeeForSearchBarLoading: false,
     EmployeesListLimit: [],
+    getCodeResponse: '',
 
     fetchExternalTree: async () => {
         set({ isExternalOrgLoading: true });
@@ -108,7 +111,7 @@ export const useOrgStore = create<OrgState>((set, get) => ({
             localStorage.setItem(STORAGE_KEY, today);
         } else if (storedDate !== today) {
             // Даты не совпадают → очищаем localStorage
-            localStorage.clear();
+            localStorage.removeItem(ORGANIZATIONS_LIST)
             localStorage.setItem(STORAGE_KEY, today);
             console.log('localStorage очищен — новый день');
         }
@@ -273,9 +276,11 @@ export const useOrgStore = create<OrgState>((set, get) => ({
             set({
                 isLoadingCode: false,
             });
+            console.log(response)
         } catch (error: any) {
-            console.error('Ошибка при отправке кода: ', error.message);
-            toast.error('Ошибка при отправке кода. Поробуйте позже');
+            console.error('Ошибка при получении кода: ', error.message);
+            console.log(error.message)
+            toast.error('Ошибка при получении кода.');
             
         } finally {
             set({ isLoadingCode: false });
@@ -295,7 +300,7 @@ export const useOrgStore = create<OrgState>((set, get) => ({
                     "id": employeeId,
                     "organizationId": organizationId,
                     "mobileNumberPersonal": personalMobile,
-                    "externalNumber": cityPhone,
+                    "externalNumberCorp": cityPhone,
                     "workPlace": workPlace,
                     "address": address
                 })

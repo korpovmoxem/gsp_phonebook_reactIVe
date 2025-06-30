@@ -1,3 +1,4 @@
+import Skeleton from "react-loading-skeleton";
 import { styled } from "styled-components";
 
 export const EmployeeListWrapperMain = styled.div.attrs({
@@ -64,7 +65,7 @@ export const FirstHeader = styled.div`
     background: #0d67a1;
     padding: 8px;
     font-weight: bold;
-    border-bottom: 1px solid rgb(255, 255, 255);
+    border-bottom: 1px solid ${(props) => props.theme.background};
     z-index: 4;
     display: flex;
     border-top-left-radius: 10px;
@@ -90,7 +91,7 @@ export const SecondHeader = styled.div`
     transition: all 0.5s ease;
     padding: 8px;
     font-weight: bold;
-    border-bottom: 1px solid #fff;
+    border-bottom: 1px solid ${(props) => props.theme.background};
     z-index: 3;
 `;
 
@@ -115,7 +116,7 @@ export const PositionWrapper = styled.div`
 `;
 
 export const EmployeeDepartmentPathWrapper = styled.div`
-    display: ;flex; 
+    display: flex;
     flex-direction: row;
 `;
 

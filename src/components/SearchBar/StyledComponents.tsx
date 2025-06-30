@@ -28,6 +28,7 @@ export const SearchInput = styled.input`
     border: none;
     outline: none;
     background: ${(props) => props.theme.backgroundSearh};
+    color: ${(props) => props.theme.mainTextColor};
     transition: all 0.5s ease;
 `;
 
@@ -88,10 +89,10 @@ export const CustomDatalist = styled.div`
     width: 60%;
     z-index: 10;
     margin-top: 5px;
-    background-color: rgb(226, 226, 226);
-    -webkit-box-shadow: 10px 15px 25px -15px rgba(34, 60, 80, 0.75);
-    -moz-box-shadow: 10px 15px 25px -15px rgba(34, 60, 80, 0.75);
-    box-shadow: 10px 15px 25px -15px rgba(34, 60, 80, 0.75);
+    background-color: ${(props) => props.theme.backgroundBlock};
+    -webkit-box-shadow: 10px 15px 25px -15px ${(props) => props.theme.shadowColor};
+    -moz-box-shadow: 10px 15px 25px -15px ${(props) => props.theme.shadowColor};
+    box-shadow: 10px 15px 25px -15px ${(props) => props.theme.shadowColor};
     :last-child {
         border-bottom-left-radius: 10px;
         border-bottom-right-radius: 10px;
@@ -109,9 +110,10 @@ export const CustomDatalistItem = styled.div`
     height: 40px;
     margin-bottom: 2px;
     padding: 5px;
-    background-color: white;
+    background-color: ${(props) => props.theme.BackgroundDatalist};
+    color: ${(props) => props.theme.mainTextColor};
     &:hover {
-        background-color: #f8f8ff;
+        background-color: ${(props) => props.theme.backgroundRowHover};
     }
 `;
 

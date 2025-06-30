@@ -15,10 +15,11 @@ export const HeaderWrapper = styled.div`
 
 export const MainLogo = styled.img`
     margin-bottom: 20px;
+    width: 10vw;
 `;
 
 export const SubLogo = styled.img`
-    width: -webkit-fill-available;
+    width: 10vw;
 `;
 
 export const SubLogoArchive = styled.a`

@@ -1,5 +1,11 @@
 import { styled } from "styled-components";
-import { SquareChevronRight, SquareChevronDown } from "lucide-react";
+import {
+    SquareChevronRight,
+    SquareChevronDown,
+    Square,
+    SquareMinus,
+    SquareDot,
+} from "lucide-react";
 
 export const OrgSidebarHeader = styled.h3`
     margin: 0 15px 10px;
@@ -51,6 +57,22 @@ export const ChevronDownButton = styled(SquareChevronDown)`
 `;
 
 export const ChevronRightButton = styled(SquareChevronRight)`
+    cursor: pointer;
+    stroke: #1d75bb;
+    &:hover {
+        stroke: #1d74bb8a;
+    }
+`;
+
+export const SquareDotButton = styled(SquareDot)`
+    cursor: pointer;
+    stroke: #1d75bb;
+    &:hover {
+        stroke: #1d74bb8a;
+    }
+`;
+
+export const SquareMinusButton = styled(SquareMinus)`
     cursor: pointer;
     stroke: #1d75bb;
     &:hover {

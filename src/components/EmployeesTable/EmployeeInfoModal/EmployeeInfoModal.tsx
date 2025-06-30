@@ -11,10 +11,11 @@ import {
     ModalHeader,
 } from "../../StyledComponents";
 import { useEffect, useRef } from "react";
-import Contact from "../../../materials/contactInfo.svg";
-import WorkPlace from "../../../materials/workPlace.svg";
+import { ReactComponent as Contact } from "../../../materials/contactInfo.svg";
+import { ReactComponent as WorkPlace } from "../../../materials/workPlace.svg";
 import { UsersRound } from "lucide-react";
 import {
+    BlockModalIcon,
     Fio,
     InfoBlock,
     InfoBlockContent,
@@ -55,7 +56,7 @@ const INFORMATION_BLOCKS = [
             },
             {
                 id: "inf_block_0_4",
-                nameField: "Email",
+                nameField: "Электронная почта",
                 value: "email",
                 isEditable: false,
             },
@@ -315,55 +316,53 @@ export const EmployeeInfoModal: React.FC = () => {
                                                 )}
                                             <div style={{ marginTop: "20px" }}>
                                                 {INFORMATION_BLOCKS.map(
-                                                    (block) => (
-                                                        <InfoBlock
-                                                            key={block.id}
-                                                        >
-                                                            <>
-                                                                <h4
-                                                                    style={{
-                                                                        margin: 0,
-                                                                        marginBottom:
-                                                                            "10px",
-                                                                    }}
-                                                                >
-                                                                    <img
-                                                                        src={
-                                                                            block.icon
-                                                                        }
+                                                    (block) => {
+                                                        const IconComponent =
+                                                            block.icon;
+                                                        return (
+                                                            <InfoBlock
+                                                                key={block.id}
+                                                            >
+                                                                <>
+                                                                    <h4
                                                                         style={{
-                                                                            marginRight:
-                                                                                "5px",
+                                                                            margin: 0,
+                                                                            marginBottom:
+                                                                                "10px",
                                                                         }}
-                                                                        alt="Иконка блока"
-                                                                    />
-                                                                    {
-                                                                        block.nameBlock
-                                                                    }
-                                                                </h4>
-                                                            </>
-                                                            <InfoBlockContent>
-                                                                {block.fields.map(
-                                                                    (field) => (
-                                                                        <ModalField
-                                                                            key={
-                                                                                field.id
-                                                                            }
-                                                                            nameField={
-                                                                                field.nameField
-                                                                            }
-                                                                            value={
-                                                                                currentEmployeeInfo[
-                                                                                    field
-                                                                                        .value
-                                                                                ]
-                                                                            }
-                                                                        />
-                                                                    )
-                                                                )}
-                                                            </InfoBlockContent>
-                                                        </InfoBlock>
-                                                    )
+                                                                    >
+                                                                        <IconComponent />
+
+                                                                        {
+                                                                            block.nameBlock
+                                                                        }
+                                                                    </h4>
+                                                                </>
+                                                                <InfoBlockContent>
+                                                                    {block.fields.map(
+                                                                        (
+                                                                            field
+                                                                        ) => (
+                                                                            <ModalField
+                                                                                key={
+                                                                                    field.id
+                                                                                }
+                                                                                nameField={
+                                                                                    field.nameField
+                                                                                }
+                                                                                value={
+                                                                                    currentEmployeeInfo[
+                                                                                        field
+                                                                                            .value
+                                                                                    ]
+                                                                                }
+                                                                            />
+                                                                        )
+                                                                    )}
+                                                                </InfoBlockContent>
+                                                            </InfoBlock>
+                                                        );
+                                                    }
                                                 )}
                                             </div>
                                         </InfoBlockWrapper>

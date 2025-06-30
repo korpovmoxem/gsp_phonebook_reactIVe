@@ -33,6 +33,10 @@ export const InfoBlock = styled.div`
     border: 1px solid rgb(223, 223, 223);
     border-radius: 10px;
     margin-bottom: 10px;
+    svg {
+        stroke: ${(props) => props.theme.mainTextColor};
+        margin-right: 5px;
+    }
 `;
 
 export const InfoBlockContent = styled.div`
@@ -54,5 +58,9 @@ export const FieldWrapper = styled.div`
 
 export const NameField = styled.label`
     font-size: 10pt;
-    color: rgb(102, 102, 102);
+    color: ${(props) => props.theme.greyHeader};
+`;
+
+export const BlockModalIcon = styled.img`
+    margin-right: 5px;
 `;

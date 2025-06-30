@@ -243,7 +243,7 @@ export const EmployeeList: React.FC = () => {
                                             <HeadColumn
                                                 style={{ flex: "1 1 0%" }}
                                             >
-                                                Email
+                                                Электронная почта
                                             </HeadColumn>
                                         </FirstHeader>
                                         {/* Заголовок организации */}
@@ -396,7 +396,7 @@ export const EmployeeList: React.FC = () => {
                                             flex: "1 1 0%",
                                         }}
                                     >
-                                        Email
+                                        Электронная почта
                                     </HeadColumn>
                                 </FirstHeader>
                                 {employeesList.length > 0 &&

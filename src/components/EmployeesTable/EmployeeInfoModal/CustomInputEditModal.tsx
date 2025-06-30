@@ -6,7 +6,7 @@ const CustomInputContainer = styled.div`
     width: 97%;
     align-self: center;
     padding: 5px;
-    background-color: rgba(240, 240, 240, 0.49);
+    background-color: ${(props) => props.theme.backgroundModalEditInput};
     border-bottom: 3px solid rgb(138, 138, 138);
     font-size: 12pt;
     margin-bottom: 10px;
@@ -35,6 +35,7 @@ const CustomInput = styled.input`
     margin: 5px 0 0 10px;
     padding: 0;
     width: 90%;
+    color: ${(props) => props.theme.mainTextColor};
 
     &::placeholder {
         font-size: 12pt;

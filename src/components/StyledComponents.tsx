@@ -1,4 +1,5 @@
 import { CopyIcon } from "lucide-react";
+import Skeleton from "react-loading-skeleton";
 import { styled } from "styled-components";
 
 export const ModalBackgroundTemplate = styled.div`
@@ -11,7 +12,7 @@ export const ModalBackgroundTemplate = styled.div`
     width: 100%;
     align-items: center;
     justify-content: center;
-    background-color: rgba(0, 0, 0, 0.25);
+    background-color: ${(props) => props.theme.modalBlurColor};
     animation-name: appear;
     animation-duration: 300ms;
     align-content: center;
@@ -26,7 +27,7 @@ export const Modal2Background = styled(ModalBackgroundTemplate)`
 `;
 
 export const ModalContainer = styled.div`
-    background: #ffffff;
+    background-color: ${(props) => props.theme.backgroundBlock};
     max-width: 1000px;
     width: 900px;
     margin: auto;
@@ -42,11 +43,13 @@ export const ModalContent = styled.div`
     display: flex;
     flex-direction: column;
     padding: 10px 30px;
+    color: ${(props) => props.theme.mainTextColor};
 `;
 
 export const CloseButton = styled.button`
     border: none;
     background-color: unset;
+    color: ${(props) => props.theme.mainTextColor};
     cursor: pointer;
     &:hover {
         color: rgb(167, 167, 167);
@@ -57,7 +60,7 @@ export const ModalHeader = styled.div`
     display: flex;
     position: sticky;
     top: 10px;
-    background-color: #ffffff;
+    background-color: ${(props) => props.theme.backgroundBlock};
     flex-direction: row;
     justify-content: space-between;
 `;
@@ -88,7 +91,7 @@ export const CustomButton = styled.button<ButtonProps>`
 `;
 
 export const CustomEmailLink = styled.a`
-    color: black;
+    color: ${(props) => props.theme.mainTextColor};
     &:hover {
         color: grey;
     }
@@ -118,7 +121,7 @@ export const RootWrapper = styled.div`
 export const ContentWrapper = styled.div`
     display: flex;
     flex-direction: row;
-    height: calc(100vh - 150px);
+    height: calc(100vh - 145px);
 `;
 
 export const SearchWrapper = styled.div`
@@ -143,4 +146,9 @@ export const FAB = styled.button`
     &:hover {
         background: rgba(167, 167, 167, 0.9);
     }
+`;
+
+export const CustomSkeleton = styled(Skeleton)`
+    --base-color: ${(props) => props.theme.backgroundSubHeader};
+    --highlight-color: ${(props) => props.theme.background};
 `;
