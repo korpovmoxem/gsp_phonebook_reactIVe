@@ -1,23 +1,14 @@
-// jest.config.js
 module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'jsdom',
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  preset: "ts-jest",
+  testEnvironment: "jsdom",
   transform: {
-    '^.+\\.tsx?$': 'ts-jest',
+    "^.+\\.tsx?$": "ts-jest",
   },
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   moduleNameMapper: {
-    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
-    '^@/(.*)$': '<rootDir>/src/$1', // если есть пути с @/
+    "\\.(css|less|scss|sass)$": "identity-obj-proxy",
+    "^.+\\.(jpg|jpeg|png)$": "<rootDir>/__mocks__/fileMock.js",
+    "\\.(svg)$": "<rootDir>/__mocks__/svgMock.js",
   },
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
-  testPathIgnorePatterns: ['/node_modules/', '/dist/', '/build/'],
-  collectCoverageFrom: [
-    'src/**/*.{ts,tsx}',
-    '!src/**/*.d.ts',
-    '!src/index.tsx',
-    '!src/reportWebVitals.ts',
-  ],
-  coverageDirectory: 'coverage',
-  coverageReporters: ['json', 'html'],
+  testMatch: ["**/?(*.)+(test).[tj]s?(x)"],
 };

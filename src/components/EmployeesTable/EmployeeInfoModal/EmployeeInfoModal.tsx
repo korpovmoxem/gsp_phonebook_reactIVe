@@ -96,6 +96,9 @@ const INFORMATION_BLOCKS = [
 ];
 
 export const EmployeeInfoModal: React.FC = () => {
+    console.log("RENDER EmployeeInfoModal");
+    console.log("RENDER MODAL FIELD");
+    console.log(ModalField);
     const isEmployeeInfoModalOpen = useOrgStore(
         (state) => state.isEmployeeInfoModalOpen
     );
