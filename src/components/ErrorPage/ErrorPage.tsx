@@ -14,14 +14,24 @@ const ErrorPageWrapper = styled.div`
     height: calc(100vh - 150px);
 `;
 
+const ErrorHeader = styled.h1`
+    color: ${(props) => props.theme.mainTextColor};
+`;
+
+const ErrorDescription = styled.h3`
+    color: ${(props) => props.theme.mainTextColor};
+`;
+
 export const ErrorPage = () => {
     const navigate = useNavigate();
     return (
         <ErrorPageWrapper>
             <div>
                 <HeaderErr>
-                    <h1>Произошла ошибка</h1>
-                    <h3>Мы уже в курсе проблемы и занимаемся её решением</h3>
+                    <ErrorHeader>Произошла ошибка</ErrorHeader>
+                    <ErrorDescription>
+                        Мы уже в курсе проблемы и занимаемся её решением
+                    </ErrorDescription>
                     <CustomButton height="40px" onClick={() => navigate("/")}>
                         Вернуться на главную
                     </CustomButton>

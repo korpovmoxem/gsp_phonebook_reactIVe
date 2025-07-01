@@ -271,7 +271,12 @@ export const useOrgStore = create<OrgState>((set, get) => ({
                     "organizationId": idOrganization
                 })
             })
-            if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+            
+            if (!response.ok) {
+                // Получаем тело ответа как JSON или текст
+                const errorData = await response.json();
+                throw new Error(errorData.detail || `HTTP error: ${response.status}`);
+            }
 
             set({
                 isLoadingCode: false,
@@ -280,7 +285,7 @@ export const useOrgStore = create<OrgState>((set, get) => ({
         } catch (error: any) {
             console.error('Ошибка при получении кода: ', error.message);
             console.log(error.message)
-            toast.error('Ошибка при получении кода.');
+            toast.error(`Ошибка при получении кода.\n${error.message && error.message}`);
             
         } finally {
             set({ isLoadingCode: false });

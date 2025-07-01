@@ -15,7 +15,7 @@ const LinkSpan = styled.span`
     text-decoration: underline;
 `;
 
-const SPECIAL_FIELDS = ["Email", "Подразделение", "Организация"];
+const SPECIAL_FIELDS = ["Электронная почта", "Подразделение", "Организация"];
 
 export const ModalField = ({ nameField, value }: Props) => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -40,7 +40,7 @@ export const ModalField = ({ nameField, value }: Props) => {
             <NameField>{nameField}</NameField>
             {SPECIAL_FIELDS.includes(nameField) ? (
                 <>
-                    {nameField === "Email" && (
+                    {nameField === "Электронная почта" && (
                         <div>
                             {value ? (
                                 <>
