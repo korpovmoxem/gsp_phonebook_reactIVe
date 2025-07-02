@@ -18,8 +18,6 @@ const LinkSpan = styled.span`
 const SPECIAL_FIELDS = ["Электронная почта", "Подразделение", "Организация"];
 
 export const ModalField = ({ nameField, value }: Props) => {
-    console.log("+++++++++++++++");
-    console.log(ModalField);
     const [searchParams, setSearchParams] = useSearchParams();
     // const selectOrg = useOrgStore((state) => state.selectOrg);
     const setIsEmployeeInfoModalOpen = useOrgStore(

@@ -11,7 +11,6 @@ export const useThemeStore = create<AppStore>((set) => ({
     theme: (localStorage.getItem('theme') as 'light' | 'dark') || 'light',
     token: localStorage.getItem('token'),
     toggleTheme: () =>{
-        console.log('Меняем тему')
         set((state) => {
             const newTheme = state.theme === 'light' ? 'dark' : 'light';
             localStorage.setItem('theme', newTheme);

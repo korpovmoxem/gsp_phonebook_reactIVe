@@ -113,7 +113,6 @@ export const useOrgStore = create<OrgState>((set, get) => ({
             // Даты не совпадают → очищаем localStorage
             localStorage.removeItem(ORGANIZATIONS_LIST)
             localStorage.setItem(STORAGE_KEY, today);
-            console.log('localStorage очищен — новый день');
         }
 
         try {
@@ -151,8 +150,6 @@ export const useOrgStore = create<OrgState>((set, get) => ({
     },
 
     selectOrg: async (organizationId, departmentId, withChildren) => {
-        console.log('selectOrg')
-        console.log(withChildren)
         set({employeesList: []})
         const targetId = departmentId || organizationId;
         set({ selectedOrgId: targetId, isEmpLoading: true });
@@ -281,7 +278,6 @@ export const useOrgStore = create<OrgState>((set, get) => ({
             set({
                 isLoadingCode: false,
             });
-            console.log(response)
         } catch (error: any) {
             console.error('Ошибка при получении кода: ', error.message);
             console.log(error.message)
