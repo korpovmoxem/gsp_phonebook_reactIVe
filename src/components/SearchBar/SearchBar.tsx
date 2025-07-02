@@ -17,6 +17,7 @@ import {
     SearchInputWrapper,
 } from "./StyledComponents";
 import { SearchedItemsSkeleton } from "./SearchedItemsSkeleton";
+import { toast } from "react-toastify";
 
 export const SearchBar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -74,7 +75,7 @@ export const SearchBar = () => {
             fetchEmployeesWithParams(query, category);
             navigate(`/employee/search?value=${query}&type=${category}`);
         } else {
-            alert("Введите запрос");
+            toast.error("Введите запрос");
         }
     };
 
