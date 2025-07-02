@@ -15,7 +15,6 @@ import { ReactComponent as Contact } from "../../../materials/contactInfo.svg";
 import { ReactComponent as WorkPlace } from "../../../materials/workPlace.svg";
 import { UsersRound } from "lucide-react";
 import {
-    BlockModalIcon,
     Fio,
     InfoBlock,
     InfoBlockContent,
@@ -29,6 +28,7 @@ const INFORMATION_BLOCKS = [
         id: "inf_block_0",
         nameBlock: "Контактная информация",
         icon: Contact,
+        testId: "contact-icon",
         fields: [
             {
                 id: "inf_block_0_0",
@@ -66,6 +66,7 @@ const INFORMATION_BLOCKS = [
         id: "inf_block_1",
         nameBlock: "Место работы",
         icon: WorkPlace,
+        testId: "workplace-icon",
         fields: [
             {
                 id: "inf_block_1_0",
@@ -96,9 +97,6 @@ const INFORMATION_BLOCKS = [
 ];
 
 export const EmployeeInfoModal: React.FC = () => {
-    console.log("RENDER EmployeeInfoModal");
-    console.log("RENDER MODAL FIELD");
-    console.log(ModalField);
     const isEmployeeInfoModalOpen = useOrgStore(
         (state) => state.isEmployeeInfoModalOpen
     );
@@ -334,7 +332,11 @@ export const EmployeeInfoModal: React.FC = () => {
                                                                                 "10px",
                                                                         }}
                                                                     >
-                                                                        <IconComponent />
+                                                                        <IconComponent
+                                                                            data-testId={
+                                                                                block.testId
+                                                                            }
+                                                                        />
 
                                                                         {
                                                                             block.nameBlock

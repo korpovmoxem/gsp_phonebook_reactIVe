@@ -1,44 +1,42 @@
+// EmployeeInfoModal.test.tsx
+
 import React from "react";
-import { render, screen } from "@testing-library/react";
-
+import { render, screen, fireEvent } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import { useOrgStore } from "../../../store/organizationStore";
 import { EmployeeInfoModal } from "./EmployeeInfoModal";
+import { useOrgStore } from "../../../store/organizationStore";
 
-// beforeEach(() => {
-//     jest.clearAllMocks();
-//     // или
-//     jest.resetModules();
-// });
-// МОК zustand
+// Mock Zustand store
 jest.mock("../../../store/organizationStore", () => ({
     useOrgStore: jest.fn(),
 }));
 
-// МОК картинки
-jest.mock("../../../materials/photo.jpg", () => "photo.jpg");
-
-// МОК иконок
-jest.mock("../../../materials/contactInfo.svg", () => () => (
-    <svg data-testid="icon-contact" />
-));
-
-jest.mock("../../../materials/workPlace.svg", () => () => (
-    <svg data-testid="icon-workplace" />
-));
-
-// МОК Spinner
-jest.mock("spinners-react", () => ({
-    SpinnerCircular: () => <div data-testid="spinner" />,
-}));
-
+// Mock ModalField
 jest.mock("./ModalField", () => ({
-    ModalField: ({ nameField, value }: any) => (
-        <div>
-            <p>{nameField}</p>
-            <p>{value || "Не указан"}</p>
+    ModalField: ({
+        nameField,
+        value,
+    }: {
+        nameField: string;
+        value?: string | null;
+    }) => (
+        <div data-testid="modal-field">
+            <span>{nameField}</span>: <span>{value || "Не указан"}</span>
         </div>
     ),
+}));
+
+// Mock SVG icons
+jest.mock("../../../materials/contactInfo.svg", () => ({
+    ReactComponent: () => <svg data-testid="contact-icon" />,
+}));
+jest.mock("../../../materials/workPlace.svg", () => ({
+    ReactComponent: () => <svg data-testid="workplace-icon" />,
+}));
+
+// Mock Spinner
+jest.mock("spinners-react", () => ({
+    SpinnerCircular: () => <div data-testid="spinner" />,
 }));
 
 describe("EmployeeInfoModal", () => {
@@ -46,60 +44,137 @@ describe("EmployeeInfoModal", () => {
     const mockSetIsEditInformation = jest.fn();
     const mockFetchCurrentEmployeeInfo = jest.fn();
 
-    beforeAll(() => {
-        jest.spyOn(console, "error").mockImplementation(() => {});
-        jest.spyOn(console, "warn").mockImplementation(() => {});
-    });
+    const baseStore = {
+        isEmployeeInfoModalOpen: true,
+        setIsEmployeeInfoModalOpen: mockSetIsEmployeeInfoModalOpen,
+        currentEmployeeInfo: {
+            telephoneNumberCorp: "+7 123 456-78-90",
+            externalNumberCorp: "+7 987 654-32-10",
+            mobileNumberCorp: "+7 111 222-33-44",
+            mobileNumberPersonal: "+7 222 333-44-55",
+            email: "test@example.com",
+            organizationName: "Организация1",
+            departmentName: "Отдел разработки",
+            address: "ул. Пушкина, д. 10",
+            workPlace: "Кабинет 100",
+            assistants: [],
+            id: "123",
+            organizationId: "org456",
+            fullNameRus: "Иванов Иван",
+            isEditAvailable: true,
+        },
+        fetchCurrentEmployeeInfo: mockFetchCurrentEmployeeInfo,
+        isCurrentEmployeeLoading: false,
+        isEditInformation: false,
+        setIsEditInformation: mockSetIsEditInformation,
+    };
 
     beforeEach(() => {
-        (useOrgStore as unknown as jest.Mock).mockImplementation(
-            (selector: any) =>
-                selector({
-                    isEmployeeInfoModalOpen: true,
-                    setIsEmployeeInfoModalOpen: mockSetIsEmployeeInfoModalOpen,
-                    isEditInformation: false,
-                    setIsEditInformation: mockSetIsEditInformation,
-                    fetchCurrentEmployeeInfo: mockFetchCurrentEmployeeInfo,
-                    isCurrentEmployeeLoading: false,
-                    currentEmployeeInfo: {
-                        fullNameRus: "Иванов Иван Иванович",
-                        email: "ivanov@example.com",
-                        telephoneNumberCorp: "123456",
-                        photo: null,
-                        positionTitle: "Разработчик",
-                        departmentName: "IT",
-                        managers: [],
-                        assistants: [],
-                    },
-                })
+        (useOrgStore as unknown as jest.Mock).mockImplementation((selector) =>
+            selector(baseStore)
         );
+        jest.clearAllMocks();
     });
 
-    it("отображает модалку с инфой о сотруднике", () => {
+    it("рендерит модалку с данными сотрудника", () => {
         render(
             <MemoryRouter>
                 <EmployeeInfoModal />
             </MemoryRouter>
         );
 
-        expect(screen.getByText("Информация о сотруднике")).toBeInTheDocument();
-        expect(screen.getByText("Иванов Иван Иванович")).toBeInTheDocument();
-        expect(screen.getByText("Разработчик")).toBeInTheDocument();
-        // expect(screen.getByText("Электронная почта")).toBeInTheDocument();
-        expect(screen.getByText("ivanov@example.com")).toBeInTheDocument();
+        expect(screen.getByText("Номер телефона")).toBeInTheDocument();
+        expect(screen.getByText("+7 123 456-78-90")).toBeInTheDocument();
+
+        expect(screen.getByText("Электронная почта")).toBeInTheDocument();
+        expect(screen.getByText("test@example.com")).toBeInTheDocument();
+
+        expect(screen.getByText("Организация")).toBeInTheDocument();
+        expect(screen.getByText("Организация1")).toBeInTheDocument();
+
+        expect(screen.queryByTestId("spinner")).not.toBeInTheDocument();
     });
 
-    // it('нажимает на "Изменить данные"', () => {
-    //     render(
-    //         <MemoryRouter>
-    //             <EmployeeInfoModal />
-    //         </MemoryRouter>
-    //     );
+    it("отображает спиннер при загрузке данных", () => {
+        (useOrgStore as unknown as jest.Mock).mockImplementation((selector) =>
+            selector({ ...baseStore, isCurrentEmployeeLoading: true })
+        );
 
-    //     const button = screen.getByText("Изменить данные");
-    //     fireEvent.click(button);
+        render(
+            <MemoryRouter>
+                <EmployeeInfoModal />
+            </MemoryRouter>
+        );
 
-    //     expect(mockSetIsEmployeeInfoModalOpen).toHaveBeenCalledWith(false);
-    //     expect(mockSetIsEditInformation).toHaveBeenCalledWith(true);
-    // });
+        expect(screen.getByTestId("spinner")).toBeInTheDocument();
+    });
+
+    it("вызывает setIsEmployeeInfoModalOpen(false) при нажатии на Escape", () => {
+        render(
+            <MemoryRouter>
+                <EmployeeInfoModal />
+            </MemoryRouter>
+        );
+
+        fireEvent.keyDown(document, { key: "Escape" });
+        expect(mockSetIsEmployeeInfoModalOpen).toHaveBeenCalledWith(false);
+    });
+
+    it('вызывает setIsEditInformation(true) при клике на кнопку "Изменить данные"', () => {
+        render(
+            <MemoryRouter>
+                <EmployeeInfoModal />
+            </MemoryRouter>
+        );
+
+        const editButton = screen.getByText(/Изменить данные/i);
+        fireEvent.click(editButton);
+
+        expect(mockSetIsEditInformation).toHaveBeenCalledWith(true);
+    });
+
+    it("не рендерит помощников, если массив пустой", () => {
+        render(
+            <MemoryRouter>
+                <EmployeeInfoModal />
+            </MemoryRouter>
+        );
+
+        expect(screen.queryByText("Помощники")).not.toBeInTheDocument();
+    });
+
+    it("рендерит помощников, если они есть", () => {
+        const storeWithAssistants = {
+            ...baseStore,
+            currentEmployeeInfo: {
+                ...baseStore.currentEmployeeInfo,
+                assistants: [
+                    {
+                        id: "1",
+                        fullName: "Иван Петров",
+                        organizationId: "org1",
+                    },
+                    {
+                        id: "2",
+                        fullName: "Петр Иванов",
+                        organizationId: "org2",
+                    },
+                ],
+            },
+        };
+
+        (useOrgStore as unknown as jest.Mock).mockImplementation((selector) =>
+            selector(storeWithAssistants)
+        );
+
+        render(
+            <MemoryRouter>
+                <EmployeeInfoModal />
+            </MemoryRouter>
+        );
+
+        expect(screen.getByText("Помощники")).toBeInTheDocument();
+        expect(screen.getByText("Иван Петров")).toBeInTheDocument();
+        expect(screen.getByText("Петр Иванов")).toBeInTheDocument();
+    });
 });

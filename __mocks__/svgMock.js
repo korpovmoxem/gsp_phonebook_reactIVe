@@ -1,6 +1,9 @@
-import React from "react";
+// __mocks__/svgMock.js
 
-const SVGMock = () => <svg />;
+const React = require('react');
 
-export default SVGMock;
-export const ReactComponent = SVGMock;
+const SVGMock = () => React.createElement('svg', { 'data-testid': 'svg-icon' });
+
+SVGMock.ReactComponent = SVGMock;
+
+module.exports = SVGMock;

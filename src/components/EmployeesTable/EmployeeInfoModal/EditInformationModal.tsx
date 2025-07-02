@@ -190,6 +190,7 @@ export const EditInformationModal = () => {
                                         onChange={(value) =>
                                             setPersonalMobile(value)
                                         }
+                                        data-testId="input-personalMobile"
                                         defaultValue={personalMobile}
                                     />
                                     <CustomInputEditModal
@@ -199,10 +200,12 @@ export const EditInformationModal = () => {
                                             setCityPhone(value)
                                         }
                                         defaultValue={cityPhone}
+                                        data-testId="input-cityPhone"
                                     />
                                     <CustomInputEditModal
                                         id={"placeWork"}
                                         labelField={"Рабочее место"}
+                                        data-tesId="input-placeWork"
                                         onChange={(value) =>
                                             setWorkPlace(value)
                                         }
@@ -213,6 +216,7 @@ export const EditInformationModal = () => {
                                         labelField={"Адрес"}
                                         onChange={(value) => setAddress(value)}
                                         defaultValue={address}
+                                        data-testId="input-address"
                                     />
                                     <div
                                         style={{
@@ -227,6 +231,7 @@ export const EditInformationModal = () => {
                                             labelField={"Код проверки"}
                                             onChange={(value) => setCode(value)}
                                             defaultValue={code}
+                                            data-testId="input-code"
                                         />
                                         {currentEmployeeInfo && (
                                             <CustomButton
@@ -236,6 +241,7 @@ export const EditInformationModal = () => {
                                                         currentEmployeeInfo?.organizationId
                                                     );
                                                 }}
+                                                data-testId="button-code"
                                                 height="53px"
                                             >
                                                 Отправить код проверки
@@ -278,6 +284,7 @@ export const EditInformationModal = () => {
                                             }
                                             onClick={() => handleSendButton()}
                                             height="40px"
+                                            data-testid="save-button"
                                         >
                                             Сохранить
                                         </CustomButton>
