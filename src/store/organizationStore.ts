@@ -32,8 +32,6 @@ interface OrgState {
     isCurrentEmployeeLoading: boolean,
     isEditInformation: boolean,
     isLoadingCode: boolean,
-
-    getCodeResponse: string;
     
 
     fetchTree: () => Promise<void>;
@@ -47,6 +45,7 @@ interface OrgState {
     setIsEditInformation: (currentState: boolean) => void;
 
     fetchVerificatinCode: (idEmployee: string, idOrganization: string) => Promise<void>;
+    getCodeResponse: string;
 
     saveEmployeeInfo: (personalMobile: string, cityPhone: string, workPlace: number | null, address: string, code: string) => Promise<void>; 
 
@@ -227,10 +226,12 @@ export const useOrgStore = create<OrgState>((set, get) => ({
 
     setIsEmployeeInfoModalOpen: (currentState) =>{
         set({isEmployeeInfoModalOpen: currentState}) //, currentEmployeeInfo: undefined
+        set({ isLoadingCode: false });
     },
 
     setIsEditInformation: (currentState) =>{
         set({isEditInformation: currentState})
+        set({ isLoadingCode: false });
     },
 
     fetchCurrentEmployeeInfo: async (idEmployee, idOrganization) => {
@@ -270,21 +271,20 @@ export const useOrgStore = create<OrgState>((set, get) => ({
             })
             
             if (!response.ok) {
+                if (response.status !== 200 && response.status !== 429) {
+                    set({ isLoadingCode: false });
+                }
                 // Получаем тело ответа как JSON или текст
                 const errorData = await response.json();
                 throw new Error(errorData.detail || `HTTP error: ${response.status}`);
             }
+            toast.info('Письмо с кодом направлено на Вашу электронную почту')
 
-            set({
-                isLoadingCode: false,
-            });
         } catch (error: any) {
             console.error('Ошибка при получении кода: ', error.message);
             console.log(error.message)
             toast.error(`Ошибка при получении кода.\n${error.message && error.message}`);
             
-        } finally {
-            set({ isLoadingCode: false });
         }
     },
 

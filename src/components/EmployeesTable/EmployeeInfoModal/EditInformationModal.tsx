@@ -28,6 +28,8 @@ export const EditInformationModal = () => {
         (state) => state.setIsEmployeeInfoModalOpen
     );
 
+    const isLoadingCode = useOrgStore((state) => state.isLoadingCode);
+
     const [personalMobile, setPersonalMobile] = useState(
         currentEmployeeInfo?.mobileNumberPersonal || ""
     );
@@ -243,8 +245,11 @@ export const EditInformationModal = () => {
                                                 }}
                                                 data-testId="button-code"
                                                 height="53px"
+                                                disabled={isLoadingCode}
                                             >
-                                                Отправить код проверки
+                                                {isLoadingCode
+                                                    ? "Код получен"
+                                                    : "Отправить код проверки"}
                                             </CustomButton>
                                         )}
                                     </div>
