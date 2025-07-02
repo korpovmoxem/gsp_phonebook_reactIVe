@@ -3,7 +3,6 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { EmployeeList } from "./EmployeeList";
 import { useOrgStore } from "../../store/organizationStore";
-import { toast } from "react-toastify";
 
 // Мокаем зависимости
 jest.mock("../../store/organizationStore", () => ({

@@ -27,10 +27,10 @@ jest.mock("./ModalField", () => ({
 }));
 
 // Mock SVG icons
-jest.mock("../../../materials/contactInfo.svg", () => ({
+jest.mock("../../../assets/contactInfo.svg", () => ({
     ReactComponent: () => <svg data-testid="contact-icon" />,
 }));
-jest.mock("../../../materials/workPlace.svg", () => ({
+jest.mock("../../../assets/workPlace.svg", () => ({
     ReactComponent: () => <svg data-testid="workplace-icon" />,
 }));
 

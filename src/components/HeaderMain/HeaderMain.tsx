@@ -1,5 +1,5 @@
-import AdressBookImg from "../../materials/adressBook.svg";
-import MainLogoImg from "../../materials/logo.svg";
+import AdressBookImg from "../../assets/adressBook.svg";
+import MainLogoImg from "../../assets/logo.svg";
 
 import { Link, useNavigate } from "react-router-dom";
 import {

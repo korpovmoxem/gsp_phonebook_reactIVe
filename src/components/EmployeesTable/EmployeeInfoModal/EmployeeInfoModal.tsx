@@ -1,5 +1,5 @@
 import { useOrgStore } from "../../../store/organizationStore";
-import PhotoDefault from "../../../materials/photo.jpg";
+import PhotoDefault from "../../../assets/photo.jpg";
 import { ModalField } from "./ModalField";
 import { SpinnerCircular } from "spinners-react";
 import {
@@ -11,8 +11,8 @@ import {
     ModalHeader,
 } from "../../StyledComponents";
 import { useEffect, useRef } from "react";
-import { ReactComponent as Contact } from "../../../materials/contactInfo.svg";
-import { ReactComponent as WorkPlace } from "../../../materials/workPlace.svg";
+import { ReactComponent as Contact } from "../../../assets/contactInfo.svg";
+import { ReactComponent as WorkPlace } from "../../../assets/workPlace.svg";
 import { UsersRound } from "lucide-react";
 import {
     Fio,
