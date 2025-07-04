@@ -1,6 +1,7 @@
 
-const PROD_API = "http://172.16.153.53:8001";
-const TEST_API = "http://172.16.153.53:8001";
+const PROD_API = process.env.REACT_APP_API_URL || '';
+const TEST_API = process.env.REACT_APP_API_URL_TEST || '';
+
 const MOCK_API = "http://localhost:5000";
 
 /**

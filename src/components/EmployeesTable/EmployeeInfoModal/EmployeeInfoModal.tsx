@@ -339,7 +339,7 @@ export const EmployeeInfoModal: React.FC = () => {
                                                                         }}
                                                                     >
                                                                         <IconComponent
-                                                                            data-testId={
+                                                                            data-testid={
                                                                                 block.testId
                                                                             }
                                                                         />

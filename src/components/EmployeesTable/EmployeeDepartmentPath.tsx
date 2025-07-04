@@ -6,6 +6,7 @@ import {
     EmployeeDepartmentPathWrapper,
     Separator,
 } from "./StyledComponents";
+import React from "react";
 
 interface Props {
     departmentId: string;
@@ -34,7 +35,7 @@ export const EmployeeDepartmentPath = ({ departmentId, dept }: Props) => {
                     if (!node) return null;
 
                     return (
-                        <>
+                        <React.Fragment key={`${id}_${index}`}>
                             <Crumb
                                 onClick={() => {
                                     selectOrg(node.organizationId || id, id);
@@ -46,7 +47,6 @@ export const EmployeeDepartmentPath = ({ departmentId, dept }: Props) => {
                                         }`
                                     );
                                 }}
-                                key={`${id}_${index}`}
                             >
                                 {node.name}
                             </Crumb>
@@ -54,7 +54,7 @@ export const EmployeeDepartmentPath = ({ departmentId, dept }: Props) => {
                                 pathIds.filter((item) => isNaN(Number(item)))
                                     .length -
                                     1 && <Separator>→</Separator>}
-                        </>
+                        </React.Fragment>
                     );
                 })}
         </EmployeeDepartmentPathWrapper>

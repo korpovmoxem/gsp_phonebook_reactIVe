@@ -192,7 +192,7 @@ export const EditInformationModal = () => {
                                         onChange={(value) =>
                                             setPersonalMobile(value)
                                         }
-                                        data-testId="input-personalMobile"
+                                        data-testid="input-personalMobile"
                                         defaultValue={personalMobile}
                                     />
                                     <CustomInputEditModal
@@ -202,7 +202,7 @@ export const EditInformationModal = () => {
                                             setCityPhone(value)
                                         }
                                         defaultValue={cityPhone}
-                                        data-testId="input-cityPhone"
+                                        data-testid="input-cityPhone"
                                     />
                                     <CustomInputEditModal
                                         id={"placeWork"}
@@ -218,7 +218,7 @@ export const EditInformationModal = () => {
                                         labelField={"Адрес"}
                                         onChange={(value) => setAddress(value)}
                                         defaultValue={address}
-                                        data-testId="input-address"
+                                        data-testid="input-address"
                                     />
                                     <div
                                         style={{
@@ -233,7 +233,7 @@ export const EditInformationModal = () => {
                                             labelField={"Код проверки"}
                                             onChange={(value) => setCode(value)}
                                             defaultValue={code}
-                                            data-testId="input-code"
+                                            data-testid="input-code"
                                         />
                                         {currentEmployeeInfo && (
                                             <CustomButton
@@ -243,7 +243,7 @@ export const EditInformationModal = () => {
                                                         currentEmployeeInfo?.organizationId
                                                     );
                                                 }}
-                                                data-testId="button-code"
+                                                data-testid="button-code"
                                                 height="53px"
                                                 disabled={isLoadingCode}
                                             >
