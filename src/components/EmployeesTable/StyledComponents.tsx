@@ -1,4 +1,3 @@
-import Skeleton from "react-loading-skeleton";
 import { styled } from "styled-components";
 
 export const EmployeeListWrapperMain = styled.div.attrs({

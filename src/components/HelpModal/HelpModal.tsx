@@ -4,7 +4,7 @@ import {
     ModalContainer,
     ModalContent,
     ModalHeader,
-} from "./StyledComponents";
+} from "../StyledComponents";
 import { useEffect, useRef } from "react";
 
 interface Props {

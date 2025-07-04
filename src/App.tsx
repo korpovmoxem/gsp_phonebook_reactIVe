@@ -1,7 +1,5 @@
-import React, { useEffect } from "react";
-import ReactDOM from "react-dom/client";
-import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
-
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { OrgSidebar } from "./components/OrgSidebar/OrgSidebar";
 import { EmployeeList } from "./components/EmployeesTable/EmployeeList";
 import { ToastContainer } from "react-toastify";
@@ -17,7 +15,7 @@ import { Footer } from "./components/Footer/Footer";
 import { useOrgStore } from "./store/organizationStore";
 import { EmployeeInfoModal } from "./components/EmployeesTable/EmployeeInfoModal/EmployeeInfoModal";
 import { EditInformationModal } from "./components/EmployeesTable/EmployeeInfoModal/EditInformationModal";
-import { HelpModal } from "./components/HelpModal";
+import { HelpModal } from "./components/HelpModal/HelpModal";
 import { ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "./theme/themes";
 import { useThemeStore } from "./store/useThemeStore";

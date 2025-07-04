@@ -186,6 +186,9 @@ export const SearchBar = () => {
                                                             departmnt.employees.map(
                                                                 (employee) => (
                                                                     <CustomDatalistItem
+                                                                        key={
+                                                                            employee.id
+                                                                        }
                                                                         onClick={() =>
                                                                             handleClickItem(
                                                                                 employee

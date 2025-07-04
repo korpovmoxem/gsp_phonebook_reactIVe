@@ -2,7 +2,7 @@ import { CustomCopyButton, CustomEmailLink } from "../../StyledComponents";
 import { toast } from "react-toastify";
 import { FieldWrapper, NameField } from "./StyledComponents";
 import { useOrgStore } from "../../../store/organizationStore";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 
 interface Props {
@@ -18,12 +18,11 @@ const LinkSpan = styled.span`
 const SPECIAL_FIELDS = ["Электронная почта", "Подразделение", "Организация"];
 
 export const ModalField = ({ nameField, value }: Props) => {
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [, setSearchParams] = useSearchParams();
     // const selectOrg = useOrgStore((state) => state.selectOrg);
     const setIsEmployeeInfoModalOpen = useOrgStore(
         (state) => state.setIsEmployeeInfoModalOpen
     );
-    const navigate = useNavigate();
     const currentEmployeeInfo = useOrgStore(
         (state) => state.currentEmployeeInfo
     );

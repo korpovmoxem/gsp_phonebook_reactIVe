@@ -5,11 +5,8 @@ import { useOrgStore } from "../../store/organizationStore";
 import { TreeNode } from "./TreeNode";
 
 import {
-    buildOrgIndexId,
-    buildOrgIndexTreeId,
     getPathToNodeFast,
     getPathToNodeFast1,
-    OrgMap,
 } from "../../utils/buildOrgIndex";
 import { toast } from "react-toastify";
 import { Organization } from "../../types";

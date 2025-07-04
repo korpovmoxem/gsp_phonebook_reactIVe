@@ -228,6 +228,9 @@ export const EmployeeInfoModal: React.FC = () => {
                                                             (manager) => (
                                                                 <>
                                                                     <span
+                                                                        key={
+                                                                            manager.id
+                                                                        }
                                                                         style={{
                                                                             fontSize:
                                                                                 "11pt",
@@ -287,6 +290,9 @@ export const EmployeeInfoModal: React.FC = () => {
                                                             (assistant) => (
                                                                 <>
                                                                     <span
+                                                                        key={
+                                                                            assistant.id
+                                                                        }
                                                                         onClick={() =>
                                                                             fetchCurrentEmployeeInfo(
                                                                                 assistant.id,

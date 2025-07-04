@@ -2,7 +2,6 @@ import { styled } from "styled-components";
 import {
     SquareChevronRight,
     SquareChevronDown,
-    Square,
     SquareMinus,
     SquareDot,
 } from "lucide-react";

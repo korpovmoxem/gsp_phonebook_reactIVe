@@ -37,7 +37,6 @@ interface OrgState {
     fetchTree: () => Promise<void>;
     fetchExternalTree: () => Promise<void>;
     selectOrg: (organizationId: string, departmentId: string | null, withChildren?: string) => Promise<void>;
-    loadMoreEmployees: () => Promise<void>;
     fetchEmployeesWithParams: (value: string, category: CATEGORIES) => Promise<void>;
     fetchCurrentEmployeeInfo: (idEmployee: string, idOrganization: string) => Promise<void>;
 
@@ -45,7 +44,6 @@ interface OrgState {
     setIsEditInformation: (currentState: boolean) => void;
 
     fetchVerificatinCode: (idEmployee: string, idOrganization: string) => Promise<void>;
-    getCodeResponse: string;
 
     saveEmployeeInfo: (personalMobile: string, cityPhone: string, workPlace: number | null, address: string, code: string) => Promise<void>; 
 
@@ -75,7 +73,6 @@ export const useOrgStore = create<OrgState>((set, get) => ({
     isLoadingCode: false,
     isEmployeeForSearchBarLoading: false,
     EmployeesListLimit: [],
-    getCodeResponse: '',
 
     fetchExternalTree: async () => {
         set({ isExternalOrgLoading: true });
@@ -177,31 +174,6 @@ export const useOrgStore = create<OrgState>((set, get) => ({
         }
     },
 
-    loadMoreEmployees: async () => {
-        set({ isEmpLoading: true, employeesList: [] });
-
-        try {
-            const base = await getAvailableApiBase();
-            const response = await fetch(`${base}/employee`);
-            
-            if (!response.ok) {
-                throw new Error(`Ошибка HTTP! Код статуса: ${response.status}`);
-            }
-
-            const resultData = await response.json(); // Парсим JSON-данные
-
-            set({
-                employees: resultData.result,
-                isEmpLoading: false,
-            });
-        } catch (err: any) {
-            console.error('Ошибка при получении списка сотрудников:', err.message);
-            toast.error('Ошибка при получении списка сотрудников. Попробуйте позже!', {
-                position: 'top-right',
-            });
-        }
-    },
-
     fetchEmployeesWithParams: async (value, category) => {
         set({ isEmpLoading: true, employeesList: [], selectedOrgId: null, employees: undefined });
 
@@ -282,7 +254,6 @@ export const useOrgStore = create<OrgState>((set, get) => ({
 
         } catch (error: any) {
             console.error('Ошибка при получении кода: ', error.message);
-            console.log(error.message)
             toast.error(`Ошибка при получении кода.\n${error.message && error.message}`);
             
         }

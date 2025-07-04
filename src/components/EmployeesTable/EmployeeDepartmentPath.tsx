@@ -46,6 +46,7 @@ export const EmployeeDepartmentPath = ({ departmentId, dept }: Props) => {
                                         }`
                                     );
                                 }}
+                                key={`${id}_${index}`}
                             >
                                 {node.name}
                             </Crumb>

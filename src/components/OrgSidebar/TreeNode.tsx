@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Organization } from "../../types";
-import styled, { DefaultTheme } from "styled-components";
+import styled from "styled-components";
 import {
     ChevronDownButton,
     ChevronRightButton,
