@@ -50,7 +50,13 @@ interface OrgState {
     // Для SearchBar
     fetchEmployeeForSearchBar: (searchValue: string, category: string) => Promise<void>;
     isEmployeeForSearchBarLoading: boolean;
-    EmployeesListLimit: EmployeesList[]
+    EmployeesListLimit: EmployeesList[];
+
+    // Для отображения данных из excel
+    employeesListFromExcel: EmployeesList[];
+    fetchEmployeeFromExcel: (searchValue: string, category: string) => Promise<void>;
+    isEmployeeFromExcelLoading: boolean;
+
 }
 
 export const useOrgStore = create<OrgState>((set, get) => ({
@@ -73,6 +79,8 @@ export const useOrgStore = create<OrgState>((set, get) => ({
     isLoadingCode: false,
     isEmployeeForSearchBarLoading: false,
     EmployeesListLimit: [],
+    employeesListFromExcel: [],
+    isEmployeeFromExcelLoading: false,
 
     fetchExternalTree: async () => {
         set({ isExternalOrgLoading: true });
@@ -321,6 +329,31 @@ export const useOrgStore = create<OrgState>((set, get) => ({
                 set({ isEmployeeForSearchBarLoading: false });
             }
         }
-        
+    },
+    fetchEmployeeFromExcel: async (value, category) => {
+        set({isEmployeeFromExcelLoading: true})
+
+        try {
+            const base = await getAvailableApiBase();
+            let endpoint = ''
+            if (value.length > 2) {
+                endpoint = `${base}/external/employee/search?value=${value}&type=${category}`
+            } else {
+                endpoint = `${base}/external/employee&limit=100`
+            }
+            
+            const response = await axios.get(endpoint);
+
+            if (response.status !== 200 ) throw new Error(`HTTP error: ${response.status}`);
+
+            set({
+                employeesListFromExcel: response.data.result,
+            });
+        } catch (error: any) {
+            console.error('Ошибка при получении списка найденных сотрудников', error);
+            toast.error('Ошибка при получении списка найденных сотрудников');
+        } finally {
+            set({ isEmployeeFromExcelLoading: false });
+        }
     },
 }));

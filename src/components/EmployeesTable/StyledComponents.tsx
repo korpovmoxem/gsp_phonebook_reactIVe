@@ -40,6 +40,21 @@ export const EmployeeTableRowDiv = styled.div.attrs({
     }
 `;
 
+export const EmployeeTableRowDivForExcel = styled.div.attrs({
+    datatype: "EmployeeTableRowDivForExcel",
+})`
+    font-family: Arial, sans-serif;
+    display: flex;
+    padding: 6px 8px;
+    min-height: 50px;
+    border-bottom: 1px solid ${(props) => props.theme.backgroundSubHeader};
+    align-items: center;
+    &:hover {
+        background-color: ${(props) => props.theme.backgroundRowHover};
+        transition: all 0.5s ease;
+    }
+`;
+
 export const Crumb = styled.span.attrs({
     datatype: "Crumb",
 })`
