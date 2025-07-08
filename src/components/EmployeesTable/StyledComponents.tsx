@@ -68,12 +68,16 @@ export const Crumb = styled.span.attrs({
     }
 `;
 
-export const Separator = styled.span`
+export const Separator = styled.span.attrs({
+    datatype: "Separator",
+})`
     margin: 0 4px;
     align-content: center;
 `;
 
-export const FirstHeader = styled.div`
+export const FirstHeader = styled.div.attrs({
+    datatype: "FirstHeader",
+})`
     position: sticky;
     top: 0;
     background: #0d67a1;
@@ -87,17 +91,23 @@ export const FirstHeader = styled.div`
     color: white;
 `;
 
-export const EmptyHeadColumn = styled.div`
+export const EmptyHeadColumn = styled.div.attrs({
+    datatype: "EmptyHeadColumn",
+})`
     min-width: 80px;
     font-weight: 400;
 `;
 
-export const HeadColumn = styled.div`
+export const HeadColumn = styled.div.attrs({
+    datatype: "HeadColumn",
+})`
     flex: 1 1 0%;
     font-weight: 400;
 `;
 
-export const SecondHeader = styled.div`
+export const SecondHeader = styled.div.attrs({
+    datatype: "SecondHeader",
+})`
     position: sticky;
     top: 35px;
     background: ${(props) => props.theme.backgroundSubHeader};
@@ -109,7 +119,9 @@ export const SecondHeader = styled.div`
     z-index: 3;
 `;
 
-export const ThirdHeader = styled.div`
+export const ThirdHeader = styled.div.attrs({
+    datatype: "ThirdHeader",
+})`
     position: sticky;
     top: 69px;
     background: ${(props) => props.theme.backgroundSubHeader};
@@ -119,22 +131,30 @@ export const ThirdHeader = styled.div`
     z-index: 2;
 `;
 
-export const CellWrapper = styled.div`
+export const CellWrapper = styled.div.attrs({
+    datatype: "CellWrapper",
+})`
     flex: 1;
     padding: 4px 8px;
 `;
 
-export const PositionWrapper = styled.div`
+export const PositionWrapper = styled.div.attrs({
+    datatype: "PositionWrapper",
+})`
     font-size: 14px;
     color: grey;
 `;
 
-export const EmployeeDepartmentPathWrapper = styled.div`
+export const EmployeeDepartmentPathWrapper = styled.div.attrs({
+    datatype: "EmployeeDepartmentPathWrapper",
+})`
     display: flex;
     flex-direction: row;
 `;
 
-export const EmployeeListWrapper = styled.div`
+export const EmployeeListWrapper = styled.div.attrs({
+    datatype: "EmployeeListWrapper",
+})`
     display: flex;
     flex-direction: column;
     flex: 5 5 0%;

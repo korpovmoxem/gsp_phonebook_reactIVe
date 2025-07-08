@@ -31,6 +31,12 @@ export const MainTreeWrapper = styled.div`
     color: ${(props) => props.theme.mainTextColor};
     border-radius: 10px;
     transition: all 0.5s ease;
+
+    @media (orientation: portrait) {
+        height: 200px;
+        width: auto;
+        max-width: none;
+    }
 `;
 
 export const TreeWrapper = styled.div`

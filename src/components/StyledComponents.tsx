@@ -122,6 +122,10 @@ export const ContentWrapper = styled.div`
     display: flex;
     flex-direction: row;
     height: calc(100vh - 145px);
+
+    @media (orientation: portrait) {
+        flex-direction: column;
+    }
 `;
 
 export const SearchWrapper = styled.div`

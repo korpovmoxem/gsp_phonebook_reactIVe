@@ -3,23 +3,15 @@ import MainLogoImg from "../../assets/logo.svg";
 
 import { Link, useNavigate } from "react-router-dom";
 import {
+    CustomToggle,
     HeaderWrapper,
+    LogoContainer,
     LogoWrapper,
     MainLogo,
     SubLogo,
 } from "./StyledComponents";
 import "@theme-toggles/react/css/Classic.css";
-import { Classic } from "@theme-toggles/react";
 import { useThemeStore } from "../../store/useThemeStore";
-import { styled } from "styled-components";
-
-const CustomToggle = styled(Classic)`
-    font-size: 22pt;
-    height: 0;
-    margin-top: 1%;
-    color: ${(props) => props.theme.toggleColor};
-    transition: all 0.5s ease;
-`;
 
 export const HeaderMain = () => {
     const navigate = useNavigate();
@@ -39,16 +31,10 @@ export const HeaderMain = () => {
         <HeaderWrapper>
             <LogoWrapper>
                 <Link to="/#">
-                    <div
-                        style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            margin: 0,
-                        }}
-                    >
+                    <LogoContainer>
                         <MainLogo src={MainLogoImg} alt="ГазСтройПром" />
                         <SubLogo src={AdressBookImg} alt="ГазСтройПром" />
-                    </div>
+                    </LogoContainer>
                 </Link>
             </LogoWrapper>
             <CustomToggle
