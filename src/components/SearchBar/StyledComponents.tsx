@@ -134,3 +134,21 @@ export const InputWrapper = styled.div`
     height: 100%;
     align-content: center;
 `;
+
+export const MoreButtonContainer = styled.div`
+    padding: 5px;
+    text-align: center;
+    cursor: pointer;
+    width: 99%;
+
+    &:hover {
+        background-color: ${(props) => props.theme.backgroundRowHover};
+    }
+`;
+
+export const MoreButton = styled.button`
+    all: unset;
+    width: 99%;
+    font-weight: 700;
+    color: ${(props) => props.theme.mainTextColor};
+`;
