@@ -231,17 +231,26 @@ export const EmployeeList: React.FC = () => {
                                         <FirstHeader>
                                             <EmptyHeadColumn> </EmptyHeadColumn>
                                             <HeadColumn
-                                                style={{ flex: "3 3 0%" }}
+                                                style={{
+                                                    minWidth: "40%",
+                                                    maxWidth: "40%",
+                                                }}
                                             >
                                                 ФИО
                                             </HeadColumn>
                                             <HeadColumn
-                                                style={{ flex: "1 1 0%" }}
+                                                style={{
+                                                    minWidth: "25%",
+                                                    maxWidth: "25%",
+                                                }}
                                             >
                                                 Номер телефона
                                             </HeadColumn>
                                             <HeadColumn
-                                                style={{ flex: "1 1 0%" }}
+                                                style={{
+                                                    minWidth: "25%",
+                                                    maxWidth: "25%",
+                                                }}
                                             >
                                                 Электронная почта
                                             </HeadColumn>
@@ -288,15 +297,12 @@ export const EmployeeList: React.FC = () => {
                                                         />
                                                         <CellWrapper
                                                             style={{
-                                                                flex: "3 3 0%",
+                                                                minWidth: "40%",
+                                                                maxWidth: "40%",
                                                             }}
                                                         >
                                                             {emp.fullNameRus}
-                                                            <PositionWrapper
-                                                                style={{
-                                                                    flex: "1 1 0%",
-                                                                }}
-                                                            >
+                                                            <PositionWrapper>
                                                                 {
                                                                     emp.positionTitle
                                                                 }
@@ -304,7 +310,8 @@ export const EmployeeList: React.FC = () => {
                                                         </CellWrapper>
                                                         <CellWrapper
                                                             style={{
-                                                                flex: "1 1 0%",
+                                                                minWidth: "25%",
+                                                                maxWidth: "25%",
                                                             }}
                                                         >
                                                             {emp.telephoneNumberCorp &&
@@ -395,21 +402,24 @@ export const EmployeeList: React.FC = () => {
                                     <EmptyHeadColumn> </EmptyHeadColumn>
                                     <HeadColumn
                                         style={{
-                                            flex: "3 3 0%",
+                                            minWidth: "40%",
+                                            maxWidth: "40%",
                                         }}
                                     >
                                         ФИО
                                     </HeadColumn>
                                     <HeadColumn
                                         style={{
-                                            flex: "1 1 0%",
+                                            minWidth: "25%",
+                                            maxWidth: "25%",
                                         }}
                                     >
                                         Номер телефона
                                     </HeadColumn>
                                     <HeadColumn
                                         style={{
-                                            flex: "1 1 0%",
+                                            minWidth: "25%",
+                                            maxWidth: "25%",
                                         }}
                                     >
                                         Электронная почта
@@ -457,7 +467,10 @@ export const EmployeeList: React.FC = () => {
                                                                 />
                                                                 <CellWrapper
                                                                     style={{
-                                                                        flex: "3 3 0%",
+                                                                        minWidth:
+                                                                            "40%",
+                                                                        maxWidth:
+                                                                            "40%",
                                                                     }}
                                                                 >
                                                                     <Highlighter
@@ -483,7 +496,10 @@ export const EmployeeList: React.FC = () => {
                                                                 </CellWrapper>
                                                                 <CellWrapper
                                                                     style={{
-                                                                        flex: "1 1 0%",
+                                                                        minWidth:
+                                                                            "25%",
+                                                                        maxWidth:
+                                                                            "25%",
                                                                     }}
                                                                 >
                                                                     {emp.telephoneNumberCorp &&
