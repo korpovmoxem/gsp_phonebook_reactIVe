@@ -49,14 +49,6 @@ function App() {
                                 }
                             />
                             <Route path="/err" element={<ErrorPage />} />
-                            <Route
-                                path="/excel"
-                                element={
-                                    <ContentWrapper>
-                                        <EmployeeListFromExcel />
-                                    </ContentWrapper>
-                                }
-                            />
                         </Routes>
 
                         <Footer />

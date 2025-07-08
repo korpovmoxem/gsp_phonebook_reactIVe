@@ -152,10 +152,6 @@ export const OrgSidebar: React.FC = () => {
                         ) : (
                             <SidebarSkeleton />
                         )}
-                        <CustomLink href={"/excel"} rel="noreferrer">
-                            <ExternalLink size={15} stroke="#1d75bb" />
-                            <ItemText>Заглушка</ItemText>
-                        </CustomLink>
                     </TreeWrapper>
                 </>
             ) : (
