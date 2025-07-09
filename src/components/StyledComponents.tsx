@@ -116,6 +116,7 @@ export const RootWrapper = styled.div`
     height: 100vh;
     background-color: ${(props) => props.theme.background};
     transition: all 0.5s ease;
+    overflow-x: auto;
 `;
 
 export const ContentWrapper = styled.div`
