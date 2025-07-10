@@ -13,6 +13,12 @@ export interface ExternalOrganizations {
     name: string;
     order: number;
 }
+
+export interface IconObject {
+    description: string;
+    url: string
+}
+
 export interface Employee {
     id: string;
     fullNameRus: string;
@@ -25,7 +31,9 @@ export interface Employee {
     telephoneNumberCorp: string;
     businessTrip: boolean;
     unavailable: boolean;
-    photo: string | null;
+    statuses: IconObject[];
+    rewards: IconObject[];
+    photo: string;
 }
 
 interface Department {

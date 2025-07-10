@@ -34,6 +34,8 @@ import {
 import Highlighter from "react-highlight-words";
 import { SearchBar } from "../SearchBar/SearchBar";
 import { ClipboardCopy } from "lucide-react";
+import { Icon } from "./Icon";
+import { PhotoObj } from "./PhotoObj";
 
 // Функция для рекурсивного сбора всех сотрудников из дерева
 const getAllEmployees = (tree: EmployeesListTree): Employee[] => {
@@ -167,7 +169,13 @@ export const EmployeeList: React.FC = () => {
 
     useEffect(() => {
         // При пустых параметрах — выбираем дефолтную орг. и департамент
-        if (
+        if (isDefaultRoute) {
+            selectOrg(
+                "7842155505",
+                "9c685cfe-e9a0-11e8-90f2-0050569026ba",
+                "false"
+            );
+        } else if (
             !searchValue &&
             !searchCategory &&
             !organizationId &&
@@ -188,16 +196,12 @@ export const EmployeeList: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    useEffect(() => {
-        if (isDefaultRoute) {
-            selectOrg(
-                "7842155505",
-                "9c685cfe-e9a0-11e8-90f2-0050569026ba",
-                "false"
-            );
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isDefaultRoute]);
+    // useEffect(() => {
+    //     if (isDefaultRoute) {
+
+    //     }
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [isDefaultRoute]);
 
     return (
         <EmployeeListWrapper>
@@ -232,12 +236,18 @@ export const EmployeeList: React.FC = () => {
                                             <EmptyHeadColumn> </EmptyHeadColumn>
                                             <HeadColumn
                                                 style={{
-                                                    minWidth: "40%",
-                                                    maxWidth: "40%",
+                                                    minWidth: "30%",
+                                                    maxWidth: "30%",
                                                 }}
                                             >
                                                 ФИО
                                             </HeadColumn>
+                                            <HeadColumn
+                                                style={{
+                                                    minWidth: "10%",
+                                                    maxWidth: "10%",
+                                                }}
+                                            ></HeadColumn>
                                             <HeadColumn
                                                 style={{
                                                     minWidth: "25%",
@@ -283,22 +293,14 @@ export const EmployeeList: React.FC = () => {
                                                             )
                                                         }
                                                     >
-                                                        <img
-                                                            src={
-                                                                emp.photo
-                                                                    ? `data:image/jpeg;base64,${emp.photo}`
-                                                                    : PhotoDefault
-                                                            }
-                                                            alt={
-                                                                emp.fullNameRus
-                                                            }
+                                                        {/* <PhotoObj
+                                                            photo={emp.photo}
                                                             width="75px"
-                                                            height="75px"
-                                                        />
+                                                        /> */}
                                                         <CellWrapper
                                                             style={{
-                                                                minWidth: "40%",
-                                                                maxWidth: "40%",
+                                                                minWidth: "30%",
+                                                                maxWidth: "30%",
                                                             }}
                                                         >
                                                             {emp.fullNameRus}
@@ -307,6 +309,41 @@ export const EmployeeList: React.FC = () => {
                                                                     emp.positionTitle
                                                                 }
                                                             </PositionWrapper>
+                                                        </CellWrapper>
+                                                        <CellWrapper
+                                                            style={{
+                                                                flexDirection:
+                                                                    "column",
+                                                            }}
+                                                        >
+                                                            <div>
+                                                                {emp.statuses.map(
+                                                                    (
+                                                                        status
+                                                                    ) => (
+                                                                        <Icon
+                                                                            icon={
+                                                                                status
+                                                                            }
+                                                                            width="40px"
+                                                                            type="status"
+                                                                        />
+                                                                    )
+                                                                )}
+                                                                {emp.rewards.map(
+                                                                    (
+                                                                        status
+                                                                    ) => (
+                                                                        <Icon
+                                                                            icon={
+                                                                                status
+                                                                            }
+                                                                            width="40px"
+                                                                            type="achievement"
+                                                                        />
+                                                                    )
+                                                                )}
+                                                            </div>
                                                         </CellWrapper>
                                                         <CellWrapper
                                                             style={{
@@ -402,8 +439,8 @@ export const EmployeeList: React.FC = () => {
                                     <EmptyHeadColumn> </EmptyHeadColumn>
                                     <HeadColumn
                                         style={{
-                                            minWidth: "40%",
-                                            maxWidth: "40%",
+                                            minWidth: "30%",
+                                            maxWidth: "30%",
                                         }}
                                     >
                                         ФИО
@@ -453,10 +490,15 @@ export const EmployeeList: React.FC = () => {
                                                                     )
                                                                 }
                                                             >
-                                                                <img
+                                                                {/* <img
                                                                     src={
-                                                                        emp.photo
-                                                                            ? `data:image/jpeg;base64,${emp.photo}`
+                                                                        emp.photo &&
+                                                                        emp
+                                                                            .photo
+                                                                            .fullSizeUrl
+                                                                            ? emp
+                                                                                  .photo
+                                                                                  .fullSizeUrl
                                                                             : PhotoDefault
                                                                     }
                                                                     alt={
@@ -464,6 +506,12 @@ export const EmployeeList: React.FC = () => {
                                                                     }
                                                                     width="75px"
                                                                     height="75px"
+                                                                /> */}
+                                                                <PhotoObj
+                                                                    photo={
+                                                                        emp.photo
+                                                                    }
+                                                                    width="75px"
                                                                 />
                                                                 <CellWrapper
                                                                     style={{
@@ -493,6 +541,41 @@ export const EmployeeList: React.FC = () => {
                                                                             emp.positionTitle
                                                                         }
                                                                     </PositionWrapper>
+                                                                </CellWrapper>
+                                                                <CellWrapper
+                                                                    style={{
+                                                                        flexDirection:
+                                                                            "column",
+                                                                    }}
+                                                                >
+                                                                    <div>
+                                                                        {emp.statuses.map(
+                                                                            (
+                                                                                status
+                                                                            ) => (
+                                                                                <Icon
+                                                                                    icon={
+                                                                                        status
+                                                                                    }
+                                                                                    width="40px"
+                                                                                    type="status"
+                                                                                />
+                                                                            )
+                                                                        )}
+                                                                        {emp.rewards.map(
+                                                                            (
+                                                                                status
+                                                                            ) => (
+                                                                                <Icon
+                                                                                    icon={
+                                                                                        status
+                                                                                    }
+                                                                                    width="40px"
+                                                                                    type="achievement"
+                                                                                />
+                                                                            )
+                                                                        )}
+                                                                    </div>
                                                                 </CellWrapper>
                                                                 <CellWrapper
                                                                     style={{

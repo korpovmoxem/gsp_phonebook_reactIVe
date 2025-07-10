@@ -32,8 +32,29 @@ EmployeeListWrapperTable.displayName = `EmployeeListWrapperTable`;
 export const EmployeeTableRowDiv = styled.div.attrs({
     datatype: "EmployeeTableRowDiv",
 })`
-    font-family: Arial, sans-serif;
     display: flex;
+    font-family: Arial, sans-serif;
+    align-content: center;
+    padding: 6px 8px;
+    min-height: 100px;
+    border-bottom: 1px solid ${(props) => props.theme.backgroundSubHeader};
+    align-items: center;
+    cursor: pointer;
+    &:hover {
+        background-color: ${(props) => props.theme.backgroundRowHover};
+        transition: all 0.5s ease;
+    }
+`;
+
+export const EmployeeTableRow = styled.div.attrs({
+    datatype: "EmployeeTableRow",
+})`
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    color: inherit;
+    font-family: Arial, sans-serif;
+    align-content: center;
     padding: 6px 8px;
     min-height: 100px;
     border-bottom: 1px solid ${(props) => props.theme.backgroundSubHeader};

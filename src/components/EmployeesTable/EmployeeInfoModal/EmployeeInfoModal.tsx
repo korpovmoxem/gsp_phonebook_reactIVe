@@ -22,6 +22,7 @@ import {
     PhotoAndInfo,
     PhotoBlock,
 } from "./StyledComponents";
+import { PhotoObj } from "../PhotoObj";
 
 const INFORMATION_BLOCKS = [
     {
@@ -196,14 +197,9 @@ export const EmployeeInfoModal: React.FC = () => {
                                 {currentEmployeeInfo && (
                                     <PhotoAndInfo>
                                         <PhotoBlock>
-                                            <img
-                                                src={
+                                            <PhotoObj
+                                                photo={
                                                     currentEmployeeInfo.photo
-                                                        ? `data:image/jpeg;base64,${currentEmployeeInfo.photo}`
-                                                        : PhotoDefault
-                                                }
-                                                alt={
-                                                    currentEmployeeInfo.fullNameRus
                                                 }
                                                 width="200px"
                                             />
@@ -213,6 +209,15 @@ export const EmployeeInfoModal: React.FC = () => {
                                                 {
                                                     currentEmployeeInfo.fullNameRus
                                                 }
+                                                <img
+                                                    src={
+                                                        currentEmployeeInfo
+                                                            .statuses[0] &&
+                                                        currentEmployeeInfo
+                                                            .statuses[0].url
+                                                    }
+                                                    alt=""
+                                                />
                                             </Fio>
                                             <span style={{ fontSize: "11pt" }}>
                                                 {
