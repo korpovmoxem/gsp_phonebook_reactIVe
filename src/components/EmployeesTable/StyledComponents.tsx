@@ -32,7 +32,7 @@ EmployeeListWrapperTable.displayName = `EmployeeListWrapperTable`;
 export const EmployeeTableRowDiv = styled.div.attrs({
     datatype: "EmployeeTableRowDiv",
 })`
-    display: flex;
+    display: table;
     font-family: Arial, sans-serif;
     align-content: center;
     padding: 6px 8px;
@@ -160,6 +160,7 @@ export const ThirdHeader = styled.div.attrs({
 export const CellWrapper = styled.div.attrs({
     datatype: "CellWrapper",
 })`
+    display: table-cell;
     flex: 1;
     padding: 4px 8px;
     flex-wrap: wrap;

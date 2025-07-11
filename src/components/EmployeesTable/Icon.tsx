@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const Icon = ({ icon, width, type }: Props) => {
-    const [imgSrc, setImgSrc] = useState(icon.url);
+    const [imgSrc, setImgSrc] = useState(`data:image/png;base64,${icon.img}`);
     const [widthIcon, setWidthIcon] = useState(width);
 
     const handleError = () => {

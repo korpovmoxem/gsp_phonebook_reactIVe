@@ -16,7 +16,7 @@ export interface ExternalOrganizations {
 
 export interface IconObject {
     description: string;
-    url: string
+    img: string
 }
 
 export interface Employee {

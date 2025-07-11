@@ -22,6 +22,12 @@ export const EmployeeDepartmentPath = ({ departmentId, dept }: Props) => {
         ? getPathToNodeFast1(departmentId, orgMapId)
         : null;
 
+    console.log("EmployeeDepartmentPath");
+    console.log(departmentId);
+    console.log(orgMapId);
+    console.log(pathIds);
+    console.log(dept);
+
     if (!orgMapId.size || !departmentId) return null;
     if (!pathIds) return null;
 

@@ -1,8 +1,713 @@
-import { useEffect, useMemo } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+// import { useEffect, useMemo } from "react";
+// import { useLocation, useSearchParams } from "react-router-dom";
+// import { useOrgStore } from "../../store/organizationStore";
+// import { EmployeeSkeleton } from "./EmployeeSkeleton";
+// import PhotoDefault from "../../assets/photo.jpg";
+// import { toast } from "react-toastify";
+// import { EmployeeDepartmentPath } from "./EmployeeDepartmentPath";
+// import {
+//     CATEGORIES,
+//     Employee,
+//     EmployeesListTree,
+//     EmployeesList,
+// } from "../../types";
+// // import NotFound from "../../assets/notFound.gif";
+// import NotFoundIcon from "../../assets/notFoundIcon.png";
+// import {
+//     CustomCopyButton,
+//     CustomEmailLink,
+//     SearchWrapper,
+// } from "../StyledComponents";
+// import {
+//     CellWrapper,
+//     ThirdHeader,
+//     EmployeeListWrapperMain,
+//     EmployeeListWrapperTable,
+//     EmployeeTableRowDiv,
+//     EmptyHeadColumn,
+//     FirstHeader,
+//     HeadColumn,
+//     PositionWrapper,
+//     SecondHeader,
+//     EmployeeListWrapper,
+// } from "./StyledComponents";
+// import Highlighter from "react-highlight-words";
+// import { SearchBar } from "../SearchBar/SearchBar";
+// import { ClipboardCopy } from "lucide-react";
+// import { Icon } from "./Icon";
+// import { PhotoObj } from "./PhotoObj";
+
+// // Функция для рекурсивного сбора всех сотрудников из дерева
+// const getAllEmployees = (tree: EmployeesListTree): Employee[] => {
+//     let result = [...tree.employees];
+//     for (const child of tree.children) {
+//         result = result.concat(getAllEmployees(child));
+//     }
+//     return result;
+// };
+
+// // Пустой шаблон, чтобы TS не ругался
+// const emptyEmployeesTree: EmployeesListTree = {
+//     organizationId: "",
+//     organizationName: "",
+//     departmentId: "",
+//     departmentName: "",
+//     employees: [],
+//     children: [],
+// };
+
+// const HIGHLIGHTER_COLOR = "#b2dff7";
+
+// export const EmployeeList: React.FC = () => {
+//     const [searchParams] = useSearchParams();
+
+//     const employees = useOrgStore((state) => state.employees);
+//     const isEmpLoading = useOrgStore((state) => state.isEmpLoading);
+//     const employeesList = useOrgStore((state) => state.employeesList);
+//     const fetchEmployeesWithParams = useOrgStore(
+//         (state) => state.fetchEmployeesWithParams
+//     );
+//     const isEmployeeInfoModalOpen = useOrgStore(
+//         (state) => state.isEmployeeInfoModalOpen
+//     );
+//     const setIsEmployeeInfoModalOpen = useOrgStore(
+//         (state) => state.setIsEmployeeInfoModalOpen
+//     );
+//     const fetchCurrentEmployeeInfo = useOrgStore(
+//         (state) => state.fetchCurrentEmployeeInfo
+//     );
+//     const selectOrg = useOrgStore((state) => state.selectOrg);
+
+//     const searchValue = searchParams.get("value");
+//     const searchCategory = searchParams.get("type") as CATEGORIES | null;
+//     const organizationId = searchParams.get("organizationId");
+//     const departmentId = searchParams.get("departmentId");
+
+//     const handleCopyClick = (text: string) => {
+//         navigator.clipboard.writeText(text);
+//         toast.info("Скопировано в буфер обмена", { position: "top-right" });
+//     };
+
+//     const handleRowClick = (empId: string, orgId: string) => {
+//         setIsEmployeeInfoModalOpen(!isEmployeeInfoModalOpen);
+//         fetchCurrentEmployeeInfo(empId, orgId);
+//     };
+
+//     // Берём либо реальное дерево, либо пустой шаблон
+//     const employeesTree = useMemo(
+//         () => employees ?? emptyEmployeesTree,
+//         [employees]
+//     );
+
+//     // Плоский список всех сотрудников из дерева
+//     const flatEmployees = useMemo(
+//         () => getAllEmployees(employeesTree),
+//         [employeesTree]
+//     );
+
+//     // Группировка плоского списка по департаментам
+//     const departments = useMemo(() => {
+//         const map: Record<
+//             string,
+//             {
+//                 departmentId: string;
+//                 departmentName: string;
+//                 employees: Employee[];
+//             }
+//         > = {};
+//         flatEmployees.forEach((emp) => {
+//             if (!map[emp.departmentId]) {
+//                 map[emp.departmentId] = {
+//                     departmentId: emp.departmentId,
+//                     departmentName: emp.departmentName,
+//                     employees: [],
+//                 };
+//             }
+//             map[emp.departmentId].employees.push(emp);
+//         });
+//         return Object.values(map);
+//     }, [flatEmployees]);
+
+//     const location = useLocation();
+//     const isDefaultRoute =
+//         location.pathname === "/" && ![...searchParams].length;
+
+//     function getAllEmails(data: EmployeesListTree): (string | null)[] {
+//         const emails: (string | null)[] = [
+//             ...data.employees.map((emp) => emp.email),
+//         ];
+
+//         for (const child of data.children) {
+//             emails.push(...getAllEmails(child));
+//         }
+
+//         return emails;
+//     }
+
+//     const handleClickCopyEmails = () => {
+//         let emails = "";
+//         if (employeesList.length > 0) {
+//             employeesList.forEach((organization) => {
+//                 organization.departments.forEach((department) => {
+//                     department.employees.forEach((employee) => {
+//                         if (employee.email) {
+//                             emails += `${employee.email} `;
+//                         }
+//                     });
+//                 });
+//             });
+//         } else {
+//             if (employees) {
+//                 emails = getAllEmails(employees).join(" ");
+//             }
+//         }
+//         navigator.clipboard.writeText(emails);
+//         toast.info("Скопировано в буфер обмена", {
+//             position: "top-right",
+//         });
+//     };
+
+//     useEffect(() => {
+//         // При пустых параметрах — выбираем дефолтную орг. и департамент
+//         if (isDefaultRoute) {
+//             selectOrg(
+//                 "7842155505",
+//                 "9c685cfe-e9a0-11e8-90f2-0050569026ba",
+//                 "false"
+//             );
+//         } else if (
+//             !searchValue &&
+//             !searchCategory &&
+//             !organizationId &&
+//             !departmentId
+//         ) {
+//             selectOrg(
+//                 "7842155505",
+//                 "9c685cfe-e9a0-11e8-90f2-0050569026ba",
+//                 "false"
+//             );
+//         } else if (searchValue && searchCategory) {
+//             // Режим поиска
+//             fetchEmployeesWithParams(searchValue, searchCategory);
+//         } else if (organizationId) {
+//             // Клик по организации/департаменту через URL
+//             selectOrg(organizationId, departmentId ?? null);
+//         }
+//         // eslint-disable-next-line react-hooks/exhaustive-deps
+//     }, []);
+
+//     // useEffect(() => {
+//     //     if (isDefaultRoute) {
+
+//     //     }
+//     //     // eslint-disable-next-line react-hooks/exhaustive-deps
+//     // }, [isDefaultRoute]);
+
+//     return (
+//         <EmployeeListWrapper>
+//             <div>
+//                 <SearchWrapper>
+//                     <SearchBar />
+//                 </SearchWrapper>
+//                 <span
+//                     style={{
+//                         justifySelf: "end",
+//                         cursor: "pointer",
+//                         display: "flex",
+//                         margin: "5px 10px 0 0",
+//                     }}
+//                     title="Скопировать Email всех найденных сотрудников"
+//                     onClick={handleClickCopyEmails}
+//                 >
+//                     <ClipboardCopy size={20} stroke="grey" />
+//                 </span>
+//             </div>
+//             <EmployeeListWrapperMain>
+//                 {isEmpLoading ? (
+//                     <EmployeeSkeleton />
+//                 ) : (
+//                     <EmployeeListWrapperTable>
+//                         {/* === Пункт 1: выбор по орг/департаменту + начальное отображение === */}
+//                         {employeesList.length === 0 ? (
+//                             <div>
+//                                 {departments.length > 0 && (
+//                                     <>
+//                                         <FirstHeader>
+//                                             <EmptyHeadColumn> </EmptyHeadColumn>
+//                                             <HeadColumn
+//                                                 style={{
+//                                                     minWidth: "30%",
+//                                                     maxWidth: "30%",
+//                                                 }}
+//                                             >
+//                                                 ФИО
+//                                             </HeadColumn>
+//                                             <HeadColumn
+//                                                 style={{
+//                                                     minWidth: "10%",
+//                                                     maxWidth: "10%",
+//                                                 }}
+//                                             ></HeadColumn>
+//                                             <HeadColumn
+//                                                 style={{
+//                                                     minWidth: "25%",
+//                                                     maxWidth: "25%",
+//                                                 }}
+//                                             >
+//                                                 Номер телефона
+//                                             </HeadColumn>
+//                                             <HeadColumn
+//                                                 style={{
+//                                                     minWidth: "25%",
+//                                                     maxWidth: "25%",
+//                                                 }}
+//                                             >
+//                                                 Электронная почта
+//                                             </HeadColumn>
+//                                         </FirstHeader>
+//                                         {/* Заголовок организации */}
+//                                         <SecondHeader>
+//                                             Организация:{" "}
+//                                             {employeesTree.organizationName}
+//                                         </SecondHeader>
+//                                         {/* Блоки департаментов */}
+//                                         {departments.map((dept) => (
+//                                             <div key={dept.departmentId}>
+//                                                 {/* Хлебные крошки с полным путём */}
+//                                                 <ThirdHeader>
+//                                                     <EmployeeDepartmentPath
+//                                                         departmentId={
+//                                                             dept.departmentId
+//                                                         }
+//                                                         dept={dept}
+//                                                     />
+//                                                 </ThirdHeader>
+//                                                 {/* Сотрудники департамента */}
+//                                                 {dept.employees.map((emp) => (
+//                                                     <EmployeeTableRowDiv
+//                                                         key={emp.id}
+//                                                         onClick={() =>
+//                                                             handleRowClick(
+//                                                                 emp.id,
+//                                                                 emp.organizationId
+//                                                             )
+//                                                         }
+//                                                     >
+//                                                         <div
+//                                                             style={{
+//                                                                 display:
+//                                                                     "table-row",
+//                                                             }}
+//                                                         >
+//                                                             <div
+//                                                                 style={{
+//                                                                     display:
+//                                                                         "table-cell",
+//                                                                 }}
+//                                                             >
+//                                                                 <PhotoObj
+//                                                                     photo={
+//                                                                         emp.photo
+//                                                                     }
+//                                                                     width="75px"
+//                                                                 />
+//                                                             </div>
+//                                                             <CellWrapper
+//                                                                 style={{
+//                                                                     minWidth:
+//                                                                         "30%",
+//                                                                     maxWidth:
+//                                                                         "30%",
+//                                                                 }}
+//                                                             >
+//                                                                 {
+//                                                                     emp.fullNameRus
+//                                                                 }
+//                                                                 <PositionWrapper>
+//                                                                     {
+//                                                                         emp.positionTitle
+//                                                                     }
+//                                                                 </PositionWrapper>
+//                                                             </CellWrapper>
+//                                                             <CellWrapper
+//                                                                 style={{
+//                                                                     flexDirection:
+//                                                                         "column",
+//                                                                 }}
+//                                                             >
+//                                                                 <div>
+//                                                                     {/* {emp.statuses.map(
+//                                                                         (
+//                                                                             status
+//                                                                         ) => (
+//                                                                             <Icon
+//                                                                                 icon={
+//                                                                                     status
+//                                                                                 }
+//                                                                                 width="40px"
+//                                                                                 type="status"
+//                                                                             />
+//                                                                         )
+//                                                                     )}
+//                                                                     {emp.rewards.map(
+//                                                                         (
+//                                                                             status
+//                                                                         ) => (
+//                                                                             <Icon
+//                                                                                 icon={
+//                                                                                     status
+//                                                                                 }
+//                                                                                 width="40px"
+//                                                                                 type="achievement"
+//                                                                             />
+//                                                                         )
+//                                                                     )} */}
+//                                                                 </div>
+//                                                             </CellWrapper>
+//                                                             <CellWrapper
+//                                                                 style={{
+//                                                                     minWidth:
+//                                                                         "25%",
+//                                                                     maxWidth:
+//                                                                         "25%",
+//                                                                 }}
+//                                                             >
+//                                                                 {emp.telephoneNumberCorp &&
+//                                                                 emp.telephoneNumberCorp !==
+//                                                                     "" ? (
+//                                                                     <CustomEmailLink
+//                                                                         href={`tel:${emp.telephoneNumberCorp}`}
+//                                                                         onClick={(
+//                                                                             e
+//                                                                         ) =>
+//                                                                             e.stopPropagation()
+//                                                                         }
+//                                                                     >
+//                                                                         {
+//                                                                             emp.telephoneNumberCorp
+//                                                                         }
+//                                                                     </CustomEmailLink>
+//                                                                 ) : (
+//                                                                     "Не указан"
+//                                                                 )}
+//                                                             </CellWrapper>
+//                                                             <CellWrapper
+//                                                                 style={{
+//                                                                     display:
+//                                                                         "flex",
+//                                                                 }}
+//                                                             >
+//                                                                 {emp.email ? (
+//                                                                     <>
+//                                                                         <CustomEmailLink
+//                                                                             href={`mailto:${emp.email}`}
+//                                                                             onClick={(
+//                                                                                 e
+//                                                                             ) =>
+//                                                                                 e.stopPropagation()
+//                                                                             }
+//                                                                         >
+//                                                                             {emp.email ||
+//                                                                                 "Не указан"}
+//                                                                         </CustomEmailLink>
+//                                                                         <CustomCopyButton
+//                                                                             size={
+//                                                                                 13
+//                                                                             }
+//                                                                             onClick={(
+//                                                                                 e
+//                                                                             ) => {
+//                                                                                 e.stopPropagation();
+//                                                                                 handleCopyClick(
+//                                                                                     emp.email!
+//                                                                                 );
+//                                                                             }}
+//                                                                         />
+//                                                                     </>
+//                                                                 ) : (
+//                                                                     "Не указан"
+//                                                                 )}
+//                                                             </CellWrapper>
+//                                                         </div>
+//                                                     </EmployeeTableRowDiv>
+//                                                 ))}
+//                                             </div>
+//                                         ))}
+//                                     </>
+//                                 )}
+//                                 {departments.length === 0 && (
+//                                     <div style={{ textAlignLast: "center" }}>
+//                                         {/* <img src={NotFound} alt="Не найдено" /> */}
+//                                         <img
+//                                             src={NotFoundIcon}
+//                                             alt="Не найдено"
+//                                             width={150}
+//                                             style={{ margin: "15% 0 40px" }}
+//                                         />
+//                                         <div>
+//                                             <span>
+//                                                 По заданным критериям сотрудники
+//                                                 не найдены. <br />
+//                                                 Проверьте правильность введенных
+//                                                 данных или выбранный фильтр
+//                                             </span>
+//                                         </div>
+//                                     </div>
+//                                 )}
+//                             </div>
+//                         ) : (
+//                             /* === Пункт 2: режим поиска === */
+//                             <div>
+//                                 <FirstHeader>
+//                                     <EmptyHeadColumn> </EmptyHeadColumn>
+//                                     <HeadColumn
+//                                         style={{
+//                                             minWidth: "30%",
+//                                             maxWidth: "30%",
+//                                         }}
+//                                     >
+//                                         ФИО
+//                                     </HeadColumn>
+//                                     <HeadColumn
+//                                         style={{
+//                                             minWidth: "25%",
+//                                             maxWidth: "25%",
+//                                         }}
+//                                     >
+//                                         Номер телефона
+//                                     </HeadColumn>
+//                                     <HeadColumn
+//                                         style={{
+//                                             minWidth: "25%",
+//                                             maxWidth: "25%",
+//                                         }}
+//                                     >
+//                                         Электронная почта
+//                                     </HeadColumn>
+//                                 </FirstHeader>
+//                                 {employeesList.length > 0 &&
+//                                     employeesList.map((org: EmployeesList) => (
+//                                         <div key={org.organizationId}>
+//                                             <SecondHeader>
+//                                                 Организация:{" "}
+//                                                 {org.organizationName}
+//                                             </SecondHeader>
+//                                             {org.departments.map((dept) => (
+//                                                 <div key={dept.departmentId}>
+//                                                     <ThirdHeader>
+//                                                         <EmployeeDepartmentPath
+//                                                             departmentId={
+//                                                                 dept.departmentId
+//                                                             }
+//                                                             dept={dept}
+//                                                         />
+//                                                     </ThirdHeader>
+//                                                     {dept.employees.map(
+//                                                         (emp) => (
+//                                                             <EmployeeTableRowDiv
+//                                                                 key={emp.id}
+//                                                                 onClick={() =>
+//                                                                     handleRowClick(
+//                                                                         emp.id,
+//                                                                         emp.organizationId
+//                                                                     )
+//                                                                 }
+//                                                             >
+//                                                                 {/* <img
+//                                                                     src={
+//                                                                         emp.photo &&
+//                                                                         emp
+//                                                                             .photo
+//                                                                             .fullSizeUrl
+//                                                                             ? emp
+//                                                                                   .photo
+//                                                                                   .fullSizeUrl
+//                                                                             : PhotoDefault
+//                                                                     }
+//                                                                     alt={
+//                                                                         emp.fullNameRus
+//                                                                     }
+//                                                                     width="75px"
+//                                                                     height="75px"
+//                                                                 /> */}
+//                                                                 <PhotoObj
+//                                                                     photo={
+//                                                                         emp.photo
+//                                                                     }
+//                                                                     width="75px"
+//                                                                 />
+//                                                                 <CellWrapper
+//                                                                     style={{
+//                                                                         minWidth:
+//                                                                             "40%",
+//                                                                         maxWidth:
+//                                                                             "40%",
+//                                                                     }}
+//                                                                 >
+//                                                                     <Highlighter
+//                                                                         searchWords={[
+//                                                                             searchValue ||
+//                                                                                 "",
+//                                                                         ]}
+//                                                                         autoEscape={
+//                                                                             true
+//                                                                         }
+//                                                                         textToHighlight={`${emp.fullNameRus}`}
+//                                                                         highlightStyle={{
+//                                                                             backgroundColor:
+//                                                                                 HIGHLIGHTER_COLOR,
+//                                                                         }}
+//                                                                     />
+
+//                                                                     <PositionWrapper>
+//                                                                         {
+//                                                                             emp.positionTitle
+//                                                                         }
+//                                                                     </PositionWrapper>
+//                                                                 </CellWrapper>
+//                                                                 <CellWrapper
+//                                                                     style={{
+//                                                                         flexDirection:
+//                                                                             "column",
+//                                                                     }}
+//                                                                 >
+//                                                                     <div>
+//                                                                         {/* {emp.statuses.map(
+//                                                                             (
+//                                                                                 status
+//                                                                             ) => (
+//                                                                                 <Icon
+//                                                                                     icon={
+//                                                                                         status
+//                                                                                     }
+//                                                                                     width="40px"
+//                                                                                     type="status"
+//                                                                                 />
+//                                                                             )
+//                                                                         )}
+//                                                                         {emp.rewards.map(
+//                                                                             (
+//                                                                                 status
+//                                                                             ) => (
+//                                                                                 <Icon
+//                                                                                     icon={
+//                                                                                         status
+//                                                                                     }
+//                                                                                     width="40px"
+//                                                                                     type="achievement"
+//                                                                                 />
+//                                                                             )
+//                                                                         )} */}
+//                                                                     </div>
+//                                                                 </CellWrapper>
+//                                                                 <CellWrapper
+//                                                                     style={{
+//                                                                         minWidth:
+//                                                                             "25%",
+//                                                                         maxWidth:
+//                                                                             "25%",
+//                                                                     }}
+//                                                                 >
+//                                                                     {emp.telephoneNumberCorp &&
+//                                                                     emp.telephoneNumberCorp !==
+//                                                                         "" ? (
+//                                                                         <CustomEmailLink
+//                                                                             href={`tel:${emp.telephoneNumberCorp}`}
+//                                                                             onClick={(
+//                                                                                 e
+//                                                                             ) =>
+//                                                                                 e.stopPropagation()
+//                                                                             }
+//                                                                         >
+//                                                                             {org
+//                                                                                 .departments
+//                                                                                 .length >
+//                                                                             1 ? (
+//                                                                                 <Highlighter
+//                                                                                     searchWords={[
+//                                                                                         searchValue ||
+//                                                                                             "",
+//                                                                                     ]}
+//                                                                                     autoEscape={
+//                                                                                         true
+//                                                                                     }
+//                                                                                     textToHighlight={`${
+//                                                                                         emp.telephoneNumberCorp ||
+//                                                                                         "Не указан"
+//                                                                                     }`}
+//                                                                                     highlightStyle={{
+//                                                                                         backgroundColor:
+//                                                                                             HIGHLIGHTER_COLOR,
+//                                                                                     }}
+//                                                                                 />
+//                                                                             ) : (
+//                                                                                 emp.telephoneNumberCorp ||
+//                                                                                 "Не указан"
+//                                                                             )}
+//                                                                         </CustomEmailLink>
+//                                                                     ) : (
+//                                                                         "Не указан"
+//                                                                     )}
+//                                                                 </CellWrapper>
+//                                                                 <CellWrapper
+//                                                                     style={{
+//                                                                         flex: "1 1 0%",
+//                                                                         display:
+//                                                                             "flex",
+//                                                                     }}
+//                                                                 >
+//                                                                     {emp.email ? (
+//                                                                         <>
+//                                                                             <CustomEmailLink
+//                                                                                 href={`mailto:${emp.email}`}
+//                                                                                 onClick={(
+//                                                                                     e
+//                                                                                 ) =>
+//                                                                                     e.stopPropagation()
+//                                                                                 }
+//                                                                             >
+//                                                                                 {emp.email ||
+//                                                                                     "Не указан"}
+//                                                                             </CustomEmailLink>
+//                                                                             <CustomCopyButton
+//                                                                                 size={
+//                                                                                     13
+//                                                                                 }
+//                                                                                 onClick={(
+//                                                                                     e
+//                                                                                 ) => {
+//                                                                                     e.stopPropagation();
+//                                                                                     handleCopyClick(
+//                                                                                         emp.email!
+//                                                                                     );
+//                                                                                 }}
+//                                                                             />
+//                                                                         </>
+//                                                                     ) : (
+//                                                                         "Не указан"
+//                                                                     )}
+//                                                                 </CellWrapper>
+//                                                             </EmployeeTableRowDiv>
+//                                                         )
+//                                                     )}
+//                                                 </div>
+//                                             ))}
+//                                         </div>
+//                                     ))}
+//                             </div>
+//                         )}
+//                     </EmployeeListWrapperTable>
+//                 )}
+//             </EmployeeListWrapperMain>
+//         </EmployeeListWrapper>
+//     );
+// };
+
+import React, { useEffect, useMemo, useState, useRef } from "react";
+import { useSearchParams, useLocation } from "react-router-dom";
 import { useOrgStore } from "../../store/organizationStore";
 import { EmployeeSkeleton } from "./EmployeeSkeleton";
-import PhotoDefault from "../../assets/photo.jpg";
+import DefaultPhoto from "../../assets/photo.jpg";
 import { toast } from "react-toastify";
 import { EmployeeDepartmentPath } from "./EmployeeDepartmentPath";
 import {
@@ -11,7 +716,6 @@ import {
     EmployeesListTree,
     EmployeesList,
 } from "../../types";
-// import NotFound from "../../assets/notFound.gif";
 import NotFoundIcon from "../../assets/notFoundIcon.png";
 import {
     CustomCopyButton,
@@ -37,6 +741,20 @@ import { ClipboardCopy } from "lucide-react";
 import { Icon } from "./Icon";
 import { PhotoObj } from "./PhotoObj";
 
+// Типы
+interface StatusReward {
+    url: string;
+    description: string;
+}
+
+interface employeeData {
+    statuses: StatusReward[];
+    rewards: StatusReward[];
+    photo: string;
+}
+
+type PhotoStatus = "loading" | "error" | employeeData;
+
 // Функция для рекурсивного сбора всех сотрудников из дерева
 const getAllEmployees = (tree: EmployeesListTree): Employee[] => {
     let result = [...tree.employees];
@@ -60,7 +778,6 @@ const HIGHLIGHTER_COLOR = "#b2dff7";
 
 export const EmployeeList: React.FC = () => {
     const [searchParams] = useSearchParams();
-
     const employees = useOrgStore((state) => state.employees);
     const isEmpLoading = useOrgStore((state) => state.isEmpLoading);
     const employeesList = useOrgStore((state) => state.employeesList);
@@ -83,6 +800,16 @@ export const EmployeeList: React.FC = () => {
     const organizationId = searchParams.get("organizationId");
     const departmentId = searchParams.get("departmentId");
 
+    const [employeeData, setEmployeeData] = useState<
+        Record<
+            string,
+            | "loading"
+            | "error"
+            | { statuses: any[]; rewards: any[]; photo: string }
+        >
+    >({});
+    const observerRefs = useRef<Record<string, HTMLDivElement>>({});
+
     const handleCopyClick = (text: string) => {
         navigator.clipboard.writeText(text);
         toast.info("Скопировано в буфер обмена", { position: "top-right" });
@@ -93,40 +820,77 @@ export const EmployeeList: React.FC = () => {
         fetchCurrentEmployeeInfo(empId, orgId);
     };
 
-    // Берём либо реальное дерево, либо пустой шаблон
     const employeesTree = useMemo(
         () => employees ?? emptyEmployeesTree,
         [employees]
     );
 
-    // Плоский список всех сотрудников из дерева
     const flatEmployees = useMemo(
         () => getAllEmployees(employeesTree),
         [employeesTree]
     );
 
-    // Группировка плоского списка по департаментам
+    // const departments = useMemo(() => {
+    //     const map: Record<
+    //         string,
+    //         {
+    //             departmentId: string;
+    //             departmentName: string;
+    //             employees: Employee[];
+    //         }
+    //     > = {};
+    //     flatEmployees.forEach((emp) => {
+    //         if (!map[emp.departmentId]) {
+    //             map[emp.departmentId] = {
+    //                 departmentId: emp.departmentId,
+    //                 departmentName: emp.departmentName,
+    //                 employees: [],
+    //             };
+    //         }
+    //         map[emp.departmentId].employees.push(emp);
+    //     });
+    //     return Object.values(map);
+    // }, [flatEmployees]);
+
     const departments = useMemo(() => {
-        const map: Record<
+        const map = new Map<
             string,
             {
                 departmentId: string;
                 departmentName: string;
                 employees: Employee[];
             }
-        > = {};
-        flatEmployees.forEach((emp) => {
-            if (!map[emp.departmentId]) {
-                map[emp.departmentId] = {
-                    departmentId: emp.departmentId,
-                    departmentName: emp.departmentName,
-                    employees: [],
-                };
+        >();
+
+        // Рекурсивная функция для обхода дерева
+        const traverse = (node: EmployeesListTree) => {
+            if (node.employees?.length > 0) {
+                const deptId = node.departmentId;
+
+                if (!map.has(deptId)) {
+                    map.set(deptId, {
+                        departmentId: deptId,
+                        departmentName: node.departmentName,
+                        employees: [],
+                    });
+                }
+
+                map.get(deptId)?.employees.push(...node.employees);
             }
-            map[emp.departmentId].employees.push(emp);
-        });
-        return Object.values(map);
-    }, [flatEmployees]);
+
+            if (node.children?.length > 0) {
+                for (const child of node.children) {
+                    traverse(child);
+                }
+            }
+        };
+
+        if (employeesTree) {
+            traverse(employeesTree); // data — это твой входной объект
+        }
+
+        return Array.from(map.values());
+    }, [employeesTree]);
 
     const location = useLocation();
     const isDefaultRoute =
@@ -136,39 +900,31 @@ export const EmployeeList: React.FC = () => {
         const emails: (string | null)[] = [
             ...data.employees.map((emp) => emp.email),
         ];
-
         for (const child of data.children) {
             emails.push(...getAllEmails(child));
         }
-
         return emails;
     }
 
     const handleClickCopyEmails = () => {
         let emails = "";
         if (employeesList.length > 0) {
-            employeesList.forEach((organization) => {
-                organization.departments.forEach((department) => {
-                    department.employees.forEach((employee) => {
-                        if (employee.email) {
-                            emails += `${employee.email} `;
-                        }
+            employeesList.forEach((org) => {
+                org.departments.forEach((dept) => {
+                    dept.employees.forEach((emp) => {
+                        if (emp.email) emails += `${emp.email} `;
                     });
                 });
             });
-        } else {
-            if (employees) {
-                emails = getAllEmails(employees).join(" ");
-            }
+        } else if (employees) {
+            emails = getAllEmails(employees).join(" ");
         }
+
         navigator.clipboard.writeText(emails);
-        toast.info("Скопировано в буфер обмена", {
-            position: "top-right",
-        });
+        toast.info("Скопировано в буфер обмена", { position: "top-right" });
     };
 
     useEffect(() => {
-        // При пустых параметрах — выбираем дефолтную орг. и департамент
         if (isDefaultRoute) {
             selectOrg(
                 "7842155505",
@@ -187,21 +943,144 @@ export const EmployeeList: React.FC = () => {
                 "false"
             );
         } else if (searchValue && searchCategory) {
-            // Режим поиска
             fetchEmployeesWithParams(searchValue, searchCategory);
         } else if (organizationId) {
-            // Клик по организации/департаменту через URL
             selectOrg(organizationId, departmentId ?? null);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [
+        isDefaultRoute,
+        searchValue,
+        searchCategory,
+        organizationId,
+        departmentId,
+        employeesList.length,
+    ]);
+
+    // Загрузка данных о сотруднике
+    const loadEmployeeData = async (
+        employeeId: string,
+        organization: string
+    ) => {
+        try {
+            setEmployeeData((prev) => ({
+                ...prev,
+                [employeeId]: "loading",
+            }));
+            const response = await fetch(
+                `http://172.16.153.53:8001/employee/image?id=${employeeId}&organizationId=${organization}&photoSize=96`
+            );
+            if (!response.ok) throw new Error("Ошибка загрузки");
+
+            const data = await response.json();
+            setEmployeeData((prev) => ({ ...prev, [employeeId]: data.result }));
+            // console.log(data.result);
+        } catch (error) {
+            console.error(`Ошибка загрузки данных для ${employeeId}:`, error);
+            setEmployeeData((prev) => ({
+                ...prev,
+                [employeeId]: "error",
+            }));
+        }
+    };
+
+    // Отслеживание видимости
+    // useEffect(() => {
+    //     console.log("-------");
+    //     const observer = new IntersectionObserver(
+    //         (entries) => {
+    //             entries.forEach((entry) => {
+    //                 const target = entry.target as HTMLElement;
+    //                 const employeeId = target.dataset.employeeId;
+    //                 console.log(entry.isIntersecting, employeeId);
+    //                 if (
+    //                     entry.isIntersecting &&
+    //                     employeeId &&
+    //                     !employeeData[employeeId]
+    //                 ) {
+    //                     loadEmployeeData(employeeId);
+    //                 }
+    //             });
+    //         },
+    //         {
+    //             rootMargin: "0px 0px 200px 0px",
+    //         }
+    //     );
+
+    //     return () => {
+    //         observer.disconnect();
+    //     };
+    // }, [employeeData]);
 
     // useEffect(() => {
-    //     if (isDefaultRoute) {
+    //     // console.log("------------");
+    //     const observer = new IntersectionObserver(
+    //         (entries) => {
+    //             // console.log(entries);
+    //             entries.forEach((entry) => {
+    //                 // console.log(entry);
+    //                 const target = entry.target as HTMLElement;
+    //                 const employeeId = target.dataset.employeeId;
 
-    //     }
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [isDefaultRoute]);
+    //                 // console.log(entry.isIntersecting, employeeId); // Это важно!
+
+    //                 if (
+    //                     entry.isIntersecting &&
+    //                     employeeId &&
+    //                     !employeeData[employeeId]
+    //                 ) {
+    //                     loadEmployeeData(employeeId);
+    //                 }
+    //             });
+    //         },
+    //         {
+    //             rootMargin: "0px 0px 200px 0px",
+    //             threshold: 0,
+    //         }
+    //     );
+
+    //     // Подписываемся только на те элементы, которые уже есть
+    //     Object.values(observerRefs.current).forEach((el) => {
+    //         if (el) observer.observe(el);
+    //     });
+
+    //     return () => {
+    //         observer.disconnect();
+    //     };
+    // }, [employeeData]);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    const target = entry.target as HTMLElement;
+                    const employeeId = target.dataset.employeeId;
+                    console.log(target);
+                    if (
+                        entry.isIntersecting &&
+                        employeeId &&
+                        !employeeData[employeeId] &&
+                        organizationId
+                    ) {
+                        loadEmployeeData(employeeId, organizationId);
+                    }
+                });
+            },
+            {
+                rootMargin: "0px 0px 200px 0px",
+                threshold: 0,
+            }
+        );
+
+        // После появления сотрудников, подписываемся на их DOM-элементы
+        Object.values(observerRefs.current).forEach((el) => {
+            if (el) observer.observe(el);
+        });
+
+        return () => {
+            observer.disconnect();
+        };
+        // Должно зависеть от списка сотрудников, т.к. меняются refs
+    }, [departments, employeesList]);
 
     return (
         <EmployeeListWrapper>
@@ -222,18 +1101,19 @@ export const EmployeeList: React.FC = () => {
                     <ClipboardCopy size={20} stroke="grey" />
                 </span>
             </div>
+
             <EmployeeListWrapperMain>
                 {isEmpLoading ? (
                     <EmployeeSkeleton />
                 ) : (
                     <EmployeeListWrapperTable>
-                        {/* === Пункт 1: выбор по орг/департаменту + начальное отображение === */}
+                        {/* === Пункт 1: выбор по орг/департаменту === */}
                         {employeesList.length === 0 ? (
                             <div>
                                 {departments.length > 0 && (
                                     <>
                                         <FirstHeader>
-                                            <EmptyHeadColumn> </EmptyHeadColumn>
+                                            <EmptyHeadColumn></EmptyHeadColumn>
                                             <HeadColumn
                                                 style={{
                                                     minWidth: "30%",
@@ -265,178 +1145,265 @@ export const EmployeeList: React.FC = () => {
                                                 Электронная почта
                                             </HeadColumn>
                                         </FirstHeader>
-                                        {/* Заголовок организации */}
                                         <SecondHeader>
                                             Организация:{" "}
                                             {employeesTree.organizationName}
                                         </SecondHeader>
-                                        {/* Блоки департаментов */}
                                         {departments.map((dept) => (
                                             <div key={dept.departmentId}>
-                                                {/* Хлебные крошки с полным путём */}
                                                 <ThirdHeader>
                                                     <EmployeeDepartmentPath
                                                         departmentId={
-                                                            dept.departmentId
+                                                            dept.departmentId ||
+                                                            ""
                                                         }
-                                                        dept={dept}
+                                                        dept={departments}
                                                     />
                                                 </ThirdHeader>
-                                                {/* Сотрудники департамента */}
                                                 {dept.employees.map((emp) => (
                                                     <EmployeeTableRowDiv
                                                         key={emp.id}
                                                         onClick={() =>
                                                             handleRowClick(
                                                                 emp.id,
-                                                                emp.organizationId
+                                                                organizationId ||
+                                                                    ""
                                                             )
                                                         }
+                                                        ref={(el) => {
+                                                            if (el) {
+                                                                observerRefs.current[
+                                                                    emp.id
+                                                                ] = el;
+                                                            }
+                                                        }}
+                                                        data-employee-id={
+                                                            emp.id
+                                                        }
                                                     >
-                                                        {/* <PhotoObj
-                                                            photo={emp.photo}
-                                                            width="75px"
-                                                        /> */}
-                                                        <CellWrapper
+                                                        <div
                                                             style={{
-                                                                minWidth: "30%",
-                                                                maxWidth: "30%",
+                                                                display:
+                                                                    "table-row",
                                                             }}
                                                         >
-                                                            {emp.fullNameRus}
-                                                            <PositionWrapper>
-                                                                {
-                                                                    emp.positionTitle
-                                                                }
-                                                            </PositionWrapper>
-                                                        </CellWrapper>
-                                                        <CellWrapper
-                                                            style={{
-                                                                flexDirection:
-                                                                    "column",
-                                                            }}
-                                                        >
-                                                            <div>
-                                                                {emp.statuses.map(
-                                                                    (
-                                                                        status
-                                                                    ) => (
-                                                                        <Icon
-                                                                            icon={
-                                                                                status
-                                                                            }
-                                                                            width="40px"
-                                                                            type="status"
-                                                                        />
+                                                            {/* --- Фото --- */}
+                                                            <div
+                                                                style={{
+                                                                    display:
+                                                                        "table-cell",
+                                                                }}
+                                                            >
+                                                                {(() => {
+                                                                    const data =
+                                                                        employeeData[
+                                                                            emp
+                                                                                .id
+                                                                        ];
+                                                                    if (
+                                                                        data ===
+                                                                        "loading"
                                                                     )
-                                                                )}
-                                                                {emp.rewards.map(
-                                                                    (
-                                                                        status
-                                                                    ) => (
-                                                                        <Icon
-                                                                            icon={
-                                                                                status
-                                                                            }
-                                                                            width="40px"
-                                                                            type="achievement"
-                                                                        />
+                                                                        return (
+                                                                            <div>
+                                                                                Загрузка...
+                                                                            </div>
+                                                                        );
+                                                                    if (
+                                                                        data ===
+                                                                        "error"
                                                                     )
-                                                                )}
+                                                                        return (
+                                                                            <PhotoObj
+                                                                                photo={
+                                                                                    null
+                                                                                }
+                                                                                width="75px"
+                                                                            />
+                                                                        );
+                                                                    if (
+                                                                        typeof data !==
+                                                                        "string"
+                                                                    ) {
+                                                                        return (
+                                                                            <PhotoObj
+                                                                                photo={
+                                                                                    data?.photo
+                                                                                }
+                                                                                width="75px"
+                                                                            />
+                                                                        );
+                                                                    }
+                                                                    return (
+                                                                        <PhotoObj
+                                                                            photo={
+                                                                                emp.photo ||
+                                                                                null
+                                                                            }
+                                                                            width="75px"
+                                                                        />
+                                                                    );
+                                                                })()}
                                                             </div>
-                                                        </CellWrapper>
-                                                        <CellWrapper
-                                                            style={{
-                                                                minWidth: "25%",
-                                                                maxWidth: "25%",
-                                                            }}
-                                                        >
-                                                            {emp.telephoneNumberCorp &&
-                                                            emp.telephoneNumberCorp !==
-                                                                "" ? (
-                                                                <CustomEmailLink
-                                                                    href={`tel:${emp.telephoneNumberCorp}`}
-                                                                    onClick={(
-                                                                        e
-                                                                    ) =>
-                                                                        e.stopPropagation()
-                                                                    }
-                                                                >
+
+                                                            {/* --- ФИО --- */}
+                                                            <CellWrapper
+                                                                style={{
+                                                                    minWidth:
+                                                                        "30%",
+                                                                    maxWidth:
+                                                                        "30%",
+                                                                }}
+                                                            >
+                                                                {
+                                                                    emp.fullNameRus
+                                                                }
+                                                                <PositionWrapper>
                                                                     {
-                                                                        emp.telephoneNumberCorp
+                                                                        emp.positionTitle
                                                                     }
-                                                                </CustomEmailLink>
-                                                            ) : (
-                                                                "Не указан"
-                                                            )}
-                                                        </CellWrapper>
-                                                        <CellWrapper
-                                                            style={{
-                                                                display: "flex",
-                                                            }}
-                                                        >
-                                                            {emp.email ? (
-                                                                <>
+                                                                </PositionWrapper>
+                                                            </CellWrapper>
+
+                                                            {/* --- Иконки --- */}
+                                                            <CellWrapper
+                                                                style={{
+                                                                    flexDirection:
+                                                                        "column",
+                                                                }}
+                                                            >
+                                                                <div>
+                                                                    {(() => {
+                                                                        const data =
+                                                                            employeeData[
+                                                                                emp
+                                                                                    .id
+                                                                            ];
+                                                                        if (
+                                                                            data ===
+                                                                                "loading" ||
+                                                                            data ===
+                                                                                "error" ||
+                                                                            typeof data ===
+                                                                                "string"
+                                                                        )
+                                                                            return null;
+                                                                        return (
+                                                                            <>
+                                                                                {data?.statuses &&
+                                                                                    data
+                                                                                        ?.statuses
+                                                                                        .length >
+                                                                                        0 &&
+                                                                                    data?.statuses.map(
+                                                                                        (
+                                                                                            status,
+                                                                                            i
+                                                                                        ) => (
+                                                                                            <Icon
+                                                                                                key={`status-${i}`}
+                                                                                                icon={
+                                                                                                    status
+                                                                                                }
+                                                                                                width="40px"
+                                                                                                type="status"
+                                                                                            />
+                                                                                        )
+                                                                                    )}
+                                                                                {data?.rewards &&
+                                                                                    data
+                                                                                        ?.rewards
+                                                                                        .length >
+                                                                                        0 &&
+                                                                                    data?.rewards.map(
+                                                                                        (
+                                                                                            reward,
+                                                                                            i
+                                                                                        ) => (
+                                                                                            <Icon
+                                                                                                key={`reward-${i}`}
+                                                                                                icon={
+                                                                                                    reward
+                                                                                                }
+                                                                                                width="40px"
+                                                                                                type="achievement"
+                                                                                            />
+                                                                                        )
+                                                                                    )}
+                                                                            </>
+                                                                        );
+                                                                    })()}
+                                                                </div>
+                                                            </CellWrapper>
+
+                                                            {/* --- Телефон --- */}
+                                                            <CellWrapper
+                                                                style={{
+                                                                    minWidth:
+                                                                        "25%",
+                                                                    maxWidth:
+                                                                        "25%",
+                                                                }}
+                                                            >
+                                                                {emp.telephoneNumberCorp ? (
                                                                     <CustomEmailLink
-                                                                        href={`mailto:${emp.email}`}
-                                                                        onClick={(
-                                                                            e
-                                                                        ) =>
-                                                                            e.stopPropagation()
-                                                                        }
+                                                                        href={`tel:${emp.telephoneNumberCorp}`}
                                                                     >
-                                                                        {emp.email ||
-                                                                            "Не указан"}
-                                                                    </CustomEmailLink>
-                                                                    <CustomCopyButton
-                                                                        size={
-                                                                            13
+                                                                        {
+                                                                            emp.telephoneNumberCorp
                                                                         }
-                                                                        onClick={(
-                                                                            e
-                                                                        ) => {
-                                                                            e.stopPropagation();
-                                                                            handleCopyClick(
-                                                                                emp.email!
-                                                                            );
-                                                                        }}
-                                                                    />
-                                                                </>
-                                                            ) : (
-                                                                "Не указан"
-                                                            )}
-                                                        </CellWrapper>
+                                                                    </CustomEmailLink>
+                                                                ) : (
+                                                                    "Не указан"
+                                                                )}
+                                                            </CellWrapper>
+
+                                                            {/* --- Email --- */}
+                                                            <CellWrapper
+                                                                style={{
+                                                                    display:
+                                                                        "flex",
+                                                                }}
+                                                            >
+                                                                {emp.email ? (
+                                                                    <>
+                                                                        <CustomEmailLink
+                                                                            href={`mailto:${emp.email}`}
+                                                                        >
+                                                                            {
+                                                                                emp.email
+                                                                            }
+                                                                        </CustomEmailLink>
+                                                                        <CustomCopyButton
+                                                                            size={
+                                                                                13
+                                                                            }
+                                                                            onClick={(
+                                                                                e
+                                                                            ) =>
+                                                                                handleCopyClick(
+                                                                                    emp.email!
+                                                                                )
+                                                                            }
+                                                                        />
+                                                                    </>
+                                                                ) : (
+                                                                    "Не указан"
+                                                                )}
+                                                            </CellWrapper>
+                                                        </div>
                                                     </EmployeeTableRowDiv>
                                                 ))}
                                             </div>
                                         ))}
                                     </>
                                 )}
-                                {departments.length === 0 && (
-                                    <div style={{ textAlignLast: "center" }}>
-                                        {/* <img src={NotFound} alt="Не найдено" /> */}
-                                        <img
-                                            src={NotFoundIcon}
-                                            alt="Не найдено"
-                                            width={150}
-                                            style={{ margin: "15% 0 40px" }}
-                                        />
-                                        <div>
-                                            <span>
-                                                По заданным критериям сотрудники
-                                                не найдены. <br />
-                                                Проверьте правильность введенных
-                                                данных или выбранный фильтр
-                                            </span>
-                                        </div>
-                                    </div>
-                                )}
                             </div>
                         ) : (
                             /* === Пункт 2: режим поиска === */
                             <div>
                                 <FirstHeader>
-                                    <EmptyHeadColumn> </EmptyHeadColumn>
+                                    <EmptyHeadColumn></EmptyHeadColumn>
                                     <HeadColumn
                                         style={{
                                             minWidth: "30%",
@@ -462,215 +1429,263 @@ export const EmployeeList: React.FC = () => {
                                         Электронная почта
                                     </HeadColumn>
                                 </FirstHeader>
-                                {employeesList.length > 0 &&
-                                    employeesList.map((org: EmployeesList) => (
-                                        <div key={org.organizationId}>
-                                            <SecondHeader>
-                                                Организация:{" "}
-                                                {org.organizationName}
-                                            </SecondHeader>
-                                            {org.departments.map((dept) => (
-                                                <div key={dept.departmentId}>
-                                                    <ThirdHeader>
-                                                        <EmployeeDepartmentPath
-                                                            departmentId={
-                                                                dept.departmentId
+                                {employeesList.map((org: EmployeesList) => (
+                                    <div key={org.organizationId}>
+                                        <SecondHeader>
+                                            Организация: {org.organizationName}
+                                        </SecondHeader>
+                                        {org.departments.map((dept) => (
+                                            <div key={dept.departmentId}>
+                                                <ThirdHeader>
+                                                    <EmployeeDepartmentPath
+                                                        departmentId={
+                                                            dept.departmentId
+                                                        }
+                                                        dept={dept}
+                                                    />
+                                                </ThirdHeader>
+                                                {dept.employees.map((emp) => (
+                                                    <EmployeeTableRowDiv
+                                                        key={emp.id}
+                                                        onClick={() =>
+                                                            handleRowClick(
+                                                                emp.id,
+                                                                emp.organizationId
+                                                            )
+                                                        }
+                                                        ref={(el) => {
+                                                            if (el) {
+                                                                observerRefs.current[
+                                                                    emp.id
+                                                                ] = el;
                                                             }
-                                                            dept={dept}
-                                                        />
-                                                    </ThirdHeader>
-                                                    {dept.employees.map(
-                                                        (emp) => (
-                                                            <EmployeeTableRowDiv
-                                                                key={emp.id}
-                                                                onClick={() =>
-                                                                    handleRowClick(
-                                                                        emp.id,
-                                                                        emp.organizationId
-                                                                    )
-                                                                }
+                                                        }}
+                                                        data-employee-id={
+                                                            emp.id
+                                                        }
+                                                    >
+                                                        <div
+                                                            style={{
+                                                                display:
+                                                                    "table-row",
+                                                            }}
+                                                        >
+                                                            <div
+                                                                style={{
+                                                                    display:
+                                                                        "table-cell",
+                                                                }}
                                                             >
-                                                                {/* <img
-                                                                    src={
-                                                                        emp.photo &&
-                                                                        emp
-                                                                            .photo
-                                                                            .fullSizeUrl
-                                                                            ? emp
-                                                                                  .photo
-                                                                                  .fullSizeUrl
-                                                                            : PhotoDefault
+                                                                {(() => {
+                                                                    const data =
+                                                                        employeeData[
+                                                                            emp
+                                                                                .id
+                                                                        ];
+                                                                    if (
+                                                                        data ===
+                                                                        "loading"
+                                                                    )
+                                                                        return (
+                                                                            <div>
+                                                                                Загрузка...
+                                                                            </div>
+                                                                        );
+                                                                    if (
+                                                                        data ===
+                                                                        "error"
+                                                                    )
+                                                                        return (
+                                                                            <PhotoObj
+                                                                                photo={
+                                                                                    null
+                                                                                }
+                                                                                width="75px"
+                                                                            />
+                                                                        );
+                                                                    if (
+                                                                        typeof data !==
+                                                                        "string"
+                                                                    ) {
+                                                                        return (
+                                                                            <PhotoObj
+                                                                                photo={
+                                                                                    data?.photo
+                                                                                }
+                                                                                width="75px"
+                                                                            />
+                                                                        );
                                                                     }
-                                                                    alt={
-                                                                        emp.fullNameRus
-                                                                    }
-                                                                    width="75px"
-                                                                    height="75px"
-                                                                /> */}
-                                                                <PhotoObj
-                                                                    photo={
-                                                                        emp.photo
-                                                                    }
-                                                                    width="75px"
-                                                                />
-                                                                <CellWrapper
-                                                                    style={{
-                                                                        minWidth:
-                                                                            "40%",
-                                                                        maxWidth:
-                                                                            "40%",
-                                                                    }}
-                                                                >
-                                                                    <Highlighter
-                                                                        searchWords={[
-                                                                            searchValue ||
-                                                                                "",
-                                                                        ]}
-                                                                        autoEscape={
-                                                                            true
-                                                                        }
-                                                                        textToHighlight={`${emp.fullNameRus}`}
-                                                                        highlightStyle={{
-                                                                            backgroundColor:
-                                                                                HIGHLIGHTER_COLOR,
-                                                                        }}
-                                                                    />
+                                                                    return (
+                                                                        <PhotoObj
+                                                                            photo={
+                                                                                emp.photo ||
+                                                                                null
+                                                                            }
+                                                                            width="75px"
+                                                                        />
+                                                                    );
+                                                                })()}
+                                                            </div>
 
-                                                                    <PositionWrapper>
+                                                            <CellWrapper
+                                                                style={{
+                                                                    minWidth:
+                                                                        "40%",
+                                                                    maxWidth:
+                                                                        "40%",
+                                                                }}
+                                                            >
+                                                                <Highlighter
+                                                                    searchWords={[
+                                                                        searchValue ||
+                                                                            "",
+                                                                    ]}
+                                                                    autoEscape
+                                                                    textToHighlight={`${emp.fullNameRus}`}
+                                                                    highlightStyle={{
+                                                                        backgroundColor:
+                                                                            HIGHLIGHTER_COLOR,
+                                                                    }}
+                                                                />
+                                                                <PositionWrapper>
+                                                                    {
+                                                                        emp.positionTitle
+                                                                    }
+                                                                </PositionWrapper>
+                                                            </CellWrapper>
+
+                                                            <CellWrapper
+                                                                style={{
+                                                                    flexDirection:
+                                                                        "column",
+                                                                }}
+                                                            >
+                                                                <div>
+                                                                    {(() => {
+                                                                        const data =
+                                                                            employeeData[
+                                                                                emp
+                                                                                    .id
+                                                                            ];
+                                                                        if (
+                                                                            data ===
+                                                                                "loading" ||
+                                                                            data ===
+                                                                                "error" ||
+                                                                            typeof data ===
+                                                                                "string"
+                                                                        )
+                                                                            return null;
+                                                                        return (
+                                                                            <>
+                                                                                {data?.statuses &&
+                                                                                    data
+                                                                                        ?.statuses
+                                                                                        .length >
+                                                                                        0 &&
+                                                                                    data?.statuses.map(
+                                                                                        (
+                                                                                            status,
+                                                                                            i
+                                                                                        ) => (
+                                                                                            <Icon
+                                                                                                key={`status-${i}`}
+                                                                                                icon={
+                                                                                                    status
+                                                                                                }
+                                                                                                width="40px"
+                                                                                                type="status"
+                                                                                            />
+                                                                                        )
+                                                                                    )}
+                                                                                {data?.rewards &&
+                                                                                    data
+                                                                                        ?.rewards
+                                                                                        .length >
+                                                                                        0 &&
+                                                                                    data?.rewards.map(
+                                                                                        (
+                                                                                            reward,
+                                                                                            i
+                                                                                        ) => (
+                                                                                            <Icon
+                                                                                                key={`reward-${i}`}
+                                                                                                icon={
+                                                                                                    reward
+                                                                                                }
+                                                                                                width="40px"
+                                                                                                type="achievement"
+                                                                                            />
+                                                                                        )
+                                                                                    )}
+                                                                            </>
+                                                                        );
+                                                                    })()}
+                                                                </div>
+                                                            </CellWrapper>
+
+                                                            <CellWrapper
+                                                                style={{
+                                                                    minWidth:
+                                                                        "25%",
+                                                                    maxWidth:
+                                                                        "25%",
+                                                                }}
+                                                            >
+                                                                {emp.telephoneNumberCorp ? (
+                                                                    <CustomEmailLink
+                                                                        href={`tel:${emp.telephoneNumberCorp}`}
+                                                                    >
                                                                         {
-                                                                            emp.positionTitle
+                                                                            emp.telephoneNumberCorp
                                                                         }
-                                                                    </PositionWrapper>
-                                                                </CellWrapper>
-                                                                <CellWrapper
-                                                                    style={{
-                                                                        flexDirection:
-                                                                            "column",
-                                                                    }}
-                                                                >
-                                                                    <div>
-                                                                        {emp.statuses.map(
-                                                                            (
-                                                                                status
-                                                                            ) => (
-                                                                                <Icon
-                                                                                    icon={
-                                                                                        status
-                                                                                    }
-                                                                                    width="40px"
-                                                                                    type="status"
-                                                                                />
-                                                                            )
-                                                                        )}
-                                                                        {emp.rewards.map(
-                                                                            (
-                                                                                status
-                                                                            ) => (
-                                                                                <Icon
-                                                                                    icon={
-                                                                                        status
-                                                                                    }
-                                                                                    width="40px"
-                                                                                    type="achievement"
-                                                                                />
-                                                                            )
-                                                                        )}
-                                                                    </div>
-                                                                </CellWrapper>
-                                                                <CellWrapper
-                                                                    style={{
-                                                                        minWidth:
-                                                                            "25%",
-                                                                        maxWidth:
-                                                                            "25%",
-                                                                    }}
-                                                                >
-                                                                    {emp.telephoneNumberCorp &&
-                                                                    emp.telephoneNumberCorp !==
-                                                                        "" ? (
+                                                                    </CustomEmailLink>
+                                                                ) : (
+                                                                    "Не указан"
+                                                                )}
+                                                            </CellWrapper>
+
+                                                            <CellWrapper
+                                                                style={{
+                                                                    flex: "1 1 0%",
+                                                                    display:
+                                                                        "flex",
+                                                                }}
+                                                            >
+                                                                {emp.email ? (
+                                                                    <>
                                                                         <CustomEmailLink
-                                                                            href={`tel:${emp.telephoneNumberCorp}`}
+                                                                            href={`mailto:${emp.email}`}
+                                                                        >
+                                                                            {
+                                                                                emp.email
+                                                                            }
+                                                                        </CustomEmailLink>
+                                                                        <CustomCopyButton
+                                                                            size={
+                                                                                13
+                                                                            }
                                                                             onClick={(
                                                                                 e
                                                                             ) =>
-                                                                                e.stopPropagation()
+                                                                                handleCopyClick(
+                                                                                    emp.email!
+                                                                                )
                                                                             }
-                                                                        >
-                                                                            {org
-                                                                                .departments
-                                                                                .length >
-                                                                            1 ? (
-                                                                                <Highlighter
-                                                                                    searchWords={[
-                                                                                        searchValue ||
-                                                                                            "",
-                                                                                    ]}
-                                                                                    autoEscape={
-                                                                                        true
-                                                                                    }
-                                                                                    textToHighlight={`${
-                                                                                        emp.telephoneNumberCorp ||
-                                                                                        "Не указан"
-                                                                                    }`}
-                                                                                    highlightStyle={{
-                                                                                        backgroundColor:
-                                                                                            HIGHLIGHTER_COLOR,
-                                                                                    }}
-                                                                                />
-                                                                            ) : (
-                                                                                emp.telephoneNumberCorp ||
-                                                                                "Не указан"
-                                                                            )}
-                                                                        </CustomEmailLink>
-                                                                    ) : (
-                                                                        "Не указан"
-                                                                    )}
-                                                                </CellWrapper>
-                                                                <CellWrapper
-                                                                    style={{
-                                                                        flex: "1 1 0%",
-                                                                        display:
-                                                                            "flex",
-                                                                    }}
-                                                                >
-                                                                    {emp.email ? (
-                                                                        <>
-                                                                            <CustomEmailLink
-                                                                                href={`mailto:${emp.email}`}
-                                                                                onClick={(
-                                                                                    e
-                                                                                ) =>
-                                                                                    e.stopPropagation()
-                                                                                }
-                                                                            >
-                                                                                {emp.email ||
-                                                                                    "Не указан"}
-                                                                            </CustomEmailLink>
-                                                                            <CustomCopyButton
-                                                                                size={
-                                                                                    13
-                                                                                }
-                                                                                onClick={(
-                                                                                    e
-                                                                                ) => {
-                                                                                    e.stopPropagation();
-                                                                                    handleCopyClick(
-                                                                                        emp.email!
-                                                                                    );
-                                                                                }}
-                                                                            />
-                                                                        </>
-                                                                    ) : (
-                                                                        "Не указан"
-                                                                    )}
-                                                                </CellWrapper>
-                                                            </EmployeeTableRowDiv>
-                                                        )
-                                                    )}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    ))}
+                                                                        />
+                                                                    </>
+                                                                ) : (
+                                                                    "Не указан"
+                                                                )}
+                                                            </CellWrapper>
+                                                        </div>
+                                                    </EmployeeTableRowDiv>
+                                                ))}
+                                            </div>
+                                        ))}
+                                    </div>
+                                ))}
                             </div>
                         )}
                     </EmployeeListWrapperTable>

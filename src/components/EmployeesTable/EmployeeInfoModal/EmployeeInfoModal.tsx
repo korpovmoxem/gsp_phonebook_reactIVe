@@ -197,19 +197,19 @@ export const EmployeeInfoModal: React.FC = () => {
                                 {currentEmployeeInfo && (
                                     <PhotoAndInfo>
                                         <PhotoBlock>
-                                            <PhotoObj
+                                            {/* <PhotoObj
                                                 photo={
                                                     currentEmployeeInfo.photo
                                                 }
                                                 width="200px"
-                                            />
+                                            /> */}
                                         </PhotoBlock>
                                         <InfoBlockWrapper>
                                             <Fio>
                                                 {
                                                     currentEmployeeInfo.fullNameRus
                                                 }
-                                                <img
+                                                {/* <img
                                                     src={
                                                         currentEmployeeInfo
                                                             .statuses[0] &&
@@ -217,7 +217,7 @@ export const EmployeeInfoModal: React.FC = () => {
                                                             .statuses[0].url
                                                     }
                                                     alt=""
-                                                />
+                                                /> */}
                                             </Fio>
                                             <span style={{ fontSize: "11pt" }}>
                                                 {
