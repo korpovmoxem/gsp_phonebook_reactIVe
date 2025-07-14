@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { Employee } from "../../types";
 import { CustomEmailLink, CustomCopyButton } from "../StyledComponents";
 import { Icon } from "./Icon";
@@ -10,11 +10,11 @@ import {
     EmployeeTableRowDiv,
     PositionWrapper,
 } from "./StyledComponents";
+import { useEmployeeStore } from "../../store/employeeStore";
 
 interface Props {
     emp: Employee;
     handleRowClick: (employeeId: string, orgId: string) => void;
-    observerRefs: React.RefObject<Record<string, HTMLDivElement>>;
     organizationId: string | null;
     employeeData: Record<
         string,
@@ -26,21 +26,26 @@ interface Props {
 const EmployeeTableItem = ({
     emp,
     handleRowClick,
-    observerRefs,
     organizationId,
     employeeData,
     handleCopyClick,
 }: Props) => {
+    const loadEmployeeData = useEmployeeStore(s => s.loadEmployeeData);
+
+    // Если фото еще нет — запусти загрузку
+    useEffect(() => {
+        if (
+            emp.id &&
+            organizationId &&
+            employeeData[emp.id] === undefined
+        ) {
+            loadEmployeeData(emp.id, organizationId);
+        }
+    }, [emp.id, organizationId, employeeData, loadEmployeeData]);
     return (
         <EmployeeTableRowDiv
             key={emp.id}
             onClick={() => handleRowClick(emp.id, organizationId || "")}
-            ref={(el) => {
-                if (el) {
-                    observerRefs.current[emp.id] = el;
-                    el.dataset.organizationId = organizationId || "";
-                }
-            }}
             data-employee-id={emp.id}
         >
             <DivTableRow>
