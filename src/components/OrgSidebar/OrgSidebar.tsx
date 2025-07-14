@@ -90,11 +90,9 @@ export const OrgSidebar: React.FC = () => {
         }
     }, [searchParams, orgMap]);
 
-    // В OrgSidebar.tsx
+    // Запускаем поиск сотрудников только для дочерних элементов. Руты нужны только для раскрытия
     const handleSelect = (node: Organization) => {
-        if (node.root) {
-            setSearchParams({ organizationId: node.id, treeId: node.treeId });
-        } else {
+        if (!node.root) {
             setSearchParams({
                 organizationId: node.organizationId || "",
                 departmentId: node.id,

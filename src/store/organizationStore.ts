@@ -184,7 +184,6 @@ export const useOrgStore = create<OrgState>((set, get) => ({
 
     fetchEmployeesWithParams: async (value, category) => {
         set({ isEmpLoading: true, employeesList: [], selectedOrgId: null, employees: undefined });
-
         try {
             const base = await getAvailableApiBase();
             const response = await fetch(

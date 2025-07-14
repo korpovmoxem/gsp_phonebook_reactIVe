@@ -92,6 +92,7 @@ export const CustomButton = styled.button<ButtonProps>`
 
 export const CustomEmailLink = styled.a`
     color: ${(props) => props.theme.mainTextColor};
+    overflow: hidden;
     &:hover {
         color: grey;
     }

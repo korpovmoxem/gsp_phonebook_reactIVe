@@ -23,6 +23,7 @@ import {
     PhotoBlock,
 } from "./StyledComponents";
 import { PhotoObj } from "../PhotoObj";
+import { useEmployeeStore } from "../../../store/employeeStore";
 
 const INFORMATION_BLOCKS = [
     {
@@ -117,6 +118,7 @@ export const EmployeeInfoModal: React.FC = () => {
     const setIsEditInformation = useOrgStore(
         (state) => state.setIsEditInformation
     );
+    const additionalInfo = useEmployeeStore((state) => state.employeeData);
 
     const handleEditInfo = () => {
         setIsEmployeeInfoModalOpen(!isEmployeeInfoModalOpen);
@@ -197,12 +199,31 @@ export const EmployeeInfoModal: React.FC = () => {
                                 {currentEmployeeInfo && (
                                     <PhotoAndInfo>
                                         <PhotoBlock>
-                                            {/* <PhotoObj
-                                                photo={
-                                                    currentEmployeeInfo.photo
+                                            {(() => {
+                                                const data =
+                                                    additionalInfo[
+                                                        currentEmployeeInfo.id
+                                                    ];
+                                                if (
+                                                    data === "loading" ||
+                                                    data === "error"
+                                                )
+                                                    return (
+                                                        <PhotoObj
+                                                            photo={null}
+                                                            width="200px"
+                                                        />
+                                                    );
+
+                                                if (typeof data !== "string") {
+                                                    return (
+                                                        <PhotoObj
+                                                            photo={data?.photo}
+                                                            width="200px"
+                                                        />
+                                                    );
                                                 }
-                                                width="200px"
-                                            /> */}
+                                            })()}
                                         </PhotoBlock>
                                         <InfoBlockWrapper>
                                             <Fio>

@@ -12,11 +12,13 @@ import {
 } from "./StyledComponents";
 import "@theme-toggles/react/css/Classic.css";
 import { useThemeStore } from "../../store/useThemeStore";
+import { useOrgStore } from "../../store/organizationStore";
 
 export const HeaderMain = () => {
     const navigate = useNavigate();
     const toggleTheme = useThemeStore((state) => state.toggleTheme);
     const theme = useThemeStore((state) => state.theme);
+    const selectOrg = useOrgStore((state) => state.selectOrg);
 
     // При появлении ошибок реакта переходть на страницу с ошибкой
     window.onerror = function (message, source, lineno, colno, error) {
@@ -30,8 +32,16 @@ export const HeaderMain = () => {
     return (
         <HeaderWrapper>
             <LogoWrapper>
-                <Link to="/#">
-                    <LogoContainer>
+                <Link to="/">
+                    <LogoContainer
+                        onClick={() => {
+                            selectOrg(
+                                "7842155505",
+                                "9c685cfe-e9a0-11e8-90f2-0050569026ba",
+                                "false"
+                            );
+                        }}
+                    >
                         <MainLogo src={MainLogoImg} alt="ГазСтройПром" />
                         <SubLogo src={AdressBookImg} alt="ГазСтройПром" />
                     </LogoContainer>

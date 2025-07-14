@@ -19,7 +19,6 @@ import { HelpModal } from "./components/HelpModal/HelpModal";
 import { ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "./theme/themes";
 import { useThemeStore } from "./store/useThemeStore";
-import { EmployeeListFromExcel } from "./components/EmployeesTable/EmployeeListFromExcel";
 
 function App() {
     const [isHelpOpen, setIsHelpOpen] = React.useState(false);

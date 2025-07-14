@@ -20,6 +20,7 @@ import {
 } from "./StyledComponents";
 import { SearchedItemsSkeleton } from "./SearchedItemsSkeleton";
 import { toast } from "react-toastify";
+import { useEmployeeStore } from "../../store/employeeStore";
 
 export const SearchBar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -55,6 +56,10 @@ export const SearchBar = () => {
         (state) => state.fetchEmployeeForSearchBar
     );
 
+    const loadEmployeeData = useEmployeeStore(
+        (state) => state.loadEmployeeData
+    );
+
     const handleInputChange = (e: string) => {
         setQuery(e);
         if (!isNaN(Number(e)) && e !== "" && e !== " ") {
@@ -72,8 +77,8 @@ export const SearchBar = () => {
     };
 
     const handleSearch = () => {
+        setIsOpen(false);
         if (query.trim()) {
-            setIsOpen(false);
             fetchEmployeesWithParams(query, category);
             navigate(`/employee/search?value=${query}&type=${category}`);
         } else {
@@ -97,11 +102,12 @@ export const SearchBar = () => {
 
     const debouncedQuery = useDebouncedValue(query, 500); // Задержка 500 мс
 
-    const handleClickItem = (item: Employee) => {
+    const handleClickItem = (item: Employee, organizationId: string) => {
         setIsOpen(false);
         // setQuery(item.fullNameRus);
         setIsEmployeeInfoModalOpen(!isEmployeeInfoModalOpen);
-        fetchCurrentEmployeeInfo(item.id, item.organizationId);
+        loadEmployeeData(item.id, organizationId);
+        fetchCurrentEmployeeInfo(item.id, organizationId);
     };
 
     // Обработка запроса при изменении debouncedQuery
@@ -197,7 +203,8 @@ export const SearchBar = () => {
                                                                                 }
                                                                                 onClick={() =>
                                                                                     handleClickItem(
-                                                                                        employee
+                                                                                        employee,
+                                                                                        item.organizationId
                                                                                     )
                                                                                 }
                                                                             >

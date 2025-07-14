@@ -33,6 +33,8 @@ export const EmployeeTableRowDiv = styled.div.attrs({
     datatype: "EmployeeTableRowDiv",
 })`
     display: table;
+    table-layout: fixed;
+    width: 100%;
     font-family: Arial, sans-serif;
     align-content: center;
     padding: 6px 8px;
@@ -46,24 +48,14 @@ export const EmployeeTableRowDiv = styled.div.attrs({
     }
 `;
 
-export const EmployeeTableRow = styled.div.attrs({
-    datatype: "EmployeeTableRow",
-})`
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-    color: inherit;
-    font-family: Arial, sans-serif;
+export const DivTableRow = styled.div`
+    display: table-row;
+`;
+
+export const DivTableCell = styled.div`
+    display: table-cell;
+    width: 100px;
     align-content: center;
-    padding: 6px 8px;
-    min-height: 100px;
-    border-bottom: 1px solid ${(props) => props.theme.backgroundSubHeader};
-    align-items: center;
-    cursor: pointer;
-    &:hover {
-        background-color: ${(props) => props.theme.backgroundRowHover};
-        transition: all 0.5s ease;
-    }
 `;
 
 export const EmployeeTableRowDivForExcel = styled.div.attrs({
@@ -120,7 +112,7 @@ export const FirstHeader = styled.div.attrs({
 export const EmptyHeadColumn = styled.div.attrs({
     datatype: "EmptyHeadColumn",
 })`
-    min-width: 80px;
+    width: 100px;
     font-weight: 400;
 `;
 
@@ -161,9 +153,9 @@ export const CellWrapper = styled.div.attrs({
     datatype: "CellWrapper",
 })`
     display: table-cell;
-    flex: 1;
     padding: 4px 8px;
     flex-wrap: wrap;
+    align-content: center;
 `;
 
 export const PositionWrapper = styled.div.attrs({
@@ -178,6 +170,7 @@ export const EmployeeDepartmentPathWrapper = styled.div.attrs({
 })`
     display: flex;
     flex-direction: row;
+    overflow-x: auto;
 `;
 
 export const EmployeeListWrapper = styled.div.attrs({
