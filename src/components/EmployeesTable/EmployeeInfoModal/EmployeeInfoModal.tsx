@@ -24,6 +24,7 @@ import {
 } from "./StyledComponents";
 import { PhotoObj } from "../PhotoObj";
 import { useEmployeeStore } from "../../../store/employeeStore";
+import { Icon } from "../Icon";
 
 const INFORMATION_BLOCKS = [
     {
@@ -224,21 +225,120 @@ export const EmployeeInfoModal: React.FC = () => {
                                                     );
                                                 }
                                             })()}
+                                            <div
+                                                style={{
+                                                    marginTop: "10px",
+                                                    alignContent: "center",
+                                                    alignItems: "center",
+                                                }}
+                                            >
+                                                <h4
+                                                    style={{
+                                                        margin: 0,
+                                                        marginBottom: "10px",
+                                                    }}
+                                                >
+                                                    Статус
+                                                </h4>
+                                                {(() => {
+                                                    const data =
+                                                        additionalInfo[
+                                                            currentEmployeeInfo
+                                                                .id
+                                                        ];
+                                                    if (
+                                                        data === "loading" ||
+                                                        data === "error"
+                                                    )
+                                                        return null;
+
+                                                    if (
+                                                        typeof data !== "string"
+                                                    ) {
+                                                        return (
+                                                            <>
+                                                                {data?.statuses?.map(
+                                                                    (
+                                                                        status
+                                                                    ) => (
+                                                                        <Icon
+                                                                            icon={
+                                                                                status
+                                                                            }
+                                                                            width={
+                                                                                "40px"
+                                                                            }
+                                                                            type={
+                                                                                "status"
+                                                                            }
+                                                                        />
+                                                                    )
+                                                                )}
+                                                            </>
+                                                        );
+                                                    }
+                                                })()}
+                                            </div>
+                                            <div
+                                                style={{
+                                                    marginTop: "10px",
+                                                    alignContent: "center",
+                                                    alignItems: "center",
+                                                }}
+                                            >
+                                                <h4
+                                                    style={{
+                                                        margin: 0,
+                                                        marginBottom: "10px",
+                                                    }}
+                                                >
+                                                    Достижения
+                                                </h4>
+                                                {(() => {
+                                                    const data =
+                                                        additionalInfo[
+                                                            currentEmployeeInfo
+                                                                .id
+                                                        ];
+                                                    if (
+                                                        data === "loading" ||
+                                                        data === "error"
+                                                    )
+                                                        return null;
+
+                                                    if (
+                                                        typeof data !== "string"
+                                                    ) {
+                                                        return (
+                                                            <>
+                                                                {data?.rewards?.map(
+                                                                    (
+                                                                        status
+                                                                    ) => (
+                                                                        <Icon
+                                                                            icon={
+                                                                                status
+                                                                            }
+                                                                            width={
+                                                                                "40px"
+                                                                            }
+                                                                            type={
+                                                                                "achievement"
+                                                                            }
+                                                                        />
+                                                                    )
+                                                                )}
+                                                            </>
+                                                        );
+                                                    }
+                                                })()}
+                                            </div>
                                         </PhotoBlock>
                                         <InfoBlockWrapper>
                                             <Fio>
                                                 {
                                                     currentEmployeeInfo.fullNameRus
                                                 }
-                                                {/* <img
-                                                    src={
-                                                        currentEmployeeInfo
-                                                            .statuses[0] &&
-                                                        currentEmployeeInfo
-                                                            .statuses[0].url
-                                                    }
-                                                    alt=""
-                                                /> */}
                                             </Fio>
                                             <span style={{ fontSize: "11pt" }}>
                                                 {

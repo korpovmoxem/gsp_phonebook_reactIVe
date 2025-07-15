@@ -1,7 +1,24 @@
-import { styled } from "styled-components";
+import { css, keyframes, styled } from "styled-components";
+
+// Анимация тени
+const highlightShadow = keyframes`
+  0% {
+    box-shadow: 0 0 0 7px rgba(0, 123, 255, 0);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(0, 123, 255, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0);
+  }
+`;
+
+interface SearchComponentProps {
+    $isAnimated?: boolean;
+}
 
 // Стилизация самого searchBar
-export const SearchComponent = styled.div`
+export const SearchComponent = styled.div<SearchComponentProps>`
     display: flex;
     width: 100%;
     align-items: center;
@@ -15,6 +32,12 @@ export const SearchComponent = styled.div`
     :focus-within {
         border-color: #007bff;
     }
+
+    ${({ $isAnimated }) =>
+        $isAnimated &&
+        css`
+            animation: ${highlightShadow} 0.5s ease-in-out;
+        `}
 `;
 
 export const SearchInputWrapper = styled.div`

@@ -1,13 +1,14 @@
 import { create } from "zustand";
+import { IconObject, ImageSize } from "../types";
 
 type EmployeeState = {
-    employeeData: Record<string, "loading" | "error" | { statuses: any[]; rewards: any[]; photo: string }>;
-    loadEmployeeData: (employeeId: string, orgId: string) => void;
+    employeeData: Record<string, "loading" | "error" | { statuses: IconObject[]; rewards: IconObject[]; photo: string }>;
+    loadEmployeeData: (employeeId: string, orgId: string, size: ImageSize) => void;
 };
 
 export const useEmployeeStore = create<EmployeeState>((set, get) => ({
     employeeData: {},
-    loadEmployeeData: async (employeeId, orgId) => {
+    loadEmployeeData: async (employeeId, orgId, size) => {
         set((state) => ({
             employeeData: {
                 ...state.employeeData,
@@ -17,7 +18,7 @@ export const useEmployeeStore = create<EmployeeState>((set, get) => ({
 
         try {
             const response = await fetch(
-                `http://172.16.153.53:8001/employee/image?id=${employeeId}&organizationId=${orgId}&photoSize=96`
+                `http://172.16.153.53:8001/employee/image?id=${employeeId}&organizationId=${orgId}&photoSize=${size}`
             );
 
             if (!response.ok) throw new Error("Ошибка загрузки");

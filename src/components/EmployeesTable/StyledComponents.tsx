@@ -12,15 +12,12 @@ export const EmployeeListWrapperMain = styled.div.attrs({
     transition: all 0.5s ease;
     border-radius: 10px;
     height: calc(100% - 138px);
-
-    @media (orientation: portrait) {
-        height: calc(100% - 388px);
-    }
 `;
 
 export const EmployeeListWrapperTable = styled.div.attrs({
     datatype: "EmployeeListWrapperTable",
 })`
+    height: 100%;
     overflow-y: auto;
     scrollbar-width: thin;
     scroll-behavior: smooth;

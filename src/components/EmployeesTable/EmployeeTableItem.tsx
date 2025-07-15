@@ -30,16 +30,12 @@ const EmployeeTableItem = ({
     employeeData,
     handleCopyClick,
 }: Props) => {
-    const loadEmployeeData = useEmployeeStore(s => s.loadEmployeeData);
+    const loadEmployeeData = useEmployeeStore((s) => s.loadEmployeeData);
 
     // Если фото еще нет — запусти загрузку
     useEffect(() => {
-        if (
-            emp.id &&
-            organizationId &&
-            employeeData[emp.id] === undefined
-        ) {
-            loadEmployeeData(emp.id, organizationId);
+        if (emp.id && organizationId && employeeData[emp.id] === undefined) {
+            loadEmployeeData(emp.id, organizationId, "96");
         }
     }, [emp.id, organizationId, employeeData, loadEmployeeData]);
     return (
@@ -49,21 +45,18 @@ const EmployeeTableItem = ({
             data-employee-id={emp.id}
         >
             <DivTableRow>
-                {/* --- Фото --- */}
                 <DivTableCell>
                     {(() => {
                         const data = employeeData[emp.id];
-                        if (data === "loading") {
-                            // return <PhotoObj photo={null} width="75px" />;
-                            return null;
-                        } else if (data === "error") {
-                            return null;
+                        if (
+                            data === "loading" ||
+                            data === "error" ||
+                            data === undefined
+                        ) {
+                            return <PhotoObj photo={null} width="75px" />;
                         }
 
                         if (typeof data !== "string" && data !== undefined) {
-                            console.log("+++++++");
-                            console.log(emp.id);
-                            console.log(data);
                             return (
                                 <PhotoObj photo={data?.photo} width="75px" />
                             );
@@ -71,7 +64,6 @@ const EmployeeTableItem = ({
                     })()}
                 </DivTableCell>
 
-                {/* --- ФИО --- */}
                 <CellWrapper
                     style={{
                         width: "30%",
@@ -82,7 +74,6 @@ const EmployeeTableItem = ({
                     <PositionWrapper>{emp.positionTitle}</PositionWrapper>
                 </CellWrapper>
 
-                {/* --- Иконки --- */}
                 <CellWrapper
                     style={{
                         flexDirection: "column",
@@ -127,7 +118,6 @@ const EmployeeTableItem = ({
                     </div>
                 </CellWrapper>
 
-                {/* --- Телефон --- */}
                 <CellWrapper
                     style={{
                         width: "25%",
@@ -144,7 +134,6 @@ const EmployeeTableItem = ({
                     )}
                 </CellWrapper>
 
-                {/* --- Email --- */}
                 <CellWrapper
                     style={{
                         width: "25%",

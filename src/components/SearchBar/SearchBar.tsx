@@ -31,6 +31,7 @@ export const SearchBar = () => {
     const [category, setCategory] = useState<CATEGORIES>(
         (searchParams.get("category") as CATEGORIES) || "fullName"
     );
+    const [isAnimated, setIsAnimated] = useState(false);
 
     const navigate = useNavigate();
 
@@ -106,7 +107,7 @@ export const SearchBar = () => {
         setIsOpen(false);
         // setQuery(item.fullNameRus);
         setIsEmployeeInfoModalOpen(!isEmployeeInfoModalOpen);
-        loadEmployeeData(item.id, organizationId);
+        loadEmployeeData(item.id, organizationId, "512");
         fetchCurrentEmployeeInfo(item.id, organizationId);
     };
 
@@ -159,9 +160,37 @@ export const SearchBar = () => {
         };
     }, []);
 
+    // Запуск анимации
+    const triggerShadowAnimation = () => {
+        setIsAnimated(true);
+
+        setTimeout(() => {
+            setIsAnimated(false);
+        }, 500); // Должно совпадать с длительностью анимации
+    };
+
+    // Обработчик Ctrl + F / Cmd + F
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if ((e.ctrlKey || e.metaKey) && (e.key === "f" || e.key === "а")) {
+                e.preventDefault();
+
+                if (inputRef.current) {
+                    inputRef.current.focus();
+                    triggerShadowAnimation();
+                }
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    }, []);
+
     return (
         <>
-            <SearchComponent>
+            <SearchComponent $isAnimated={isAnimated}>
                 <SearchInputWrapper>
                     <InputWrapper>
                         <SearchInput
@@ -230,7 +259,7 @@ export const SearchBar = () => {
                                                                                 </CustomDatalistItemHeader>
                                                                                 <CustomDatalistItemText>
                                                                                     {
-                                                                                        employee.organizationName
+                                                                                        item.organizationName
                                                                                     }
                                                                                     {category ===
                                                                                         "email" &&

@@ -77,3 +77,5 @@ export interface EmployeesListTree {
     organizationId: string,
     organizationName: string,
 }
+
+export type ImageSize = '96' | '512'
