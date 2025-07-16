@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { useSearchParams, useLocation } from "react-router-dom";
 import { useOrgStore } from "../../store/organizationStore";
 import { EmployeeSkeleton } from "./EmployeeSkeleton";
@@ -103,6 +103,7 @@ export const EmployeeList: React.FC = () => {
     const searchCategory = searchParams.get("type") as CATEGORIES | null;
     const organizationId = searchParams.get("organizationId");
     const departmentId = searchParams.get("departmentId");
+    const scrollContainerRef = useRef<Window | HTMLElement | null>(null);
 
     const handleCopyClick = (text: string) => {
         navigator.clipboard.writeText(text);
@@ -160,6 +161,21 @@ export const EmployeeList: React.FC = () => {
         toast.info("Скопировано в буфер обмена", { position: "top-right" });
     };
 
+    const [showScrollButton, setShowScrollButton] = useState(false);
+    const handleScroll = (e: Event) => {
+        const target = e.target as HTMLElement;
+
+        const scrollTop = "scrollTop" in target ? target.scrollTop : 0;
+        console.log("Scroll position:", scrollTop);
+        setShowScrollButton(scrollTop > 300); // показываем, если прокрутили больше 300px
+    };
+
+    const scrollToTop = () => {
+        if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollTo({ top: 0, behavior: "smooth" });
+        }
+    };
+
     React.useEffect(() => {
         if (isDefaultRoute) {
             selectOrg(
@@ -185,7 +201,6 @@ export const EmployeeList: React.FC = () => {
         }
     }, []);
 
-    // -- UI
     return (
         <EmployeeListWrapper>
             <div>
@@ -298,6 +313,15 @@ export const EmployeeList: React.FC = () => {
                                 width: "100%",
                                 overflowX: "hidden",
                             }}
+                            scrollerRef={(ref) => {
+                                if (ref) {
+                                    scrollContainerRef.current = ref;
+                                    ref.addEventListener(
+                                        "scroll",
+                                        handleScroll
+                                    );
+                                }
+                            }}
                             groupCounts={groupCounts}
                             groupContent={(index) => (
                                 <ThirdHeader key={departmentIds[index]}>
@@ -328,6 +352,29 @@ export const EmployeeList: React.FC = () => {
                     </EmployeeListWrapperTable>
                 )}
             </EmployeeListWrapperMain>
+            {showScrollButton && (
+                <button
+                    onClick={scrollToTop}
+                    style={{
+                        position: "absolute",
+                        bottom: "20px",
+                        right: "20px",
+                        zIndex: 10,
+                        padding: "10px",
+                        backgroundColor: "#1d75bb",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "50%",
+                        width: "40px",
+                        height: "40px",
+                        cursor: "pointer",
+                        boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+                        fontSize: "18px",
+                    }}
+                >
+                    ↑
+                </button>
+            )}
         </EmployeeListWrapper>
     );
 };
