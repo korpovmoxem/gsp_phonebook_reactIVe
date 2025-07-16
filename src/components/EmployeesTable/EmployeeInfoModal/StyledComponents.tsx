@@ -4,6 +4,11 @@ export const PhotoAndInfo = styled.div`
     display: flex;
     flex-direction: row;
     gap: 10px;
+
+    @media (width < 1460px) {
+        flex-direction: column;
+        align-items: center;
+    }
 `;
 
 export const PhotoBlock = styled.div`

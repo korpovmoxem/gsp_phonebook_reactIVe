@@ -7,8 +7,6 @@ interface Props {
 }
 
 export const PhotoObj = ({ photo, width }: Props) => {
-    console.log("PhotoObj");
-    console.log(photo);
     const [imgSrc, setImgSrc] = useState(
         photo ? `data:image/png;base64,${photo}` : DefaultPhoto
     );

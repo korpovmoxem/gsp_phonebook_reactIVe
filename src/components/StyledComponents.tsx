@@ -29,14 +29,15 @@ export const Modal2Background = styled(ModalBackgroundTemplate)`
 export const ModalContainer = styled.div`
     background-color: ${(props) => props.theme.backgroundBlock};
     max-width: 1000px;
-    width: 900px;
+    width: 50%;
     margin: auto;
     border-radius: 10px;
     max-height: 90vh;
-    overflow-y: auto;
     scrollbar-width: thin;
     scroll-behavior: smooth;
     scrollbar-color: rgb(199, 199, 199) transparent;
+
+    min-width: 575px;
 `;
 
 export const ModalContent = styled.div`

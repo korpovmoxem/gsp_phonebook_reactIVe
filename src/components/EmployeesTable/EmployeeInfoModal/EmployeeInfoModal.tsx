@@ -120,6 +120,9 @@ export const EmployeeInfoModal: React.FC = () => {
         (state) => state.setIsEditInformation
     );
     const additionalInfo = useEmployeeStore((state) => state.employeeData);
+    const loadEmployeeData = useEmployeeStore(
+        (state) => state.loadEmployeeData
+    );
 
     const handleEditInfo = () => {
         setIsEmployeeInfoModalOpen(!isEmployeeInfoModalOpen);
@@ -176,6 +179,7 @@ export const EmployeeInfoModal: React.FC = () => {
                                             display: "flex",
                                             flexDirection: "row",
                                             alignItems: "center",
+                                            zIndex: "999",
                                         }}
                                     >
                                         <h3>Информация о сотруднике</h3>
@@ -197,49 +201,15 @@ export const EmployeeInfoModal: React.FC = () => {
                                         X
                                     </CloseButton>
                                 </ModalHeader>
-                                {currentEmployeeInfo && (
-                                    <PhotoAndInfo>
-                                        <PhotoBlock>
-                                            {(() => {
-                                                const data =
-                                                    additionalInfo[
-                                                        currentEmployeeInfo.id
-                                                    ];
-                                                if (
-                                                    data === "loading" ||
-                                                    data === "error"
-                                                )
-                                                    return (
-                                                        <PhotoObj
-                                                            photo={null}
-                                                            width="200px"
-                                                        />
-                                                    );
-
-                                                if (typeof data !== "string") {
-                                                    return (
-                                                        <PhotoObj
-                                                            photo={data?.photo}
-                                                            width="200px"
-                                                        />
-                                                    );
-                                                }
-                                            })()}
-                                            <div
-                                                style={{
-                                                    marginTop: "10px",
-                                                    alignContent: "center",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <h4
-                                                    style={{
-                                                        margin: 0,
-                                                        marginBottom: "10px",
-                                                    }}
-                                                >
-                                                    Статус
-                                                </h4>
+                                <div
+                                    style={{
+                                        height: "calc(80vh - 80px)",
+                                        overflowY: "auto",
+                                    }}
+                                >
+                                    {currentEmployeeInfo && (
+                                        <PhotoAndInfo>
+                                            <PhotoBlock>
                                                 {(() => {
                                                     const data =
                                                         additionalInfo[
@@ -247,264 +217,358 @@ export const EmployeeInfoModal: React.FC = () => {
                                                                 .id
                                                         ];
                                                     if (
-                                                        data === "loading" ||
-                                                        data === "error"
+                                                        data.large ===
+                                                            "loading" ||
+                                                        data.large === "error"
                                                     )
-                                                        return null;
+                                                        return (
+                                                            <PhotoObj
+                                                                photo={null}
+                                                                width="200px"
+                                                            />
+                                                        );
 
                                                     if (
-                                                        typeof data !== "string"
+                                                        typeof data.large !==
+                                                        "string"
                                                     ) {
                                                         return (
-                                                            <>
-                                                                {data?.statuses?.map(
-                                                                    (
-                                                                        status
-                                                                    ) => (
-                                                                        <Icon
-                                                                            icon={
-                                                                                status
-                                                                            }
-                                                                            width={
-                                                                                "40px"
-                                                                            }
-                                                                            type={
-                                                                                "status"
-                                                                            }
-                                                                        />
-                                                                    )
-                                                                )}
-                                                            </>
+                                                            <PhotoObj
+                                                                photo={
+                                                                    data?.large
+                                                                        ? data
+                                                                              ?.large
+                                                                              .photo
+                                                                        : ""
+                                                                }
+                                                                width="200px"
+                                                            />
                                                         );
                                                     }
                                                 })()}
-                                            </div>
-                                            <div
-                                                style={{
-                                                    marginTop: "10px",
-                                                    alignContent: "center",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <h4
-                                                    style={{
-                                                        margin: 0,
-                                                        marginBottom: "10px",
-                                                    }}
-                                                >
-                                                    Достижения
-                                                </h4>
-                                                {(() => {
-                                                    const data =
-                                                        additionalInfo[
-                                                            currentEmployeeInfo
-                                                                .id
-                                                        ];
-                                                    if (
-                                                        data === "loading" ||
-                                                        data === "error"
-                                                    )
-                                                        return null;
 
-                                                    if (
-                                                        typeof data !== "string"
-                                                    ) {
-                                                        return (
-                                                            <>
-                                                                {data?.rewards?.map(
-                                                                    (
-                                                                        status
-                                                                    ) => (
-                                                                        <Icon
-                                                                            icon={
-                                                                                status
-                                                                            }
-                                                                            width={
-                                                                                "40px"
-                                                                            }
-                                                                            type={
-                                                                                "achievement"
-                                                                            }
-                                                                        />
-                                                                    )
-                                                                )}
-                                                            </>
-                                                        );
-                                                    }
-                                                })()}
-                                            </div>
-                                        </PhotoBlock>
-                                        <InfoBlockWrapper>
-                                            <Fio>
-                                                {
-                                                    currentEmployeeInfo.fullNameRus
-                                                }
-                                            </Fio>
-                                            <span style={{ fontSize: "11pt" }}>
-                                                {
-                                                    currentEmployeeInfo.positionTitle
-                                                }
-                                            </span>
-                                            {currentEmployeeInfo.managers &&
-                                                currentEmployeeInfo.managers
-                                                    .length > 0 && (
-                                                    <div>
-                                                        (
-                                                        {currentEmployeeInfo.managers.map(
-                                                            (manager) => (
-                                                                <>
-                                                                    <span
-                                                                        key={
-                                                                            manager.id
-                                                                        }
-                                                                        style={{
-                                                                            fontSize:
-                                                                                "11pt",
-                                                                            textDecoration:
-                                                                                "underline",
-                                                                            cursor: "pointer",
-                                                                            color: "#1d75bb",
-                                                                        }}
-                                                                        onClick={() =>
-                                                                            fetchCurrentEmployeeInfo(
-                                                                                manager.id,
-                                                                                manager.organizationId
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        {
-                                                                            manager.fullName
-                                                                        }
-                                                                    </span>
-                                                                    {currentEmployeeInfo
-                                                                        .managers
-                                                                        .length >
-                                                                        1 && (
-                                                                        <br />
-                                                                    )}
-                                                                </>
-                                                            )
-                                                        )}
+                                                <>
+                                                    {(() => {
+                                                        const data =
+                                                            additionalInfo[
+                                                                currentEmployeeInfo
+                                                                    .id
+                                                            ];
+                                                        if (
+                                                            data.large ===
+                                                                "loading" ||
+                                                            data.large ===
+                                                                "error"
                                                         )
-                                                    </div>
-                                                )}
-                                            {currentEmployeeInfo.assistants &&
-                                                currentEmployeeInfo.assistants
-                                                    .length > 0 && (
-                                                    <InfoBlock
-                                                        style={{
-                                                            marginTop: "10px",
-                                                        }}
-                                                    >
-                                                        <h4
+                                                            return null;
+
+                                                        if (
+                                                            typeof data.large !==
+                                                                "string" &&
+                                                            data.large !==
+                                                                undefined
+                                                        ) {
+                                                            return (
+                                                                <>
+                                                                    <>
+                                                                        {data
+                                                                            .large
+                                                                            .statuses
+                                                                            .length >
+                                                                            0 && (
+                                                                            <div
+                                                                                style={{
+                                                                                    marginTop:
+                                                                                        "10px",
+                                                                                    alignContent:
+                                                                                        "center",
+                                                                                    alignItems:
+                                                                                        "center",
+                                                                                    textAlign:
+                                                                                        "center",
+                                                                                }}
+                                                                            >
+                                                                                <div
+                                                                                    style={{
+                                                                                        display:
+                                                                                            "flex",
+                                                                                        flexWrap:
+                                                                                            "wrap",
+                                                                                        gap: "10px",
+                                                                                        width: "200px",
+                                                                                        margin: "0 auto",
+                                                                                    }}
+                                                                                >
+                                                                                    {data?.large.statuses?.map(
+                                                                                        (
+                                                                                            status
+                                                                                        ) => (
+                                                                                            <Icon
+                                                                                                icon={
+                                                                                                    status
+                                                                                                }
+                                                                                                width={
+                                                                                                    "40px"
+                                                                                                }
+                                                                                                type={
+                                                                                                    "status"
+                                                                                                }
+                                                                                            />
+                                                                                        )
+                                                                                    )}
+                                                                                </div>
+                                                                            </div>
+                                                                        )}
+                                                                    </>
+                                                                    <>
+                                                                        {data
+                                                                            .large
+                                                                            .achievements
+                                                                            .length >
+                                                                            0 && (
+                                                                            <div
+                                                                                style={{
+                                                                                    marginTop:
+                                                                                        "10px",
+                                                                                    alignContent:
+                                                                                        "center",
+                                                                                    alignItems:
+                                                                                        "center",
+                                                                                    textAlign:
+                                                                                        "center",
+                                                                                }}
+                                                                            >
+                                                                                <div
+                                                                                    style={{
+                                                                                        display:
+                                                                                            "flex",
+                                                                                        flexWrap:
+                                                                                            "wrap",
+                                                                                        gap: "10px",
+                                                                                        width: "200px",
+                                                                                        margin: "0 auto",
+                                                                                    }}
+                                                                                >
+                                                                                    {data?.large.achievements?.map(
+                                                                                        (
+                                                                                            achievement
+                                                                                        ) => (
+                                                                                            <Icon
+                                                                                                icon={
+                                                                                                    achievement
+                                                                                                }
+                                                                                                width={
+                                                                                                    "40px"
+                                                                                                }
+                                                                                                type={
+                                                                                                    "achievement"
+                                                                                                }
+                                                                                            />
+                                                                                        )
+                                                                                    )}
+                                                                                </div>
+                                                                            </div>
+                                                                        )}
+                                                                    </>
+                                                                </>
+                                                            );
+                                                        }
+                                                    })()}
+                                                </>
+                                            </PhotoBlock>
+                                            <InfoBlockWrapper>
+                                                <div></div>
+                                                <Fio>
+                                                    {
+                                                        currentEmployeeInfo.fullNameRus
+                                                    }
+                                                </Fio>
+                                                <span
+                                                    style={{ fontSize: "11pt" }}
+                                                >
+                                                    {
+                                                        currentEmployeeInfo.positionTitle
+                                                    }
+                                                </span>
+                                                {currentEmployeeInfo.managers &&
+                                                    currentEmployeeInfo.managers
+                                                        .length > 0 && (
+                                                        <div>
+                                                            (
+                                                            {currentEmployeeInfo.managers.map(
+                                                                (manager) => (
+                                                                    <>
+                                                                        <span
+                                                                            key={
+                                                                                manager.id
+                                                                            }
+                                                                            style={{
+                                                                                fontSize:
+                                                                                    "11pt",
+                                                                                textDecoration:
+                                                                                    "underline",
+                                                                                cursor: "pointer",
+                                                                                color: "#1d75bb",
+                                                                            }}
+                                                                            onClick={() => {
+                                                                                fetchCurrentEmployeeInfo(
+                                                                                    manager.id,
+                                                                                    manager.organizationId
+                                                                                );
+                                                                                loadEmployeeData(
+                                                                                    manager.id,
+                                                                                    manager.organizationId,
+                                                                                    "512"
+                                                                                );
+                                                                            }}
+                                                                        >
+                                                                            {
+                                                                                manager.fullName
+                                                                            }
+                                                                        </span>
+                                                                        {currentEmployeeInfo
+                                                                            .managers
+                                                                            .length >
+                                                                            1 && (
+                                                                            <br />
+                                                                        )}
+                                                                    </>
+                                                                )
+                                                            )}
+                                                            )
+                                                        </div>
+                                                    )}
+                                                {currentEmployeeInfo.assistants &&
+                                                    currentEmployeeInfo
+                                                        .assistants.length >
+                                                        0 && (
+                                                        <InfoBlock
                                                             style={{
-                                                                margin: 0,
-                                                                marginBottom:
+                                                                marginTop:
                                                                     "10px",
                                                             }}
                                                         >
-                                                            <UsersRound
-                                                                size={16}
+                                                            <h4
                                                                 style={{
-                                                                    marginRight:
-                                                                        "5px",
+                                                                    margin: 0,
+                                                                    marginBottom:
+                                                                        "10px",
                                                                 }}
-                                                            />
-                                                            Помощники
-                                                        </h4>
-                                                        {currentEmployeeInfo.assistants.map(
-                                                            (assistant) => (
-                                                                <>
-                                                                    <span
-                                                                        key={
-                                                                            assistant.id
-                                                                        }
-                                                                        onClick={() =>
-                                                                            fetchCurrentEmployeeInfo(
-                                                                                assistant.id,
-                                                                                assistant.organizationId
-                                                                            )
-                                                                        }
-                                                                        style={{
-                                                                            textDecoration:
-                                                                                "underline",
-                                                                            cursor: "pointer",
-                                                                            color: "#1d75bb",
-                                                                        }}
-                                                                    >
-                                                                        {
-                                                                            assistant.fullName
-                                                                        }
-                                                                    </span>
-                                                                    {currentEmployeeInfo
-                                                                        .assistants
-                                                                        .length >
-                                                                        1 && (
-                                                                        <br />
-                                                                    )}
-                                                                </>
-                                                            )
-                                                        )}
-                                                    </InfoBlock>
-                                                )}
-                                            <div style={{ marginTop: "20px" }}>
-                                                {INFORMATION_BLOCKS.map(
-                                                    (block) => {
-                                                        const IconComponent =
-                                                            block.icon;
-                                                        return (
-                                                            <InfoBlock
-                                                                key={block.id}
                                                             >
-                                                                <>
-                                                                    <h4
-                                                                        style={{
-                                                                            margin: 0,
-                                                                            marginBottom:
-                                                                                "10px",
-                                                                        }}
-                                                                    >
-                                                                        <IconComponent
-                                                                            data-testid={
-                                                                                block.testId
+                                                                <UsersRound
+                                                                    size={16}
+                                                                    style={{
+                                                                        marginRight:
+                                                                            "5px",
+                                                                    }}
+                                                                />
+                                                                Помощники
+                                                            </h4>
+                                                            {currentEmployeeInfo.assistants.map(
+                                                                (assistant) => (
+                                                                    <>
+                                                                        <span
+                                                                            key={
+                                                                                assistant.id
                                                                             }
-                                                                        />
-
-                                                                        {
-                                                                            block.nameBlock
-                                                                        }
-                                                                    </h4>
-                                                                </>
-                                                                <InfoBlockContent>
-                                                                    {block.fields.map(
-                                                                        (
-                                                                            field
-                                                                        ) => (
-                                                                            <ModalField
-                                                                                key={
-                                                                                    field.id
-                                                                                }
-                                                                                nameField={
-                                                                                    field.nameField
-                                                                                }
-                                                                                value={
-                                                                                    currentEmployeeInfo[
-                                                                                        field
-                                                                                            .value
-                                                                                    ]
+                                                                            onClick={() => {
+                                                                                fetchCurrentEmployeeInfo(
+                                                                                    assistant.id,
+                                                                                    assistant.organizationId
+                                                                                );
+                                                                                loadEmployeeData(
+                                                                                    assistant.id,
+                                                                                    assistant.organizationId,
+                                                                                    "512"
+                                                                                );
+                                                                            }}
+                                                                            style={{
+                                                                                textDecoration:
+                                                                                    "underline",
+                                                                                cursor: "pointer",
+                                                                                color: "#1d75bb",
+                                                                            }}
+                                                                        >
+                                                                            {
+                                                                                assistant.fullName
+                                                                            }
+                                                                        </span>
+                                                                        {currentEmployeeInfo
+                                                                            .assistants
+                                                                            .length >
+                                                                            1 && (
+                                                                            <br />
+                                                                        )}
+                                                                    </>
+                                                                )
+                                                            )}
+                                                        </InfoBlock>
+                                                    )}
+                                                <div
+                                                    style={{
+                                                        marginTop: "20px",
+                                                    }}
+                                                >
+                                                    {INFORMATION_BLOCKS.map(
+                                                        (block) => {
+                                                            const IconComponent =
+                                                                block.icon;
+                                                            return (
+                                                                <InfoBlock
+                                                                    key={
+                                                                        block.id
+                                                                    }
+                                                                >
+                                                                    <>
+                                                                        <h4
+                                                                            style={{
+                                                                                margin: 0,
+                                                                                marginBottom:
+                                                                                    "10px",
+                                                                            }}
+                                                                        >
+                                                                            <IconComponent
+                                                                                data-testid={
+                                                                                    block.testId
                                                                                 }
                                                                             />
-                                                                        )
-                                                                    )}
-                                                                </InfoBlockContent>
-                                                            </InfoBlock>
-                                                        );
-                                                    }
-                                                )}
-                                            </div>
-                                        </InfoBlockWrapper>
-                                    </PhotoAndInfo>
-                                )}
+
+                                                                            {
+                                                                                block.nameBlock
+                                                                            }
+                                                                        </h4>
+                                                                    </>
+                                                                    <InfoBlockContent>
+                                                                        {block.fields.map(
+                                                                            (
+                                                                                field
+                                                                            ) => (
+                                                                                <ModalField
+                                                                                    key={
+                                                                                        field.id
+                                                                                    }
+                                                                                    nameField={
+                                                                                        field.nameField
+                                                                                    }
+                                                                                    value={
+                                                                                        currentEmployeeInfo[
+                                                                                            field
+                                                                                                .value
+                                                                                        ]
+                                                                                    }
+                                                                                />
+                                                                            )
+                                                                        )}
+                                                                    </InfoBlockContent>
+                                                                </InfoBlock>
+                                                            );
+                                                        }
+                                                    )}
+                                                </div>
+                                            </InfoBlockWrapper>
+                                        </PhotoAndInfo>
+                                    )}
+                                </div>
                             </>
                         )}
                     </ModalContent>

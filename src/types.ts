@@ -32,7 +32,7 @@ export interface Employee {
     businessTrip: boolean;
     unavailable: boolean;
     statuses: IconObject[];
-    rewards: IconObject[];
+    achievements: IconObject[];
     photo: string;
 }
 
@@ -79,3 +79,19 @@ export interface EmployeesListTree {
 }
 
 export type ImageSize = '96' | '512'
+
+export type EmployeePhotoData = {
+    statuses: IconObject[];
+    achievements: IconObject[];
+    photo: string;
+};
+export type EmployeePhotoState = "loading" | "error" | EmployeePhotoData;
+export type EmployeePhotoSizes = {
+    small?: EmployeePhotoState;
+    large?: EmployeePhotoState;
+};
+
+export type EmployeeState = {
+    employeeData: Record<string, EmployeePhotoSizes>;
+    loadEmployeeData: (employeeId: string, orgId: string, size: ImageSize) => void;
+};

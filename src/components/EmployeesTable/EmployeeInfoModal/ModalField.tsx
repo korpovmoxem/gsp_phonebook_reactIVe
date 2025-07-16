@@ -15,7 +15,7 @@ const LinkSpan = styled.span`
     text-decoration: underline;
 `;
 
-const SPECIAL_FIELDS = ["Электронная почта", "Подразделение", "Организация"];
+const SPECIAL_FIELDS = ["Электронная почта", "Подразделение"];
 
 export const ModalField = ({ nameField, value }: Props) => {
     const [, setSearchParams] = useSearchParams();
@@ -61,22 +61,6 @@ export const ModalField = ({ nameField, value }: Props) => {
                                 "Не указан"
                             )}
                         </div>
-                    )}
-                    {nameField === "Организация" && (
-                        <LinkSpan
-                            onClick={() => {
-                                setSearchParams({
-                                    organizationId:
-                                        currentEmployeeInfo?.organizationId ||
-                                        "",
-                                    treeId: node?.treeId || "",
-                                    limit: "100",
-                                });
-                                setIsEmployeeInfoModalOpen(false);
-                            }}
-                        >
-                            {value || "Не указан"}
-                        </LinkSpan>
                     )}
                     {nameField === "Подразделение" && (
                         <LinkSpan
