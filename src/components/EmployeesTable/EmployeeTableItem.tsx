@@ -242,7 +242,7 @@ const EmployeeTableItem = ({
         >
             <DivTableRow>
                 {/* Фото */}
-                <DivTableCell>
+                <DivTableCell style={{ textAlign: "center" }}>
                     {(() => {
                         if (
                             data === "loading" ||
@@ -346,7 +346,7 @@ const EmployeeTableItem = ({
                             style={{
                                 display: "flex",
                                 flexDirection: "row",
-                                justifyContent: "space-between",
+                                justifyContent: "end",
                             }}
                         >
                             <CustomEmailLink
