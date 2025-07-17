@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import {
     Crumb,
     EmployeeDepartmentPathWrapper,
+    NonClickableCrumb,
     Separator,
 } from "./StyledComponents";
 import React from "react";
@@ -11,9 +12,18 @@ import React from "react";
 interface Props {
     departmentId: string;
     dept?: any;
+    showOrganization?: boolean;
+    organizationId?: string;
+    organizationName?: string;
 }
 
-export const EmployeeDepartmentPath = ({ departmentId, dept }: Props) => {
+export const EmployeeDepartmentPath = ({
+    departmentId,
+    dept,
+    showOrganization = false,
+    organizationId,
+    organizationName,
+}: Props) => {
     const orgMapId = useOrgStore((state) => state.orgMapId);
     const selectOrg = useOrgStore((state) => state.selectOrg);
     const navigate = useNavigate();
@@ -27,13 +37,19 @@ export const EmployeeDepartmentPath = ({ departmentId, dept }: Props) => {
 
     return (
         <EmployeeDepartmentPathWrapper>
+            {/* Только если showOrganization === true */}
+            {showOrganization && organizationId && organizationName && (
+                <>
+                    <NonClickableCrumb>{organizationName}</NonClickableCrumb>
+                    <Separator>→</Separator>
+                </>
+            )}
             {pathIds
                 .filter((item) => isNaN(Number(item)))
                 .reverse()
-                .map((id, index) => {
+                .map((id, index, arr) => {
                     const node = orgMapId.get(id)?.node;
                     if (!node) return null;
-
                     return (
                         <React.Fragment key={`${id}_${index}`}>
                             <Crumb
@@ -50,10 +66,7 @@ export const EmployeeDepartmentPath = ({ departmentId, dept }: Props) => {
                             >
                                 {node.name}
                             </Crumb>
-                            {index <
-                                pathIds.filter((item) => isNaN(Number(item)))
-                                    .length -
-                                    1 && <Separator>→</Separator>}
+                            {index < arr.length - 1 && <Separator>→</Separator>}
                         </React.Fragment>
                     );
                 })}

@@ -133,7 +133,7 @@ export const CustomDatalistItem = styled.div`
     height: 40px;
     margin-bottom: 2px;
     padding: 5px;
-    background-color: ${(props) => props.theme.BackgroundDatalist};
+    background-color: ${(props) => props.theme.backgroundSearchItem};
     color: ${(props) => props.theme.mainTextColor};
     &:hover {
         background-color: ${(props) => props.theme.backgroundRowHover};

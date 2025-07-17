@@ -326,6 +326,7 @@ const EmployeeTableItem = ({
                     {emp.telephoneNumberCorp ? (
                         <CustomEmailLink
                             href={`tel:${emp.telephoneNumberCorp}`}
+                            onClick={(e) => e.stopPropagation()}
                         >
                             {emp.telephoneNumberCorp}
                         </CustomEmailLink>
@@ -348,12 +349,18 @@ const EmployeeTableItem = ({
                                 justifyContent: "space-between",
                             }}
                         >
-                            <CustomEmailLink href={`mailto:${emp.email}`}>
+                            <CustomEmailLink
+                                href={`mailto:${emp.email}`}
+                                onClick={(e) => e.stopPropagation()}
+                            >
                                 {emp.email}
                             </CustomEmailLink>
                             <CustomCopyButton
                                 size={13}
-                                onClick={() => handleCopyClick(emp.email!)}
+                                onClick={(e) => {
+                                    handleCopyClick(emp.email!);
+                                    e.stopPropagation();
+                                }}
                                 style={{ width: "20%" }}
                             />
                         </div>

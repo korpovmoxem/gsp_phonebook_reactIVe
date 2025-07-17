@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Organization } from "../../types";
 import styled from "styled-components";
 import {
@@ -47,6 +47,7 @@ export const TreeNode = ({
     expandedIds,
 }: Props) => {
     const [expanded, setExpanded] = useState(false);
+    const itemRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         // Проверяем treeId, а не id
@@ -54,12 +55,22 @@ export const TreeNode = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [expandedIds]);
 
+    useEffect(() => {
+        if (node.id === selectedId && itemRef.current) {
+            itemRef.current.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+            });
+        }
+    }, [selectedId, node.id]);
+
     return (
         <div
             style={{
                 marginLeft: 10,
                 marginTop: 5,
             }}
+            ref={node.id === selectedId ? itemRef : null}
         >
             <ItemRow
                 onClick={() => {
@@ -101,9 +112,7 @@ export const TreeNode = ({
                 ) : (
                     <span>
                         <SquareDotButton size={DEFAULT_EXPAND_ICON_SIZE} />
-                        {/* <SquareMinusButSton size={DEFAULT_EXPAND_ICON_SIZE} /> */}
                     </span>
-                    // <span style={{ width: DEFAULT_EXPAND_ICON_SIZE }}></span>
                 )}
 
                 <ItemText>{node.name}</ItemText>

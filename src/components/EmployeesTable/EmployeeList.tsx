@@ -4,18 +4,9 @@ import { useOrgStore } from "../../store/organizationStore";
 import { EmployeeSkeleton } from "./EmployeeSkeleton";
 import { toast } from "react-toastify";
 import { EmployeeDepartmentPath } from "./EmployeeDepartmentPath";
-import {
-    CATEGORIES,
-    Employee,
-    EmployeesListTree,
-    EmployeesList,
-} from "../../types";
+import { CATEGORIES, EmployeesListTree } from "../../types";
 import NotFoundIcon from "../../assets/notFoundIcon.png";
-import {
-    CustomCopyButton,
-    CustomEmailLink,
-    SearchWrapper,
-} from "../StyledComponents";
+import { SearchWrapper } from "../StyledComponents";
 import {
     FirstHeader,
     SecondHeader,
@@ -32,7 +23,6 @@ import EmployeeTableItem from "./EmployeeTableItem";
 import { useEmployeeStore } from "../../store/employeeStore";
 import { GroupedVirtuoso } from "react-virtuoso";
 
-// Функция для преобразования EmployeesListTree в массив департаментов и сотрудников
 function flattenDepartments(tree: EmployeesListTree | undefined) {
     if (!tree)
         return {
@@ -104,7 +94,6 @@ export const EmployeeList: React.FC = () => {
     const organizationId = searchParams.get("organizationId");
     const departmentId = searchParams.get("departmentId");
     const scrollContainerRef = useRef<Window | HTMLElement | null>(null);
-
     const handleCopyClick = (text: string) => {
         navigator.clipboard.writeText(text);
         toast.info("Скопировано в буфер обмена", { position: "top-right" });
@@ -121,13 +110,50 @@ export const EmployeeList: React.FC = () => {
         [employees]
     );
 
-    // flatten department data for GroupedVirtuoso
+    // Обычный режим (по орг/департаменту, дерево)
     const {
         groupCounts,
         employees: flatEmployees,
         groupLabels,
         departmentIds,
     } = useMemo(() => flattenDepartments(employeesTree), [employeesTree]);
+
+    // Режим поиска (поиск по всему employeesList)
+    const {
+        groupCounts: searchGroupCounts,
+        groupLabels: searchGroupLabels,
+        employeesFlat: searchEmployeesFlat,
+    } = useMemo(() => {
+        const groupCounts: number[] = [];
+        const groupLabels: {
+            orgId: string;
+            orgName: string;
+            departmentId: string;
+            departmentName: string;
+        }[] = [];
+        const employeesFlat: any[] = [];
+        employeesList.forEach((org) => {
+            org.departments.forEach((dept) => {
+                groupCounts.push(dept.employees.length);
+                groupLabels.push({
+                    orgId: org.organizationId,
+                    orgName: org.organizationName,
+                    departmentId: dept.departmentId,
+                    departmentName: dept.departmentName,
+                });
+                dept.employees.forEach((emp) => {
+                    employeesFlat.push({
+                        ...emp,
+                        orgId: org.organizationId,
+                        orgName: org.organizationName,
+                        departmentId: dept.departmentId,
+                        departmentName: dept.departmentName,
+                    });
+                });
+            });
+        });
+        return { groupCounts, groupLabels, employeesFlat };
+    }, [employeesList]);
 
     const location = useLocation();
     const isDefaultRoute =
@@ -149,7 +175,7 @@ export const EmployeeList: React.FC = () => {
             employeesList.forEach((org) => {
                 org.departments.forEach((dept) => {
                     dept.employees.forEach((emp) => {
-                        if (emp.email) emails += `${emp.email} `;
+                        if (emp.email) emails += `${emp.email}`;
                     });
                 });
             });
@@ -160,7 +186,6 @@ export const EmployeeList: React.FC = () => {
         navigator.clipboard.writeText(emails);
         toast.info("Скопировано в буфер обмена", { position: "top-right" });
     };
-
     const [showScrollButton, setShowScrollButton] = useState(false);
     const handleScroll = (e: Event) => {
         const target = e.target as HTMLElement;
@@ -175,7 +200,6 @@ export const EmployeeList: React.FC = () => {
             scrollContainerRef.current.scrollTo({ top: 0, behavior: "smooth" });
         }
     };
-
     React.useEffect(() => {
         if (isDefaultRoute) {
             selectOrg(
@@ -201,6 +225,10 @@ export const EmployeeList: React.FC = () => {
         }
     }, []);
 
+    // ref для scrollToTopButton
+    const tableRef = useRef<HTMLDivElement>(null);
+
+    // -- UI
     return (
         <EmployeeListWrapper>
             <div>
@@ -224,8 +252,7 @@ export const EmployeeList: React.FC = () => {
                 {isEmpLoading ? (
                     <EmployeeSkeleton />
                 ) : employeesList.length > 0 ? (
-                    // === Режим поиска ===
-                    <EmployeeListWrapperTable>
+                    <EmployeeListWrapperTable ref={tableRef}>
                         <FirstHeader>
                             <EmptyHeadColumn></EmptyHeadColumn>
                             <HeadColumn style={{ width: "30%" }}>
@@ -239,37 +266,55 @@ export const EmployeeList: React.FC = () => {
                                 Электронная почта
                             </HeadColumn>
                         </FirstHeader>
-                        {employeesList.map((org: EmployeesList) => (
-                            <div key={org.organizationId}>
-                                <SecondHeader>
-                                    Организация: {org.organizationName}
-                                </SecondHeader>
-                                {org.departments.map((dept) => (
-                                    <div key={dept.departmentId}>
-                                        <ThirdHeader>
-                                            <EmployeeDepartmentPath
-                                                departmentId={dept.departmentId}
-                                                dept={dept}
-                                            />
-                                        </ThirdHeader>
-                                        {dept.employees.map((emp) => (
-                                            <EmployeeTableItem
-                                                key={emp.id}
-                                                emp={emp}
-                                                handleRowClick={handleRowClick}
-                                                organizationId={
-                                                    dept.organizationId
-                                                }
-                                                employeeData={employeeData}
-                                                handleCopyClick={
-                                                    handleCopyClick
-                                                }
-                                            />
-                                        ))}
-                                    </div>
-                                ))}
-                            </div>
-                        ))}
+                        <GroupedVirtuoso
+                            style={{
+                                height: "calc(100% - 56px)",
+                                width: "100%",
+                                overflowX: "hidden",
+                            }}
+                            groupCounts={searchGroupCounts}
+                            groupContent={(groupIndex) => {
+                                const curr = searchGroupLabels[groupIndex];
+                                return (
+                                    <ThirdHeader>
+                                        <EmployeeDepartmentPath
+                                            departmentId={curr.departmentId}
+                                            dept={{
+                                                departmentId: curr.departmentId,
+                                                departmentName:
+                                                    curr.departmentName,
+                                                employees: [],
+                                            }}
+                                            showOrganization={true}
+                                            organizationId={curr.orgId}
+                                            organizationName={curr.orgName}
+                                        />
+                                    </ThirdHeader>
+                                );
+                            }}
+                            scrollerRef={(ref) => {
+                                if (ref) {
+                                    scrollContainerRef.current = ref;
+                                    ref.addEventListener(
+                                        "scroll",
+                                        handleScroll
+                                    );
+                                }
+                            }}
+                            itemContent={(index) => {
+                                const emp = searchEmployeesFlat[index];
+                                return (
+                                    <EmployeeTableItem
+                                        key={emp.id}
+                                        emp={emp}
+                                        handleRowClick={handleRowClick}
+                                        organizationId={emp.orgId}
+                                        employeeData={employeeData}
+                                        handleCopyClick={handleCopyClick}
+                                    />
+                                );
+                            }}
+                        />
                     </EmployeeListWrapperTable>
                 ) : flatEmployees.length === 0 ? (
                     <div style={{ textAlign: "center" }}>
@@ -289,8 +334,7 @@ export const EmployeeList: React.FC = () => {
                         </div>
                     </div>
                 ) : (
-                    // === Виртуализированный список сотрудников с группировкой по подразделениям ===
-                    <EmployeeListWrapperTable>
+                    <EmployeeListWrapperTable ref={tableRef}>
                         <FirstHeader>
                             <EmptyHeadColumn></EmptyHeadColumn>
                             <HeadColumn style={{ width: "30%" }}>
@@ -304,9 +348,11 @@ export const EmployeeList: React.FC = () => {
                                 Электронная почта
                             </HeadColumn>
                         </FirstHeader>
-                        <SecondHeader>
-                            Организация: {employeesTree.organizationName}
-                        </SecondHeader>
+                        <div style={{ position: "sticky", top: 35, zIndex: 3 }}>
+                            <SecondHeader>
+                                Организация: {employeesTree.organizationName}
+                            </SecondHeader>
+                        </div>
                         <GroupedVirtuoso
                             style={{
                                 height: "calc(100% - 80px)",

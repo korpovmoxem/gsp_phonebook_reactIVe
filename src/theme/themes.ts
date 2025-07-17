@@ -15,6 +15,7 @@ export type AppTheme = {
     BackgroundDatalist: string
     backgroundModalEditInput: string
     modalBlurColor: string
+    backgroundSearchItem: string
 }
 
 const WHITE = '#ffffff'
@@ -37,6 +38,7 @@ export const lightTheme: AppTheme = {
     BackgroundDatalist: WHITE,
     backgroundModalEditInput: 'rgba(240, 240, 240, 0.5)',
     modalBlurColor: 'rgba(0, 0, 0, 0.25)',
+    backgroundSearchItem: '#c5def078',
 };
 
 export const darkTheme: AppTheme = {
@@ -55,4 +57,5 @@ export const darkTheme: AppTheme = {
     BackgroundDatalist: '#252525',
     backgroundModalEditInput: 'rgba(29, 29, 29, 0.5)',
     modalBlurColor: 'rgba(255, 255, 255, 0.25)',
+    backgroundSearchItem: '#56565678',
 };

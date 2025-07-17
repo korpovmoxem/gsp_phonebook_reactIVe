@@ -7,7 +7,6 @@ export const PhotoAndInfo = styled.div`
 
     @media (width < 1460px) {
         flex-direction: column;
-        align-items: center;
     }
 `;
 
@@ -16,11 +15,15 @@ export const PhotoBlock = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 0 20px 20px 20px;
     width: 30%;
     min-width: 240px;
     height: 50%;
     border-radius: 10px;
+
+    @media (width < 1460px) {
+        padding: 0 20px 20px 0px;
+    }
 `;
 
 export const InfoBlockWrapper = styled.div`
@@ -55,6 +58,7 @@ export const InfoBlockContent = styled.div`
 
 export const Fio = styled.h3`
     margin: 0;
+    line-height: 1.1;
 `;
 
 export const FieldWrapper = styled.div`

@@ -83,6 +83,14 @@ export const Crumb = styled.span.attrs({
     }
 `;
 
+export const NonClickableCrumb = styled.span.attrs({
+    datatype: "Crumb",
+})`
+    color: ${(props) => props.theme.subHeaderColor};
+    transition: all 0.5s ease;
+    margin-right: 4px;
+`;
+
 export const Separator = styled.span.attrs({
     datatype: "Separator",
 })`

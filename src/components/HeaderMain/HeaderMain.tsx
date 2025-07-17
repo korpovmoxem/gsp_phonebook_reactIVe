@@ -13,12 +13,16 @@ import {
 import "@theme-toggles/react/css/Classic.css";
 import { useThemeStore } from "../../store/useThemeStore";
 import { useOrgStore } from "../../store/organizationStore";
+import { useState } from "react";
+import { FAB } from "../StyledComponents";
+import { HelpModal } from "../HelpModal/HelpModal";
 
 export const HeaderMain = () => {
     const navigate = useNavigate();
     const toggleTheme = useThemeStore((state) => state.toggleTheme);
     const theme = useThemeStore((state) => state.theme);
     const selectOrg = useOrgStore((state) => state.selectOrg);
+    const [isHelpOpen, setIsHelpOpen] = useState(false);
 
     // При появлении ошибок реакта переходть на страницу с ошибкой
     window.onerror = function (message, source, lineno, colno, error) {
@@ -47,15 +51,30 @@ export const HeaderMain = () => {
                     </LogoContainer>
                 </Link>
             </LogoWrapper>
-            <CustomToggle
-                onClickCapture={toggleTheme}
-                toggled={theme === "dark" ? true : false}
-                duration={500}
-                placeholder={undefined}
-                onPointerEnterCapture={undefined}
-                onPointerLeaveCapture={undefined}
-                title="Переключить тему"
-            />
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    marginTop: "10px",
+                }}
+            >
+                <div>
+                    <FAB onClick={() => setIsHelpOpen(true)}>?</FAB>
+                </div>
+                <div>
+                    <CustomToggle
+                        onClickCapture={toggleTheme}
+                        toggled={theme === "dark" ? true : false}
+                        duration={500}
+                        placeholder={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                        title="Переключить тему"
+                    />
+                </div>
+            </div>
+            {isHelpOpen && <HelpModal onClose={() => setIsHelpOpen(false)} />}
         </HeaderWrapper>
     );
 };

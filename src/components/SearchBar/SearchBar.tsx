@@ -324,7 +324,7 @@ export const SearchBar = () => {
                                                                 handleSearch
                                                             }
                                                         >
-                                                            Ещё...
+                                                            Показать все
                                                         </MoreButton>
                                                     </MoreButtonContainer>
                                                 </>

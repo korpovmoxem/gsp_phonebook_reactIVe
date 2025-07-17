@@ -1,4 +1,4 @@
-import { CopyIcon } from "lucide-react";
+import { CopyIcon, Info } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import { styled } from "styled-components";
 
@@ -94,6 +94,7 @@ export const CustomButton = styled.button<ButtonProps>`
 export const CustomEmailLink = styled.a`
     color: ${(props) => props.theme.mainTextColor};
     overflow: hidden;
+    text-overflow: ellipsis;
     &:hover {
         color: grey;
     }
@@ -137,21 +138,18 @@ export const SearchWrapper = styled.div`
     width: 100%;
 `;
 
-export const FAB = styled.button`
+export const FAB = styled(Info)`
     cursor: pointer;
-    position: fixed;
-    bottom: 70px;
-    right: 50px;
-    width: 40px;
-    height: 40px;
+    width: 27px;
+    height: 27px;
     border-radius: 45px;
     border: none;
-    background: rgba(167, 167, 167, 0.51);
-    font-size: 25pt;
-    color: #ffffff;
+    font-size: 15pt;
+    color: rgba(167, 167, 167, 0.71);
+    margin-bottom: 10px;
 
     &:hover {
-        background: rgba(167, 167, 167, 0.9);
+        color: rgba(167, 167, 167, 0.9);
     }
 `;
 

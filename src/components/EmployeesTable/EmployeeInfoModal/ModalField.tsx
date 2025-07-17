@@ -15,11 +15,10 @@ const LinkSpan = styled.span`
     text-decoration: underline;
 `;
 
-const SPECIAL_FIELDS = ["Электронная почта", "Подразделение"];
+const SPECIAL_FIELDS = ["Электронная почта", "Подразделение", "Номер телефона"];
 
 export const ModalField = ({ nameField, value }: Props) => {
     const [, setSearchParams] = useSearchParams();
-    // const selectOrg = useOrgStore((state) => state.selectOrg);
     const setIsEmployeeInfoModalOpen = useOrgStore(
         (state) => state.setIsEmployeeInfoModalOpen
     );
@@ -42,7 +41,12 @@ export const ModalField = ({ nameField, value }: Props) => {
                     {nameField === "Электронная почта" && (
                         <div>
                             {value ? (
-                                <>
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        maxWidth: "200px",
+                                    }}
+                                >
                                     <CustomEmailLink
                                         href={`mailto:${value}`}
                                         onClick={(e) => e.stopPropagation()}
@@ -50,12 +54,28 @@ export const ModalField = ({ nameField, value }: Props) => {
                                         {value}
                                     </CustomEmailLink>
                                     <CustomCopyButton
-                                        size={13}
+                                        size={15}
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             handleCopyClick(value!);
                                         }}
                                     />
+                                </div>
+                            ) : (
+                                "Не указан"
+                            )}
+                        </div>
+                    )}
+                    {nameField === "Номер телефона" && (
+                        <div>
+                            {value ? (
+                                <>
+                                    <CustomEmailLink
+                                        href={`tel:${value}`}
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
+                                        {value}
+                                    </CustomEmailLink>
                                 </>
                             ) : (
                                 "Не указан"
