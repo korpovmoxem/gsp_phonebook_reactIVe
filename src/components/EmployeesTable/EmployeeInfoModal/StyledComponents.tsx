@@ -75,3 +75,30 @@ export const NameField = styled.label`
 export const BlockModalIcon = styled.img`
     margin-right: 5px;
 `;
+
+export const EditModalInputsContainer = styled.div`
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 колонки */
+    gap: 20px;
+`;
+
+export const EditModalTextContainer = styled.div`
+    margin: 0;
+    overflow-y: auto;
+    @media (height<950px) and (height>760px) {
+        max-height: 200px;
+    }
+    @media (height<760px) and (height>700px) {
+        max-height: 150px;
+    }
+    @media (height<700px) {
+        max-height: 1000px;
+    }
+`;
+
+export const EditModalContentWrapper = styled.div`
+    @media (height<700px) {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+`;

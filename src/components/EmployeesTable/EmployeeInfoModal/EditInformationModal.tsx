@@ -10,6 +10,11 @@ import {
 } from "../../StyledComponents";
 import { CustomInputEditModal } from "./CustomInputEditModal";
 import { useEffect, useRef, useState } from "react";
+import {
+    EditModalContentWrapper,
+    EditModalInputsContainer,
+    EditModalTextContainer,
+} from "./StyledComponents";
 
 export const EditInformationModal = () => {
     const currentEmployeeInfo = useOrgStore(
@@ -115,187 +120,215 @@ export const EditInformationModal = () => {
                                 X
                             </CloseButton>
                         </ModalHeader>
-                        {currentEmployeeInfo?.email &&
-                        currentEmployeeInfo?.isEditAvailable ? (
-                            <>
-                                <div>
-                                    <span>
-                                        &nbsp;Для изменений данных сотрудника
-                                        необходимо написать новую информацию в
-                                        соответствующие поля или очистить поле
-                                        для его удаления в карточке
-                                    </span>
-                                </div>
-                                <br />
-                                <div>
-                                    <span>
-                                        &nbsp;Для того, чтобы изменения вступили
-                                        в силу необходимо запросить код
-                                        проверки, который будет выслан на
-                                        корпоративную почту сотрудника, вписать
-                                        его в соответствующее поле и нажать
-                                        "Сохранить". В день может быть отправлен
-                                        только один код. Информацию разрешено
-                                        менять один раз в день
-                                    </span>
-                                </div>
-                                <br />
-                            </>
-                        ) : (
-                            <>
-                                {currentEmployeeInfo?.isEditAvailable && (
+                        <EditModalContentWrapper>
+                            <EditModalTextContainer>
+                                {currentEmployeeInfo?.email &&
+                                currentEmployeeInfo?.isEditAvailable ? (
                                     <>
-                                        <span>
-                                            &nbsp;Электронная почта отсутствует.
-                                            Изменение данных невозможно
-                                        </span>
+                                        <div>
+                                            <span>
+                                                &nbsp;Для изменений данных
+                                                сотрудника необходимо написать
+                                                новую информацию в
+                                                соответствующие поля или
+                                                очистить поле для его удаления в
+                                                карточке
+                                            </span>
+                                        </div>
+                                        <br />
+                                        <div>
+                                            <span>
+                                                &nbsp;Для того, чтобы изменения
+                                                вступили в силу необходимо
+                                                запросить код проверки, который
+                                                будет выслан на корпоративную
+                                                почту сотрудника, вписать его в
+                                                соответствующее поле и нажать
+                                                "Сохранить". В день может быть
+                                                отправлен только один код.
+                                                Информацию разрешено менять один
+                                                раз в день
+                                            </span>
+                                        </div>
                                         <br />
                                     </>
-                                )}
-                            </>
-                        )}
-
-                        <div>
-                            <span>
-                                &nbsp;Если ФИО, должность или подразделение
-                                сотрудника указаны неверно, необходимо
-                                обратиться к своему кадровому работнику
-                                (куратору) для внесения изменений в карточке 1С:
-                                ЗУП.
-                            </span>
-                        </div>
-                        <br />
-                        <div>
-                            <span>
-                                &nbsp;При необходимости изменить email или
-                                фотографию профиля, необходимо создать{" "}
-                                <a
-                                    href="https://sd.gsprom.ru/portal/navigator-fields.html?service=slmService$2601911&amp;component=slmService$2603460&amp;category=serviceCateg$2601801&amp;route=serviceCall$request"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    <b>
-                                        заявку на Портале системы «Поддержка
-                                        пользователей» / Телефонный справочник /
-                                        Изменение данных пользователя
-                                    </b>
-                                </a>
-                            </span>
-                        </div>
-                        {currentEmployeeInfo?.email &&
-                            currentEmployeeInfo?.isEditAvailable && (
-                                <>
-                                    <h3>{currentEmployeeInfo?.fullNameRus}</h3>
-                                    <CustomInputEditModal
-                                        id={"mobilePersonal"}
-                                        labelField={"Мобильный телефон(личный)"}
-                                        onChange={(value) =>
-                                            setPersonalMobile(value)
-                                        }
-                                        data-testid="input-personalMobile"
-                                        defaultValue={personalMobile}
-                                    />
-                                    <CustomInputEditModal
-                                        id={"cityPhone"}
-                                        labelField={"Городской телефон"}
-                                        onChange={(value) =>
-                                            setCityPhone(value)
-                                        }
-                                        defaultValue={cityPhone}
-                                        data-testid="input-cityPhone"
-                                    />
-                                    <CustomInputEditModal
-                                        id={"placeWork"}
-                                        labelField={"Рабочее место"}
-                                        data-tesId="input-placeWork"
-                                        onChange={(value) =>
-                                            setWorkPlace(value)
-                                        }
-                                        defaultValue={workPlace}
-                                    />
-                                    <CustomInputEditModal
-                                        id={"Adress"}
-                                        labelField={"Адрес"}
-                                        onChange={(value) => setAddress(value)}
-                                        defaultValue={address}
-                                        data-testid="input-address"
-                                    />
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            width: "70%",
-                                            alignSelf: "anchor-center",
-                                        }}
-                                    >
-                                        <CustomInputEditModal
-                                            id={"code"}
-                                            labelField={"Код проверки"}
-                                            onChange={(value) => setCode(value)}
-                                            defaultValue={code}
-                                            data-testid="input-code"
-                                        />
-                                        {currentEmployeeInfo && (
-                                            <CustomButton
-                                                onClick={() => {
-                                                    fetchVerificatinCode(
-                                                        currentEmployeeInfo?.id,
-                                                        currentEmployeeInfo?.organizationId
-                                                    );
-                                                }}
-                                                data-testid="button-code"
-                                                height="53px"
-                                                disabled={isLoadingCode}
-                                            >
-                                                {isLoadingCode
-                                                    ? "Код получен"
-                                                    : "Отправить код проверки"}
-                                            </CustomButton>
+                                ) : (
+                                    <>
+                                        {currentEmployeeInfo?.isEditAvailable && (
+                                            <>
+                                                <span>
+                                                    &nbsp;Электронная почта
+                                                    отсутствует. Изменение
+                                                    данных невозможно
+                                                </span>
+                                                <br />
+                                            </>
                                         )}
-                                    </div>
-                                    <div style={{ margin: "20px 0" }}>
-                                        <input
-                                            type="checkbox"
-                                            value=""
-                                            id="flexCheckDefault"
-                                            onClick={() =>
-                                                setIsCheckboxOn(!isCheckboxOn)
-                                            }
-                                        />
-                                        <label htmlFor="flexCheckDefault">
-                                            Нажимая на кнопку, я соглашаюсь с{" "}
-                                            <a
-                                                href="https://www.gsprom.ru/politic/"
-                                                target="_blank"
-                                                rel="noreferrer"
-                                            >
-                                                Политикой обработки персональных
-                                                данных
-                                            </a>{" "}
-                                            и даю согласие на{" "}
-                                            <a
-                                                href="https://www.gsprom.ru/politic/"
-                                                target="_blank"
-                                                rel="noreferrer"
-                                            >
-                                                обработку персональных данных
-                                            </a>
-                                        </label>
-                                    </div>
-                                    <div style={{ alignSelf: "center" }}>
-                                        <CustomButton
-                                            disabled={
-                                                !isCheckboxOn || code.length < 6
-                                            }
-                                            onClick={() => handleSendButton()}
-                                            height="40px"
-                                            data-testid="save-button"
+                                    </>
+                                )}
+
+                                <div>
+                                    <span>
+                                        &nbsp;Если ФИО, должность или
+                                        подразделение сотрудника указаны
+                                        неверно, необходимо обратиться к своему
+                                        кадровому работнику (куратору) для
+                                        внесения изменений в карточке 1С: ЗУП.
+                                    </span>
+                                </div>
+                                <br />
+                                <div>
+                                    <span>
+                                        &nbsp;При необходимости изменить email
+                                        или фотографию профиля, необходимо
+                                        создать{" "}
+                                        <a
+                                            href="https://sd.gsprom.ru/portal/navigator-fields.html?service=slmService$2601911&amp;component=slmService$2603460&amp;category=serviceCateg$2601801&amp;route=serviceCall$request"
+                                            target="_blank"
+                                            rel="noreferrer"
                                         >
-                                            Сохранить
-                                        </CustomButton>
-                                    </div>
-                                </>
-                            )}
+                                            <b>
+                                                заявку на Портале системы
+                                                «Поддержка пользователей» /
+                                                Телефонный справочник /
+                                                Изменение данных пользователя
+                                            </b>
+                                        </a>
+                                    </span>
+                                </div>
+                            </EditModalTextContainer>
+                            {currentEmployeeInfo?.email &&
+                                currentEmployeeInfo?.isEditAvailable && (
+                                    <>
+                                        <h3>
+                                            {currentEmployeeInfo?.fullNameRus}
+                                        </h3>
+                                        <EditModalInputsContainer>
+                                            <CustomInputEditModal
+                                                id={"mobilePersonal"}
+                                                labelField={
+                                                    "Мобильный телефон(личный)"
+                                                }
+                                                onChange={(value) =>
+                                                    setPersonalMobile(value)
+                                                }
+                                                data-testid="input-personalMobile"
+                                                defaultValue={personalMobile}
+                                            />
+                                            <CustomInputEditModal
+                                                id={"cityPhone"}
+                                                labelField={"Городской телефон"}
+                                                onChange={(value) =>
+                                                    setCityPhone(value)
+                                                }
+                                                defaultValue={cityPhone}
+                                                data-testid="input-cityPhone"
+                                            />
+                                            <CustomInputEditModal
+                                                id={"placeWork"}
+                                                labelField={"Рабочее место"}
+                                                data-tesId="input-placeWork"
+                                                onChange={(value) =>
+                                                    setWorkPlace(value)
+                                                }
+                                                defaultValue={workPlace}
+                                            />
+                                            <CustomInputEditModal
+                                                id={"Adress"}
+                                                labelField={"Адрес"}
+                                                onChange={(value) =>
+                                                    setAddress(value)
+                                                }
+                                                defaultValue={address}
+                                                data-testid="input-address"
+                                            />
+                                        </EditModalInputsContainer>
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                flexDirection: "row",
+                                                width: "70%",
+                                                alignSelf: "anchor-center",
+                                            }}
+                                        >
+                                            <CustomInputEditModal
+                                                id={"code"}
+                                                labelField={"Код проверки"}
+                                                onChange={(value) =>
+                                                    setCode(value)
+                                                }
+                                                defaultValue={code}
+                                                data-testid="input-code"
+                                            />
+                                            {currentEmployeeInfo && (
+                                                <CustomButton
+                                                    onClick={() => {
+                                                        fetchVerificatinCode(
+                                                            currentEmployeeInfo?.id,
+                                                            currentEmployeeInfo?.organizationId
+                                                        );
+                                                    }}
+                                                    data-testid="button-code"
+                                                    height="53px"
+                                                    disabled={isLoadingCode}
+                                                >
+                                                    {isLoadingCode
+                                                        ? "Код получен"
+                                                        : "Отправить код проверки"}
+                                                </CustomButton>
+                                            )}
+                                        </div>
+                                        <div style={{ margin: "20px 0" }}>
+                                            <input
+                                                type="checkbox"
+                                                value=""
+                                                id="flexCheckDefault"
+                                                onClick={() =>
+                                                    setIsCheckboxOn(
+                                                        !isCheckboxOn
+                                                    )
+                                                }
+                                            />
+                                            <label htmlFor="flexCheckDefault">
+                                                Нажимая на кнопку, я соглашаюсь
+                                                с{" "}
+                                                <a
+                                                    href="https://www.gsprom.ru/politic/"
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                >
+                                                    Политикой обработки
+                                                    персональных данных
+                                                </a>{" "}
+                                                и даю согласие на{" "}
+                                                <a
+                                                    href="https://www.gsprom.ru/politic/"
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                >
+                                                    обработку персональных
+                                                    данных
+                                                </a>
+                                            </label>
+                                        </div>
+                                        <div style={{ alignSelf: "center" }}>
+                                            <CustomButton
+                                                disabled={
+                                                    !isCheckboxOn ||
+                                                    code.length < 6
+                                                }
+                                                onClick={() =>
+                                                    handleSendButton()
+                                                }
+                                                height="40px"
+                                                data-testid="save-button"
+                                            >
+                                                Сохранить
+                                            </CustomButton>
+                                        </div>
+                                    </>
+                                )}
+                        </EditModalContentWrapper>
                     </ModalContent>
                 </ModalContainer>
             </Modal2Background>
