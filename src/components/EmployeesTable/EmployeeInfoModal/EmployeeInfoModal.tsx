@@ -1,5 +1,4 @@
 import { useOrgStore } from "../../../store/organizationStore";
-import PhotoDefault from "../../../assets/photo.jpg";
 import { ModalField } from "./ModalField";
 import { SpinnerCircular } from "spinners-react";
 import {
@@ -19,6 +18,7 @@ import {
     InfoBlock,
     InfoBlockContent,
     InfoBlockWrapper,
+    LinkSpan,
     PhotoAndInfo,
     PhotoBlock,
 } from "./StyledComponents";
@@ -467,7 +467,7 @@ export const EmployeeInfoModal: React.FC = () => {
                                                             {currentEmployeeInfo.assistants.map(
                                                                 (assistant) => (
                                                                     <>
-                                                                        <span
+                                                                        <LinkSpan
                                                                             key={
                                                                                 assistant.id
                                                                             }
@@ -482,17 +482,11 @@ export const EmployeeInfoModal: React.FC = () => {
                                                                                     "512"
                                                                                 );
                                                                             }}
-                                                                            style={{
-                                                                                textDecoration:
-                                                                                    "underline",
-                                                                                cursor: "pointer",
-                                                                                color: "#1d75bb",
-                                                                            }}
                                                                         >
                                                                             {
                                                                                 assistant.fullName
                                                                             }
-                                                                        </span>
+                                                                        </LinkSpan>
                                                                         {currentEmployeeInfo
                                                                             .assistants
                                                                             .length >

@@ -1,19 +1,13 @@
 import { CustomCopyButton, CustomEmailLink } from "../../StyledComponents";
 import { toast } from "react-toastify";
-import { FieldWrapper, NameField } from "./StyledComponents";
+import { FieldWrapper, LinkSpan, NameField } from "./StyledComponents";
 import { useOrgStore } from "../../../store/organizationStore";
 import { useSearchParams } from "react-router-dom";
-import styled from "styled-components";
 
 interface Props {
     nameField: string;
     value: string | null;
 }
-
-const LinkSpan = styled.span`
-    cursor: pointer;
-    text-decoration: underline;
-`;
 
 const SPECIAL_FIELDS = ["Электронная почта", "Подразделение", "Номер телефона"];
 

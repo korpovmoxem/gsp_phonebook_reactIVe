@@ -79,7 +79,8 @@ export const BlockModalIcon = styled.img`
 export const EditModalInputsContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* 2 колонки */
-    gap: 20px;
+    gap: 10px;
+    width: 100%;
 `;
 
 export const EditModalTextContainer = styled.div`
@@ -97,8 +98,18 @@ export const EditModalTextContainer = styled.div`
 `;
 
 export const EditModalContentWrapper = styled.div`
+    place-items: center;
     @media (height<700px) {
         max-height: 400px;
         overflow-y: auto;
+    }
+`;
+
+export const LinkSpan = styled.span`
+    cursor: pointer;
+    text-decoration: underline;
+    &:hover {
+        color: ${(props) => props.theme.hoverItemText};
+        transition: all 0.5s ease;
     }
 `;

@@ -200,7 +200,7 @@ export const EditInformationModal = () => {
                             {currentEmployeeInfo?.email &&
                                 currentEmployeeInfo?.isEditAvailable && (
                                     <>
-                                        <h3>
+                                        <h3 style={{ justifySelf: "left" }}>
                                             {currentEmployeeInfo?.fullNameRus}
                                         </h3>
                                         <EditModalInputsContainer>

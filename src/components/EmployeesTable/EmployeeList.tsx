@@ -191,7 +191,6 @@ export const EmployeeList: React.FC = () => {
         const target = e.target as HTMLElement;
 
         const scrollTop = "scrollTop" in target ? target.scrollTop : 0;
-        console.log("Scroll position:", scrollTop);
         setShowScrollButton(scrollTop > 300); // показываем, если прокрутили больше 300px
     };
 
@@ -262,7 +261,9 @@ export const EmployeeList: React.FC = () => {
                             <HeadColumn style={{ width: "25%" }}>
                                 Номер телефона
                             </HeadColumn>
-                            <HeadColumn style={{ width: "25%" }}>
+                            <HeadColumn
+                                style={{ width: "25%", textAlign: "center" }}
+                            >
                                 Электронная почта
                             </HeadColumn>
                         </FirstHeader>
@@ -344,7 +345,9 @@ export const EmployeeList: React.FC = () => {
                             <HeadColumn style={{ width: "25%" }}>
                                 Номер телефона
                             </HeadColumn>
-                            <HeadColumn style={{ width: "25%" }}>
+                            <HeadColumn
+                                style={{ width: "25%", textAlign: "center" }}
+                            >
                                 Электронная почта
                             </HeadColumn>
                         </FirstHeader>
