@@ -27,7 +27,6 @@ export const EmployeeDepartmentPath = ({
     const orgMapId = useOrgStore((state) => state.orgMapId);
     const selectOrg = useOrgStore((state) => state.selectOrg);
     const navigate = useNavigate();
-
     const pathIds = departmentId
         ? getPathToNodeFast1(departmentId, orgMapId)
         : null;
@@ -46,7 +45,6 @@ export const EmployeeDepartmentPath = ({
             )}
             {pathIds
                 .filter((item) => isNaN(Number(item)))
-                .reverse()
                 .map((id, index, arr) => {
                     const node = orgMapId.get(id)?.node;
                     if (!node) return null;

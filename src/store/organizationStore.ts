@@ -154,6 +154,7 @@ export const useOrgStore = create<OrgState>((set, get) => ({
     },
 
     selectOrg: async (organizationId, departmentId, withChildren) => {
+
         set({employeesList: []})
         const targetId = departmentId || organizationId;
         set({ selectedOrgId: targetId, isEmpLoading: true });

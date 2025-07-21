@@ -24,6 +24,14 @@ export const HeaderMain = () => {
     const selectOrg = useOrgStore((state) => state.selectOrg);
     const [isHelpOpen, setIsHelpOpen] = useState(false);
 
+    const handleLogoClick = () => {
+        selectOrg(
+            "7842155505",
+            "9c685cfe-e9a0-11e8-90f2-0050569026ba",
+            "false"
+        );
+    };
+
     // При появлении ошибок реакта переходть на страницу с ошибкой
     window.onerror = function (message, source, lineno, colno, error) {
         // Перейти на страницу ошибки
@@ -33,19 +41,15 @@ export const HeaderMain = () => {
         // Перейти на страницу ошибки при Promise-ошибках
         navigate("/err");
     });
+
     return (
         <HeaderWrapper>
             <LogoWrapper>
-                <Link to="/">
-                    <LogoContainer
-                        onClick={() => {
-                            selectOrg(
-                                "7842155505",
-                                "9c685cfe-e9a0-11e8-90f2-0050569026ba",
-                                "false"
-                            );
-                        }}
-                    >
+                <Link
+                    // to={`/?organizationId=${"7842155505"}&departmentId=${"9c685cfe-e9a0-11e8-90f2-0050569026ba"}&treeId=3`} //TODO: Перенести в стор айдишники?
+                    to="/"
+                >
+                    <LogoContainer onClick={handleLogoClick}>
                         <MainLogo src={MainLogoImg} alt="ГазСтройПром" />
                         <SubLogo src={AdressBookImg} alt="ГазСтройПром" />
                     </LogoContainer>

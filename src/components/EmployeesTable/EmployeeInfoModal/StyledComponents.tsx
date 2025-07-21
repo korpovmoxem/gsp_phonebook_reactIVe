@@ -53,7 +53,12 @@ export const InfoBlockContent = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* 2 колонки */
     grid-template-rows: repeat(3, auto); /* 3 строки */
-    gap: 15px; /* расстояние между элементами */
+    gap: 15px;
+
+    /* Стили для последнего дочернего элемента */
+    > :last-child {
+        grid-column: 1 / -1;
+    }
 `;
 
 export const Fio = styled.h3`

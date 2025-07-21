@@ -38,7 +38,6 @@ export const ModalField = ({ nameField, value }: Props) => {
                                 <div
                                     style={{
                                         display: "flex",
-                                        maxWidth: "200px",
                                     }}
                                 >
                                     <CustomEmailLink

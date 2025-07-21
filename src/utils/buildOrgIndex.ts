@@ -38,15 +38,18 @@ export const buildOrgIndexId = (nodes: Organization[]): OrgMap => {
 
 export const getPathToNodeFast1 = (id: string, orgMapId: OrgMap): string[] | null => {
 
+
     const path: string[] = [];
     let currentId: string | null = id;
 
     while (currentId) {
         const entry = orgMapId.get(currentId);
+
         if (!entry) return null;
         path.unshift(currentId);
         currentId = entry.parentId;
     }
+
 
     return path;
 };

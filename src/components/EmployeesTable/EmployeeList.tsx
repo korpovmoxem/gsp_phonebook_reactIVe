@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams, useLocation } from "react-router-dom";
 import { useOrgStore } from "../../store/organizationStore";
 import { EmployeeSkeleton } from "./EmployeeSkeleton";
@@ -199,8 +199,16 @@ export const EmployeeList: React.FC = () => {
             scrollContainerRef.current.scrollTo({ top: 0, behavior: "smooth" });
         }
     };
-    React.useEffect(() => {
+    useEffect(() => {
         if (isDefaultRoute) {
+            // organizationId=7842155505&departmentId=9c685cfe-e9a0-11e8-90f2-0050569026ba&treeId=3
+            searchParams.set("organizationId", "7842155505");
+            searchParams.set(
+                "departmentId",
+                "9c685cfe-e9a0-11e8-90f2-0050569026ba"
+            );
+            searchParams.set("treeId", "3");
+
             selectOrg(
                 "7842155505",
                 "9c685cfe-e9a0-11e8-90f2-0050569026ba",
@@ -212,6 +220,12 @@ export const EmployeeList: React.FC = () => {
             !organizationId &&
             !departmentId
         ) {
+            searchParams.set("organizationId", "7842155505");
+            searchParams.set(
+                "departmentId",
+                "9c685cfe-e9a0-11e8-90f2-0050569026ba"
+            );
+            searchParams.set("treeId", "3");
             selectOrg(
                 "7842155505",
                 "9c685cfe-e9a0-11e8-90f2-0050569026ba",
@@ -353,7 +367,7 @@ export const EmployeeList: React.FC = () => {
                         </FirstHeader>
                         <div style={{ position: "sticky", top: 35, zIndex: 3 }}>
                             <SecondHeader>
-                                Организация: {employeesTree.organizationName}
+                                {employeesTree.organizationName.toUpperCase()}
                             </SecondHeader>
                         </div>
                         <GroupedVirtuoso
