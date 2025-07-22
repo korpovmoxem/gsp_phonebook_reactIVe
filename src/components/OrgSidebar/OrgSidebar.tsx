@@ -160,7 +160,7 @@
 // };
 
 import React, { useEffect, useState } from "react";
-import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
+import { useSearchParams, useLocation } from "react-router-dom";
 import { useOrgStore } from "../../store/organizationStore";
 import { TreeNode } from "./TreeNode";
 import {
@@ -168,7 +168,7 @@ import {
     getPathToNodeFast1,
 } from "../../utils/buildOrgIndex";
 import { toast } from "react-toastify";
-import { Organization } from "../../types";
+import { CATEGORIES, Organization } from "../../types";
 import { ExternalLink } from "lucide-react";
 import { SidebarSkeleton } from "./SidebarSkeleton";
 import {
@@ -190,6 +190,10 @@ export const OrgSidebar: React.FC = () => {
     const fetchExternalTree = useOrgStore((state) => state.fetchExternalTree);
     const selectOrg = useOrgStore((state) => state.selectOrg);
     const employeeList = useOrgStore((state) => state.employeesList);
+    const fetchEmployeesWithParams = useOrgStore(
+        (state) => state.fetchEmployeesWithParams
+    );
+
     const isOrgLoading = useOrgStore((state) => state.isOrgLoading);
     const isExternalOrgLoading = useOrgStore(
         (state) => state.isExternalOrgLoading
@@ -223,6 +227,11 @@ export const OrgSidebar: React.FC = () => {
                     { replace: true }
                 );
                 return;
+            } else {
+                fetchEmployeesWithParams(
+                    searchParams.get("value") || "",
+                    searchParams.get("type") as CATEGORIES
+                );
             }
         }
     }, [location.pathname, searchParams, setSearchParams]);

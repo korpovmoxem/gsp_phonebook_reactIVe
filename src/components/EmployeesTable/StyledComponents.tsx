@@ -89,6 +89,7 @@ export const NonClickableCrumb = styled.span.attrs({
     color: ${(props) => props.theme.subHeaderColor};
     transition: all 0.5s ease;
     margin-right: 4px;
+    font-weight: 700;
 `;
 
 export const Separator = styled.span.attrs({
