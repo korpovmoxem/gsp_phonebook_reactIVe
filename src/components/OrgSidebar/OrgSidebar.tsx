@@ -159,7 +159,6 @@
 //     );
 // };
 
-
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
 import { useOrgStore } from "../../store/organizationStore";
@@ -190,6 +189,7 @@ export const OrgSidebar: React.FC = () => {
     const fetchTree = useOrgStore((state) => state.fetchTree);
     const fetchExternalTree = useOrgStore((state) => state.fetchExternalTree);
     const selectOrg = useOrgStore((state) => state.selectOrg);
+    const employeeList = useOrgStore((state) => state.employeesList);
     const isOrgLoading = useOrgStore((state) => state.isOrgLoading);
     const isExternalOrgLoading = useOrgStore(
         (state) => state.isExternalOrgLoading
@@ -210,14 +210,20 @@ export const OrgSidebar: React.FC = () => {
     useEffect(() => {
         if (
             (location.pathname === "/" && searchParams.toString() === "") ||
-            (!searchParams.get("organizationId") && !searchParams.get("departmentId"))
+            (!searchParams.get("organizationId") &&
+                !searchParams.get("departmentId"))
         ) {
-            setSearchParams({
-                organizationId: "7842155505",
-                departmentId: "9c685cfe-e9a0-11e8-90f2-0050569026ba",
-                treeId: "3",
-            }, { replace: true });
-            return;
+            if (!searchParams.get("value")) {
+                setSearchParams(
+                    {
+                        organizationId: "7842155505",
+                        departmentId: "9c685cfe-e9a0-11e8-90f2-0050569026ba",
+                        treeId: "3",
+                    },
+                    { replace: true }
+                );
+                return;
+            }
         }
     }, [location.pathname, searchParams, setSearchParams]);
 
@@ -230,7 +236,10 @@ export const OrgSidebar: React.FC = () => {
         const treeId = searchParams.get("treeId");
 
         let id = depId || orgId;
-        if (!id) return;
+        if (!id) {
+            setExpandedIds([]);
+            return;
+        }
 
         // path — это путь из id (или treeId) к корню
         const path = treeId

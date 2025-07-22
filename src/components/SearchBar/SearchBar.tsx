@@ -80,6 +80,9 @@ export const SearchBar = () => {
     const handleSearch = () => {
         setIsOpen(false);
         if (query.trim()) {
+            searchParams.delete("organizationId");
+            searchParams.delete("departmentId");
+            searchParams.delete("treeId");
             fetchEmployeesWithParams(query, category);
             navigate(`/employee/search?value=${query}&type=${category}`);
         } else {

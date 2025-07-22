@@ -173,7 +173,6 @@ export const PositionWrapper = styled.div.attrs({
 export const EmployeeDepartmentPathWrapper = styled.div.attrs({
     datatype: "EmployeeDepartmentPathWrapper",
 })`
-    display: flex;
     flex-direction: row;
     overflow-x: auto;
 `;

@@ -40,7 +40,7 @@ export const EmployeeDepartmentPath = ({
             {showOrganization && organizationId && organizationName && (
                 <>
                     <NonClickableCrumb>{organizationName}</NonClickableCrumb>
-                    <Separator>→</Separator>
+                    <Separator>|</Separator>
                 </>
             )}
             {pathIds

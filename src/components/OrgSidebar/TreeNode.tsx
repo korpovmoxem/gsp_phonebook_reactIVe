@@ -59,7 +59,7 @@
 //         if (node.id === selectedId && itemRef.current) {
 //             itemRef.current.scrollIntoView({
 //                 behavior: "smooth",
-//                 block: "start",
+//                 block: "center",
 //             });
 //         }
 //     }, [selectedId, node.id]);
@@ -72,51 +72,51 @@
 //             }}
 //             ref={node.id === selectedId ? itemRef : null}
 //         >
-//             <ItemRow
-//                 onClick={() => {
-//                     node.id === null
-//                         ? setExpanded((prev) => !prev)
-//                         : onSelect(node);
-//                 }}
-//                 style={{
-//                     cursor: "pointer",
-//                     fontWeight:
-//                         node.id === selectedId && selectedId !== null
-//                             ? "bold"
-//                             : "normal",
-//                     display: "flex",
-//                     flexDirection: "row",
-//                     alignItems: "center",
-//                     marginTop: "15px",
-//                     lineHeight: 1,
-//                 }}
-//                 selected={node.id === selectedId && selectedId !== null}
-//             >
-//                 {node.children.length > 0 ? (
-//                     <span
-//                         onClick={(e) => {
-//                             e.stopPropagation();
-//                             setExpanded((prev) => !prev);
-//                         }}
-//                     >
-//                         {expanded ? (
-//                             <ChevronDownButton
-//                                 size={DEFAULT_EXPAND_ICON_SIZE}
-//                             />
-//                         ) : (
-//                             <ChevronRightButton
-//                                 size={DEFAULT_EXPAND_ICON_SIZE}
-//                             />
-//                         )}
-//                     </span>
-//                 ) : (
-//                     <span>
-//                         <SquareDotButton size={DEFAULT_EXPAND_ICON_SIZE} />
-//                     </span>
-//                 )}
+// <ItemRow
+//     onClick={() => {
+//         node.id === null
+//             ? setExpanded((prev) => !prev)
+//             : onSelect(node);
+//     }}
+//     style={{
+//         cursor: "pointer",
+//         fontWeight:
+//             node.id === selectedId && selectedId !== null
+//                 ? "bold"
+//                 : "normal",
+//         display: "flex",
+//         flexDirection: "row",
+//         alignItems: "center",
+//         marginTop: "15px",
+//         lineHeight: 1,
+//     }}
+//     selected={node.id === selectedId && selectedId !== null}
+// >
+//     {node.children.length > 0 ? (
+//         <span
+//             onClick={(e) => {
+//                 e.stopPropagation();
+//                 setExpanded((prev) => !prev);
+//             }}
+//         >
+//             {expanded ? (
+//                 <ChevronDownButton
+//                     size={DEFAULT_EXPAND_ICON_SIZE}
+//                 />
+//             ) : (
+//                 <ChevronRightButton
+//                     size={DEFAULT_EXPAND_ICON_SIZE}
+//                 />
+//             )}
+//         </span>
+//     ) : (
+//         <span>
+//             <SquareDotButton size={DEFAULT_EXPAND_ICON_SIZE} />
+//         </span>
+//     )}
 
-//                 <ItemText>{node.name}</ItemText>
-//             </ItemRow>
+//     <ItemText>{node.name}</ItemText>
+// </ItemRow>
 
 //             {expanded &&
 //                 node.children.map((child, index) => (
@@ -132,22 +132,45 @@
 //     );
 // };
 
-
 import React, { useEffect, useRef, useState } from "react";
 import {
     ChevronDownButton,
     ChevronRightButton,
     ItemRowSelected,
     ItemText,
+    SquareDotButton,
 } from "./StyledComponent";
 import { Organization } from "../../types";
-
+import { styled } from "styled-components";
+interface RowProps {
+    selected?: boolean;
+}
 interface Props {
     node: Organization;
     selectedId: string | null;
     onSelect: (node: Organization) => void;
     expandedIds: string[];
 }
+
+const ItemRow = styled.div<RowProps>`
+    cursor: pointer;
+    fontweight: normal;
+    display: flex;
+    flexdirection: row;
+    alignitems: center;
+    margintop: 7px;
+    lineheight: 1;
+    ${({ selected, theme }) =>
+        selected &&
+        `
+        // background-color: #e6e7e9;
+        background-color: ${theme.backgroundSubHeader};
+        border-radius: 10px;
+        margin-left: -5px;
+        padding: 5px 5px 5px 5px;
+    `}
+`;
+const DEFAULT_EXPAND_ICON_SIZE = 18;
 
 export const TreeNode = ({
     node,
@@ -163,8 +186,11 @@ export const TreeNode = ({
     }, [expandedIds]);
 
     useEffect(() => {
-        if (node.id === selectedId && itemRef.current) {
-            itemRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+        if (node.id === selectedId && itemRef.current && selectedId !== null) {
+            itemRef.current.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+            });
         }
     }, [selectedId, node.id]);
 
@@ -176,29 +202,51 @@ export const TreeNode = ({
             }}
             ref={node.id === selectedId ? itemRef : null}
         >
-            <div
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    cursor: node.root ? "default" : "pointer",
+            <ItemRow
+                onClick={() => {
+                    node.id === null
+                        ? setExpanded((prev) => !prev)
+                        : onSelect(node);
                 }}
-                onClick={() => onSelect(node)}
+                style={{
+                    cursor: "pointer",
+                    fontWeight:
+                        node.id === selectedId && selectedId !== null
+                            ? "bold"
+                            : "normal",
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginTop: "15px",
+                    lineHeight: 1,
+                }}
+                selected={node.id === selectedId && selectedId !== null}
             >
-                {node.children?.length > 0 ? (
-                    expanded ? (
-                        <ChevronDownButton size={18} />
-                    ) : (
-                        <ChevronRightButton size={18} />
-                    )
+                {node.children.length > 0 ? (
+                    <span
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setExpanded((prev) => !prev);
+                        }}
+                    >
+                        {expanded ? (
+                            <ChevronDownButton
+                                size={DEFAULT_EXPAND_ICON_SIZE}
+                            />
+                        ) : (
+                            <ChevronRightButton
+                                size={DEFAULT_EXPAND_ICON_SIZE}
+                            />
+                        )}
+                    </span>
                 ) : (
-                    <span style={{ width: 18, display: "inline-block" }} />
+                    <span>
+                        <SquareDotButton size={DEFAULT_EXPAND_ICON_SIZE} />
+                    </span>
                 )}
-                {node.id === selectedId ? (
-                    <ItemRowSelected>{node.name}</ItemRowSelected>
-                ) : (
-                    <ItemText>{node.name}</ItemText>
-                )}
-            </div>
+
+                <ItemText>{node.name}</ItemText>
+            </ItemRow>
             {expanded &&
                 node.children &&
                 node.children.map((child) => (

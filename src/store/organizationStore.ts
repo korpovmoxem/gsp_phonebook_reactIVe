@@ -196,6 +196,7 @@ export const useOrgStore = create<OrgState>((set, get) => ({
             set({
                 employeesList: data.result,
                 isEmpLoading: false,
+                selectedOrgId: null,
             });
         } catch (error: any) {
             console.error('Ошибка поиска сотрудников:', error.message);
