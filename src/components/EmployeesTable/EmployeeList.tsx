@@ -517,9 +517,7 @@ export const EmployeeList: React.FC = () => {
     const employees = useOrgStore((state) => state.employees);
     const isEmpLoading = useOrgStore((state) => state.isEmpLoading);
     const employeesList = useOrgStore((state) => state.employeesList);
-    const fetchEmployeesWithParams = useOrgStore(
-        (state) => state.fetchEmployeesWithParams
-    );
+
     const isEmployeeInfoModalOpen = useOrgStore(
         (state) => state.isEmployeeInfoModalOpen
     );
@@ -529,16 +527,11 @@ export const EmployeeList: React.FC = () => {
     const fetchCurrentEmployeeInfo = useOrgStore(
         (state) => state.fetchCurrentEmployeeInfo
     );
-    const selectOrg = useOrgStore((state) => state.selectOrg);
     const loadEmployeeData = useEmployeeStore(
         (state) => state.loadEmployeeData
     );
     const employeeData = useEmployeeStore((state) => state.employeeData);
 
-    const searchValue = searchParams.get("value");
-    const searchCategory = searchParams.get("type") as CATEGORIES | null;
-    const organizationId = searchParams.get("organizationId");
-    const departmentId = searchParams.get("departmentId");
     const scrollContainerRef = useRef<Window | HTMLElement | null>(null);
     const handleCopyClick = (text: string) => {
         navigator.clipboard.writeText(text);
@@ -600,10 +593,6 @@ export const EmployeeList: React.FC = () => {
         });
         return { groupCounts, groupLabels, employeesFlat };
     }, [employeesList]);
-
-    const location = useLocation();
-    const isDefaultRoute =
-        location.pathname === "/" && ![...searchParams].length;
 
     function getAllEmails(data: EmployeesListTree): (string | null)[] {
         const emails: (string | null)[] = [

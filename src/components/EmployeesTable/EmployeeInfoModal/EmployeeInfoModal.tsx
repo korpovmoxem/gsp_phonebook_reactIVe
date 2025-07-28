@@ -123,6 +123,24 @@ export const EmployeeInfoModal: React.FC = () => {
     const loadEmployeeData = useEmployeeStore(
         (state) => state.loadEmployeeData
     );
+    const current = currentEmployeeInfo;
+
+    const subject = "Контактная информация сотрудника";
+    const body = [
+        `ФИО: ${current?.fullNameRus || "—"}`,
+        `Почта: ${current?.email || "—"}`,
+        `Номер телефона: ${current?.telephoneNumberCorp || "—"}`,
+        `Организация: ${current?.organizationName || "—"}`,
+        `Департамент: ${current?.departmentName || "—"}`,
+        `Должность: ${current?.positionTitle || "—"}`,
+        `Ссылка на справочник: http://172.16.153.75:3000/`,
+    ].join("\n");
+
+    const mailtoLink = `mailto:?subject=${encodeURIComponent(
+        subject
+    )}&body=${encodeURIComponent(body)}`;
+
+    console.log(mailtoLink);
 
     const handleEditInfo = () => {
         setIsEmployeeInfoModalOpen(!isEmployeeInfoModalOpen);
@@ -189,6 +207,8 @@ export const EmployeeInfoModal: React.FC = () => {
                                         >
                                             Изменить данные
                                         </CustomButton>
+
+                                        <a href={mailtoLink}>Поделиться</a>
                                     </div>
                                     <CloseButton
                                         onClick={() =>

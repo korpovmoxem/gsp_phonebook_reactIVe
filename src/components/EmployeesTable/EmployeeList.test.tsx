@@ -1,10 +1,10 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { EmployeeList } from "./EmployeeList";
 import { useOrgStore } from "../../store/organizationStore";
 
-// Мокаем зависимости
+// 🔥 Мокаем зависимости
 jest.mock("../../store/organizationStore", () => ({
     useOrgStore: jest.fn(),
 }));
@@ -29,11 +29,37 @@ jest.mock("./EmployeeSkeleton", () => ({
     EmployeeSkeleton: () => <div data-testid="employee-skeleton" />,
 }));
 
+// 🔥 Мокаем EmployeeTableItem
+jest.mock("./EmployeeTableItem", () => ({
+    default: ({ emp, handleRowClick }: any) => (
+        <div
+            data-testid="employee-row"
+            data-emp-id={emp.id}
+            onClick={() => handleRowClick(emp.id, emp.organizationId)}
+            role="button"
+            tabIndex={0}
+        >
+            <span>{emp.fullNameRus}</span>
+            <span>{emp.positionTitle}</span>
+            <span>{emp.telephoneNumberCorp}</span>
+            <span>{emp.email}</span>
+        </div>
+    ),
+}));
+
+// 🔥 Мокаем react-virtuoso — автоматически из __mocks__
+jest.mock("react-virtuoso");
+
+// 🔥 Мокаем useNavigate
+jest.mock("react-router-dom", () => ({
+    ...jest.requireActual("react-router-dom"),
+    useNavigate: () => jest.fn(),
+}));
+
 describe("EmployeeList", () => {
-    const mockFetchEmployeesWithParams = jest.fn();
-    const mockSelectOrg = jest.fn();
     const mockSetIsEmployeeInfoModalOpen = jest.fn();
     const mockFetchCurrentEmployeeInfo = jest.fn();
+    const mockLoadEmployeeData = jest.fn();
 
     const baseStore = {
         employees: {
@@ -58,57 +84,79 @@ describe("EmployeeList", () => {
         },
         isEmpLoading: false,
         employeesList: [],
-        fetchEmployeesWithParams: mockFetchEmployeesWithParams,
-        selectOrg: mockSelectOrg,
+        fetchEmployeesWithParams: jest.fn(),
+        selectOrg: jest.fn(),
+        isEmployeeInfoModalOpen: false,
         setIsEmployeeInfoModalOpen: mockSetIsEmployeeInfoModalOpen,
         fetchCurrentEmployeeInfo: mockFetchCurrentEmployeeInfo,
+        loadEmployeeData: mockLoadEmployeeData,
     };
 
     beforeEach(() => {
+        jest.clearAllMocks();
         (useOrgStore as unknown as jest.Mock).mockImplementation((selector) =>
             selector(baseStore)
         );
     });
 
-    it("рендерит список сотрудников", () => {
+    it("рендерит список сотрудников", async () => {
         render(
             <MemoryRouter>
                 <EmployeeList />
             </MemoryRouter>
         );
 
-        expect(screen.getByText("Иванов Иван")).toBeInTheDocument();
-        expect(screen.getByText("Frontend Developer")).toBeInTheDocument();
-        expect(screen.getByText("123456")).toBeInTheDocument();
-        expect(screen.getByText("ivanov@example.com")).toBeInTheDocument();
+        // Ждём появления хотя бы одного элемента
+        await screen.findByTestId("mocked-virtuoso");
+
+        // Теперь ищем строку сотрудника
+        const row = screen.getByTestId("employee-row");
+        expect(row).toHaveTextContent("Иванов Иван");
+        expect(row).toHaveTextContent("Frontend Developer");
+        expect(row).toHaveTextContent("123456");
+        expect(row).toHaveTextContent("ivanov@example.com");
     });
 
-    it("переходит к модалке сотрудника при клике на строку", () => {
-        const mockNavigate = jest.fn();
-        jest.mock("react-router-dom", () => ({
-            ...jest.requireActual("react-router-dom"),
-            useNavigate: () => mockNavigate,
-        }));
-
+    it("переходит к модалке сотрудника при клике на строку", async () => {
         render(
             <MemoryRouter>
                 <EmployeeList />
             </MemoryRouter>
         );
 
-        const employeeRow = screen.getByText("Иванов Иван");
-        fireEvent.click(employeeRow!);
+        const row = await screen.findByTestId("employee-row");
+        fireEvent.click(row);
 
-        expect(mockSetIsEmployeeInfoModalOpen).toHaveBeenCalledWith(true);
-        expect(mockFetchCurrentEmployeeInfo).toHaveBeenCalledWith("1", "org1");
+        await waitFor(() => {
+            expect(mockSetIsEmployeeInfoModalOpen).toHaveBeenCalledWith(true);
+        });
+
+        await waitFor(() => {
+            expect(mockFetchCurrentEmployeeInfo).toHaveBeenCalledWith(
+                "1",
+                "org1"
+            );
+        });
+
+        await waitFor(() => {
+            expect(mockLoadEmployeeData).toHaveBeenCalledWith(
+                "1",
+                "org1",
+                "512"
+            );
+        });
     });
 
     it('рендерит сообщение "Не найдено" при отсутствии результатов', () => {
         (useOrgStore as unknown as jest.Mock).mockImplementation((selector) =>
             selector({
                 ...baseStore,
-                employees: undefined,
-                isEmpLoading: false,
+                employees: {
+                    ...baseStore.employees,
+                    employees: [],
+                    children: [],
+                },
+                employeesList: [],
             })
         );
 
