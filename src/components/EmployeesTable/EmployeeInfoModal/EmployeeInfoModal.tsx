@@ -12,7 +12,7 @@ import {
 import { useEffect, useRef } from "react";
 import { ReactComponent as Contact } from "../../../assets/contactInfo.svg";
 import { ReactComponent as WorkPlace } from "../../../assets/workPlace.svg";
-import { UsersRound } from "lucide-react";
+import { Share, UsersRound } from "lucide-react";
 import {
     Fio,
     InfoBlock,
@@ -208,7 +208,11 @@ export const EmployeeInfoModal: React.FC = () => {
                                             Изменить данные
                                         </CustomButton>
 
-                                        <a href={mailtoLink}>Поделиться</a>
+                                        <a href={mailtoLink} title="Поделиться">
+                                            <Share
+                                                style={{ marginLeft: "20px" }}
+                                            />
+                                        </a>
                                     </div>
                                     <CloseButton
                                         onClick={() =>
