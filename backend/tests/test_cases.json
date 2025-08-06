@@ -1,0 +1,41 @@
+{
+  "employee": {
+    "search": [
+      {
+        "value": "иван",
+        "type": "fullName",
+        "limit": 100
+      },
+      {
+        "value": "20",
+        "type": "phone",
+        "limit": 100
+      },
+      {
+        "value": "@gsprom",
+        "type": "email",
+        "limit": 100
+      },
+      {
+        "value": "директор",
+        "type": "position"
+      }
+    ],
+    "verification": [
+      {
+        "id": "4ecfa6d9-70f6-11ef-9116-005056907da3",
+        "organizationId": 7810443275
+    }
+  ],
+    "edit": [
+      {
+        "id": "4ecfa6d9-70f6-11ef-9116-005056907da3",
+        "organizationId": 7810443275,
+        "mobileNumberPersonal": "8999999999",
+        "externalNumberCorp": "8777777777",
+        "workPlace": 111111,
+        "address": "город улица дом 123"
+      }
+    ]
+  }
+}
