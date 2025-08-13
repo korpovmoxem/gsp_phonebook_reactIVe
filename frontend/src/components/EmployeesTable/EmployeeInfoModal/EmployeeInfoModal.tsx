@@ -140,8 +140,6 @@ export const EmployeeInfoModal: React.FC = () => {
         subject
     )}&body=${encodeURIComponent(body)}`;
 
-    console.log(mailtoLink);
-
     const handleEditInfo = () => {
         setIsEmployeeInfoModalOpen(!isEmployeeInfoModalOpen);
         setIsEditInformation(!isEditInformation);
@@ -241,10 +239,19 @@ export const EmployeeInfoModal: React.FC = () => {
                                                                 .id
                                                         ];
                                                     if (
-                                                        data.large ===
-                                                            "loading" ||
-                                                        data.large === "error"
+                                                        data.large === "loading"
                                                     )
+                                                        return (
+                                                            <SpinnerCircular
+                                                                size={70}
+                                                                thickness={180}
+                                                                speed={180}
+                                                                color="rgba(29, 117, 187, 1)"
+                                                                secondaryColor="rgba(57, 69, 172, 0.1)"
+                                                            />
+                                                        );
+
+                                                    if (data.large === "error")
                                                         return (
                                                             <PhotoObj
                                                                 photo={null}

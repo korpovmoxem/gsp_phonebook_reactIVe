@@ -190,6 +190,9 @@ import {
     PositionWrapper,
 } from "./StyledComponents";
 import { useEmployeeStore } from "../../store/employeeStore";
+import { SpinnerCircular } from "spinners-react";
+import { useSearchParams } from "react-router-dom";
+import Highlighter from "react-highlight-words";
 
 interface Props {
     emp: Employee;
@@ -219,6 +222,9 @@ const EmployeeTableItem = ({
     handleCopyClick,
 }: Props) => {
     const loadEmployeeData = useEmployeeStore((s) => s.loadEmployeeData);
+    const [searchParams] = useSearchParams();
+    const type = searchParams.get("type");
+    const value = searchParams.get("value");
 
     // Загружаем маленькое фото только если оно еще не загружено
     useEffect(() => {
@@ -244,11 +250,18 @@ const EmployeeTableItem = ({
                 {/* Фото */}
                 <DivTableCell style={{ textAlign: "center" }}>
                     {(() => {
-                        if (
-                            data === "loading" ||
-                            data === "error" ||
-                            data === undefined
-                        ) {
+                        if (data === "loading") {
+                            return (
+                                <SpinnerCircular
+                                    size={70}
+                                    thickness={180}
+                                    speed={180}
+                                    color="rgba(29, 117, 187, 1)"
+                                    secondaryColor="rgba(57, 69, 172, 0.1)"
+                                />
+                            );
+                        }
+                        if (data === "error" || data === undefined) {
                             return <PhotoObj photo={null} width="75px" />;
                         }
 
@@ -267,8 +280,32 @@ const EmployeeTableItem = ({
                         minWidth: "200px",
                     }}
                 >
-                    {emp.fullNameRus}
-                    <PositionWrapper>{emp.positionTitle}</PositionWrapper>
+                    {type === "fullName" ? (
+                        <Highlighter
+                            searchWords={[value || ""]}
+                            autoEscape={true}
+                            textToHighlight={`${emp.fullNameRus}`}
+                            highlightStyle={{
+                                backgroundColor: "#b2dff7",
+                            }}
+                        />
+                    ) : (
+                        <>{emp.fullNameRus}</>
+                    )}
+                    <PositionWrapper>
+                        {type === "position" ? (
+                            <Highlighter
+                                searchWords={[value || ""]}
+                                autoEscape={true}
+                                textToHighlight={`${emp.positionTitle}`}
+                                highlightStyle={{
+                                    backgroundColor: "#b2dff7",
+                                }}
+                            />
+                        ) : (
+                            <>{emp.positionTitle}</>
+                        )}
+                    </PositionWrapper>
                 </CellWrapper>
 
                 {/* Статусы и награды */}
@@ -328,7 +365,18 @@ const EmployeeTableItem = ({
                             href={`tel:${emp.telephoneNumberCorp}`}
                             onClick={(e) => e.stopPropagation()}
                         >
-                            {emp.telephoneNumberCorp}
+                            {type === "phone" ? (
+                                <Highlighter
+                                    searchWords={[value || ""]}
+                                    autoEscape={true}
+                                    textToHighlight={`${emp.telephoneNumberCorp}`}
+                                    highlightStyle={{
+                                        backgroundColor: "#b2dff7",
+                                    }}
+                                />
+                            ) : (
+                                <>{emp.telephoneNumberCorp}</>
+                            )}
                         </CustomEmailLink>
                     ) : (
                         "Не указан"
@@ -353,7 +401,18 @@ const EmployeeTableItem = ({
                                 href={`mailto:${emp.email}`}
                                 onClick={(e) => e.stopPropagation()}
                             >
-                                {emp.email}
+                                {type === "email" ? (
+                                    <Highlighter
+                                        searchWords={[value || ""]}
+                                        autoEscape={true}
+                                        textToHighlight={`${emp.email}`}
+                                        highlightStyle={{
+                                            backgroundColor: "#b2dff7",
+                                        }}
+                                    />
+                                ) : (
+                                    <>{emp.email}</>
+                                )}
                             </CustomEmailLink>
                             <CustomCopyButton
                                 size={13}
