@@ -67,7 +67,10 @@ export const ModalField = ({ nameField, value }: Props) => {
                                         href={`tel:${value}`}
                                         onClick={(e) => e.stopPropagation()}
                                     >
-                                        {value}
+                                        {`(${value.slice(0, 2)}) ${value.slice(
+                                            2,
+                                            6
+                                        )}`}
                                     </CustomEmailLink>
                                 </>
                             ) : (

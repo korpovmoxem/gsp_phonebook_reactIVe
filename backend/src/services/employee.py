@@ -10,7 +10,7 @@ from sqlalchemy.orm import joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.responses import Response
 
-from backend.src.database import (
+from src.database import (
     Organization,
     Department,
     Employee,
@@ -19,7 +19,7 @@ from backend.src.database import (
     EditedEmployee,
     Position,
 )
-from backend.src.models import (
+from src.models import (
     GetEmployeeDetailResponse,
     GetEmployeeTableResponse,
     GetTreeEmployeeTableResponse,
@@ -32,17 +32,17 @@ from backend.src.models import (
     EmployeeAchievement,
     GetEmployeeImageResponse,
 )
-from backend.src.redis import (
+from src.redis import (
     r_delete_cache,
     r_get_verification_code,
     r_set_verification_code,
     r_get_verification_code_seconds_expires,
 )
-from backend.src.smtp import async_send_email
-from backend.src.utils.sql import (
+from src.smtp import async_send_email
+from src.utils.sql import (
     sample_employee_query
 )
-from backend.src.utils.exceptions import (
+from src.utils.exceptions import (
     EmployeeNotFoundError,
     EmployeeNotEditableError,
     EmployeeWithoutEmailError,
@@ -51,13 +51,13 @@ from backend.src.utils.exceptions import (
     DailyEditLimitExceededError,
     SendEmailError,
 )
-from backend.src.storage import (
+from src.storage import (
     get_achievement_img,
     get_status_img,
     get_photo,
 )
-from backend.src.utils.localcache import get_local_cache, set_local_cache
-from backend.src.utils.funcs import get_next_day_expire_date_unix
+from src.utils.localcache import get_local_cache, set_local_cache
+from src.utils.funcs import get_next_day_expire_date_unix
 
 
 def get_verification_mail_template():

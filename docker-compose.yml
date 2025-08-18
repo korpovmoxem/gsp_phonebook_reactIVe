@@ -1,0 +1,45 @@
+services:
+  backend:
+    image: phonebook.nexus.infr.gsprom.local/phonebook/backend:${BACKEND_TAG:-latest}
+    container_name: backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_USER=$DB_USER
+      - DB_PASSWORD=$DB_PASSWORD
+      - DB_HOST=$DB_HOST
+      - DB_PORT=$DB_PORT
+      - DB_NAME=$DB_NAME
+      - REDIS_HOST=$REDIS_HOST
+      - REDIS_PORT=$REDIS_PORT
+      - REDIS_TIMEOUT=$REDIS_TIMEOUT
+      - SMTP_SERVER=$SMTP_SERVER
+      - SMTP_PORT=$SMTP_PORT
+      - SMTP_USER=$SMTP_USER
+      - SMTP_DISPLAY_NAME=$SMTP_DISPLAY_NAME
+      - SMTP_PASSWORD=$SMTP_PASSWORD
+      - STORAGE_ACCESS_KEY=$STORAGE_ACCESS_KEY
+      - STORAGE_SECRET_KEY=$STORAGE_SECRET_KEY
+      - STORAGE_URL=$STORAGE_URL
+      - BACKEND_WORKERS=$BACKEND_WORKERS
+    restart: unless-stopped
+
+  frontend:
+    image: phonebook.nexus.infr.gsprom.local/phonebook/frontend:${FRONTEND_TAG:-latest}
+    container_name: frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  prometheus:
+    image: docker-hub.nexus.infr.gsprom.local/prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - backend
+    restart: unless-stopped

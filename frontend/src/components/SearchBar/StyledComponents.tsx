@@ -53,6 +53,7 @@ export const SearchInput = styled.input`
     background: ${(props) => props.theme.backgroundSearh};
     color: ${(props) => props.theme.mainTextColor};
     transition: all 0.5s ease;
+    box-sizing: border-box;
 `;
 
 export const ClearButton = styled.button`

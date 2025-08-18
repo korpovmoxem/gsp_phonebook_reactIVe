@@ -3,11 +3,11 @@ from typing import Annotated, Literal
 from fastapi import APIRouter, Request, Depends, Query, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.src.utils.decorators import (
+from src.utils.decorators import (
     router_result_caching,
     router_result_formatter
 )
-from backend.src.services.employee import (
+from src.services.employee import (
     get_employee,
     get_employee_detail,
     employee_search,
@@ -16,7 +16,7 @@ from backend.src.services.employee import (
     get_employee_birthday,
     get_employee_image,
 )
-from backend.src.models import (
+from src.models import (
     GetEmployeeTableRequest,
     GetEmployeeDetailRequest,
     SearchEmployeeRequest,
@@ -30,8 +30,8 @@ from backend.src.models import (
     ResultEmployeeBirthdaysDateGroupResponse,
     ResultGetEmployeeImageResponse,
 )
-from backend.src.utils.exceptions import NoParamsToEditEmployee
-from backend.src.utils.sql import get_session
+from src.utils.exceptions import NoParamsToEditEmployee
+from src.utils.sql import get_session
 
 
 router = APIRouter(

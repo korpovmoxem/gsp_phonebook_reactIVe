@@ -2,8 +2,8 @@ from datetime import datetime, timedelta
 
 import redis.asyncio as redis
 
-from backend.config import settings
-from backend.src.utils.funcs import get_next_day_expire_date_unix
+from config import settings
+from src.utils.funcs import get_next_day_expire_date_unix
 
 
 REDIS_URL = settings.get_redis_url()

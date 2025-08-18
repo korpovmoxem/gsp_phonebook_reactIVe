@@ -6,14 +6,14 @@ from fastapi.responses import JSONResponse
 from prometheus_fastapi_instrumentator import Instrumentator
 import uvicorn
 
-from backend.src.api.organization import router as organization_router
-from backend.src.api.employee import router as employee_router
-from backend.src.api.external import router as external_router
-from backend.src.api.cache import router as cache_router
-from backend.src.api.status import router as status_router
-from backend.src.utils.exceptions import AppCustomError
-from backend.src.utils.localdata import generate_local_data
-from backend.config import settings
+from src.api.organization import router as organization_router
+from src.api.employee import router as employee_router
+from src.api.external import router as external_router
+from src.api.cache import router as cache_router
+from src.api.status import router as status_router
+from src.utils.exceptions import AppCustomError
+from src.utils.localdata import generate_local_data
+from config import settings
 
 
 @asynccontextmanager
@@ -61,5 +61,5 @@ if __name__ == '__main__':
     uvicorn.run(
         app,
         host='0.0.0.0',
-        port=8001,
+        port=8000,
     )

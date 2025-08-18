@@ -2,10 +2,10 @@ from sqlalchemy import false, or_, Select, select, and_
 from sqlalchemy.orm import joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.src.database import (
+from src.database import (
     Employee,
 )
-from backend.src.database import async_session_maker
+from src.database import async_session_maker
 
 
 

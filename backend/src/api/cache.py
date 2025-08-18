@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from backend.src.utils.localcache import local_cache
-from backend.src.redis import (
+from src.utils.localcache import local_cache
+from src.redis import (
     r_delete_cache,
     r_get_verification_code,
     r_delete_verification_code

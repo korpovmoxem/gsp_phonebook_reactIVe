@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from typing import List, Optional
 import uuid
 
-from backend.src.database import (
+from src.database import (
     Organization,
     Department,
     Employee,

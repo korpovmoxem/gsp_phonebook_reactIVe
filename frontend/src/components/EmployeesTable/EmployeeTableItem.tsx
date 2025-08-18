@@ -192,7 +192,7 @@ import {
 import { useEmployeeStore } from "../../store/employeeStore";
 import { SpinnerCircular } from "spinners-react";
 import { useSearchParams } from "react-router-dom";
-import Highlighter from "react-highlight-words";
+import Highlighter, { FindChunks } from "react-highlight-words";
 
 interface Props {
     emp: Employee;
@@ -225,6 +225,65 @@ const EmployeeTableItem = ({
     const [searchParams] = useSearchParams();
     const type = searchParams.get("type");
     const value = searchParams.get("value");
+
+    interface Chunk {
+        start: number;
+        end: number;
+    }
+
+    const createDigitAwareFindChunks =
+        () =>
+        ({ searchWords, textToHighlight }: FindChunks): Chunk[] => {
+            const chunks: Chunk[] = [];
+
+            // Обрабатываем только первый searchWord, если это строка
+            const firstWord = searchWords[0];
+            let query: string;
+
+            if (typeof firstWord === "string") {
+                query = firstWord.trim();
+            } else {
+                return chunks; // Если это RegExp — не поддерживаем (или можно обработать отдельно)
+            }
+
+            // Проверяем, что запрос — непустая строка из цифр
+            if (!query || !/^\d+$/.test(query)) {
+                return chunks;
+            }
+
+            // Собираем все цифры и их индексы в оригинальной строке
+            const digitsWithIndices: { char: string; index: number }[] = [];
+            for (let i = 0; i < textToHighlight.length; i++) {
+                if (/\d/.test(textToHighlight[i])) {
+                    digitsWithIndices.push({
+                        char: textToHighlight[i],
+                        index: i,
+                    });
+                }
+            }
+
+            if (digitsWithIndices.length === 0) return chunks;
+
+            // Формируем строку из всех цифр
+            const digitString = digitsWithIndices.map((d) => d.char).join("");
+
+            // Ищем подстроку
+            const matchIndex = digitString.indexOf(query);
+            if (matchIndex === -1) return chunks;
+
+            // Добавляем chunk для каждой совпавшей цифры
+            for (let i = matchIndex; i < matchIndex + query.length; i++) {
+                if (i < digitsWithIndices.length) {
+                    const { index } = digitsWithIndices[i];
+                    chunks.push({
+                        start: index,
+                        end: index + 1,
+                    });
+                }
+            }
+
+            return chunks;
+        };
 
     // Загружаем маленькое фото только если оно еще не загружено
     useEffect(() => {
@@ -369,13 +428,20 @@ const EmployeeTableItem = ({
                                 <Highlighter
                                     searchWords={[value || ""]}
                                     autoEscape={true}
-                                    textToHighlight={`${emp.telephoneNumberCorp}`}
+                                    textToHighlight={`(${emp.telephoneNumberCorp.slice(
+                                        0,
+                                        2
+                                    )}) ${emp.telephoneNumberCorp.slice(2, 6)}`}
                                     highlightStyle={{
                                         backgroundColor: "#b2dff7",
                                     }}
+                                    findChunks={createDigitAwareFindChunks()}
                                 />
                             ) : (
-                                <>{emp.telephoneNumberCorp}</>
+                                <>{`(${emp.telephoneNumberCorp.slice(
+                                    0,
+                                    2
+                                )}) ${emp.telephoneNumberCorp.slice(2, 6)}`}</>
                             )}
                         </CustomEmailLink>
                     ) : (

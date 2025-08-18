@@ -1,15 +1,15 @@
 from fastapi import APIRouter, Request, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.src.models import (
+from src.models import (
     ResultGetExternalPhonebookResponse,
 )
-from backend.src.utils.decorators import (
+from src.utils.decorators import (
     router_result_formatter,
     router_result_caching
 )
-from backend.src.services.external import get_external_phonebook
-from backend.src.utils.sql import get_session
+from src.services.external import get_external_phonebook
+from src.utils.sql import get_session
 
 
 

@@ -1,10 +1,10 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
-from backend.src.database import (
+from src.database import (
     ExternalPhonebook
 )
-from backend.src.models import (
+from src.models import (
     GetExternalPhonebookResponse
 )
 

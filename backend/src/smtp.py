@@ -8,7 +8,7 @@ import sys
 
 import aiosmtplib
 
-from backend.config import settings
+from config import settings
 
 
 logger = logging.getLogger('smtp')

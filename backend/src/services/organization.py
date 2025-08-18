@@ -4,16 +4,16 @@ from collections import defaultdict
 from sqlalchemy import select, and_
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.src.database import (
+from src.database import (
     Organization,
     Department,
 )
-from backend.src.models import (
+from src.models import (
     GetOrganizationResponse,
     GetOrganizationTreeRootResponse,
     GetOrganizationTreeChildrenResponse,
 )
-from backend.src.utils.sql import (
+from src.utils.sql import (
     active_employee_filter,
 )
 

@@ -2,14 +2,14 @@ from datetime import date
 from typing import Optional, List
 import asyncio
 
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, select
 from sqlalchemy.orm import DeclarativeBase, Mapped, relationship, validates, sessionmaker
 from sqlalchemy.ext.asyncio import AsyncAttrs, async_sessionmaker, create_async_engine
 from sqlalchemy.testing.schema import mapped_column
 from sqlalchemy.schema import PrimaryKeyConstraint
 from sqlalchemy.ext.hybrid import hybrid_property
 
-from backend.config import settings
+from config import settings
 
 
 DATABASE_URL = settings.get_async_db_url()

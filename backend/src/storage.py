@@ -3,13 +3,13 @@ from typing import Literal
 from minio import Minio
 import yaml
 
-from backend.config import settings
-from backend.src.utils.funcs import (
+from config import settings
+from src.utils.funcs import (
     run_async,
     get_next_dat_expire_date_timedelta,
 )
-from backend.src.utils.decorators import format_exceptions_to_none_result
-from backend.src.utils.decorators import urllib3_http_response_to_base64
+from src.utils.decorators import format_exceptions_to_none_result
+from src.utils.decorators import urllib3_http_response_to_base64
 
 
 client = Minio(**settings.get_storage_settings())

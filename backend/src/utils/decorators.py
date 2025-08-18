@@ -8,12 +8,12 @@ import base64
 
 from fastapi import Request, HTTPException
 
-from backend.src.redis import (
+from src.redis import (
     r_get_cache,
     r_set_cache,
     get_next_day_expire_date_unix
 )
-from backend.src.utils.localcache import (
+from src.utils.localcache import (
     set_local_cache,
     get_local_cache,
 )
