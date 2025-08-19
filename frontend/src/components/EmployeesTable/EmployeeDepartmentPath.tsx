@@ -5,6 +5,7 @@ import {
     Crumb,
     EmployeeDepartmentPathWrapper,
     NonClickableCrumb,
+    OrganizationInSearchLine,
     Separator,
 } from "./StyledComponents";
 import React from "react";
@@ -38,11 +39,11 @@ export const EmployeeDepartmentPath = ({
         <EmployeeDepartmentPathWrapper>
             {/* Только если showOrganization === true */}
             {showOrganization && organizationId && organizationName && (
-                <>
+                <OrganizationInSearchLine>
                     <NonClickableCrumb>{organizationName}</NonClickableCrumb>
                     <br />
                     <hr />
-                </>
+                </OrganizationInSearchLine>
             )}
             {pathIds
                 .filter((item) => isNaN(Number(item)))

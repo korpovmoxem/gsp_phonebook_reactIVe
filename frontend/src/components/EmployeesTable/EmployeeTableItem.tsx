@@ -321,12 +321,12 @@ const EmployeeTableItem = ({
                             );
                         }
                         if (data === "error" || data === undefined) {
-                            return <PhotoObj photo={null} width="75px" />;
+                            return <PhotoObj photo={null} width="55px" />;
                         }
 
                         if (typeof data !== "string" && data !== undefined) {
                             return (
-                                <PhotoObj photo={data?.photo} width="75px" />
+                                <PhotoObj photo={data?.photo} width="55px" />
                             );
                         }
                     })()}

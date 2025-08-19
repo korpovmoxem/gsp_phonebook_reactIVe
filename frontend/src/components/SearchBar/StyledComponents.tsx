@@ -92,10 +92,10 @@ export const CustomSelect = styled(SearchSelect)`
 `;
 
 export const SearchButton = styled.button`
-    border: 1px solid #0d67a1;
+    border: 1px solid #076eb5;
     width: 100px;
     padding: 16px 20px;
-    background-color: #0d67a1;
+    background-color: #076eb5;
     color: white;
     cursor: pointer;
     :hover {

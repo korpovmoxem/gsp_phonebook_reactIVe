@@ -11,7 +11,7 @@ export const EmployeeListWrapperMain = styled.div.attrs({
     color: ${(props) => props.theme.mainTextColor};
     transition: all 0.5s ease;
     border-radius: 10px;
-    height: calc(100% - 138px);
+    height: calc(100% - 118px);
 `;
 
 export const EmployeeListWrapperTable = styled.div.attrs({
@@ -35,7 +35,7 @@ export const EmployeeTableRowDiv = styled.div.attrs({
     font-family: Arial, sans-serif;
     align-content: center;
     padding: 6px 8px;
-    min-height: 100px;
+    min-height: 60px;
     border-bottom: 1px solid ${(props) => props.theme.backgroundSubHeader};
     align-items: center;
     cursor: pointer;
@@ -77,6 +77,7 @@ export const Crumb = styled.span.attrs({
     transition: all 0.5s ease;
     cursor: pointer;
     margin-right: 4px;
+    padding-left: 6px;
 
     &:hover {
         text-decoration: underline;
@@ -86,10 +87,15 @@ export const Crumb = styled.span.attrs({
 export const NonClickableCrumb = styled.span.attrs({
     datatype: "Crumb",
 })`
-    color: ${(props) => props.theme.subHeaderColor};
+    color: black;
     transition: all 0.5s ease;
-    margin-right: 4px;
     font-weight: 700;
+`;
+
+export const OrganizationInSearchLine = styled.div`
+    background: #c8dae6;
+    margin: 0;
+    padding: 6px 0 0 6px;
 `;
 
 export const Separator = styled.span.attrs({
@@ -104,7 +110,7 @@ export const FirstHeader = styled.div.attrs({
 })`
     position: sticky;
     top: 0;
-    background: #0d67a1;
+    background: #076eb5;
     padding: 8px;
     font-weight: bold;
     border-bottom: 1px solid ${(props) => props.theme.background};
@@ -134,8 +140,9 @@ export const SecondHeader = styled.div.attrs({
 })`
     position: sticky;
     top: 35px;
-    background: ${(props) => props.theme.backgroundSubHeader};
-    color: ${(props) => props.theme.subHeaderColor};
+    // background: ${(props) => props.theme.backgroundSubHeader};
+    background: #c8dae6;
+    color: #3f3f3fff;
     transition: all 0.5s ease;
     padding: 8px;
     font-weight: bold;
@@ -150,7 +157,18 @@ export const ThirdHeader = styled.div.attrs({
     top: 69px;
     background: ${(props) => props.theme.backgroundSubHeader};
     transition: all 0.5s ease;
-    padding: 6px;
+    padding: 6px 6px 10px 6px;
+    font-weight: 500;
+    z-index: 2;
+`;
+
+export const ThirdHeaderForSearch = styled.div.attrs({
+    datatype: "ThirdHeader",
+})`
+    position: sticky;
+    top: 69px;
+    background: ${(props) => props.theme.backgroundSubHeader};
+    transition: all 0.5s ease;
     font-weight: 500;
     z-index: 2;
 `;
@@ -176,6 +194,7 @@ export const EmployeeDepartmentPathWrapper = styled.div.attrs({
 })`
     flex-direction: row;
     overflow-x: auto;
+    padding-bottom: 10px;
 `;
 
 export const EmployeeListWrapper = styled.div.attrs({

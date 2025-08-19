@@ -22,6 +22,7 @@ services:
       - STORAGE_SECRET_KEY=$STORAGE_SECRET_KEY
       - STORAGE_URL=$STORAGE_URL
       - BACKEND_WORKERS=$BACKEND_WORKERS
+      - PROMETHEUS_MULTIPROC_DIR=/prometheus
     restart: unless-stopped
 
   frontend:

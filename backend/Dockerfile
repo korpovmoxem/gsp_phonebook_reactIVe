@@ -41,8 +41,8 @@ RUN pip install --trusted-host nexus.infr.gsprom.local --index-url https://nexus
 
 COPY . .
 
-# Открытие порта
 EXPOSE 8000
 
-# Стало:
+RUN mkdir /prometheus
+
 CMD ["sh", "-c", "gunicorn main:app --workers ${BACKEND_WORKERS} --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000"]

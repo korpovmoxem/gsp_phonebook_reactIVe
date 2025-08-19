@@ -462,6 +462,7 @@ import {
     EmployeeListWrapper,
     HeadColumn,
     EmptyHeadColumn,
+    ThirdHeaderForSearch,
 } from "./StyledComponents";
 import { SearchBar } from "../SearchBar/SearchBar";
 import { ClipboardCopy } from "lucide-react";
@@ -645,7 +646,7 @@ export const EmployeeList: React.FC = () => {
                 <SearchWrapper>
                     <SearchBar />
                 </SearchWrapper>
-                <span
+                {/* <span
                     style={{
                         justifySelf: "end",
                         cursor: "pointer",
@@ -656,7 +657,7 @@ export const EmployeeList: React.FC = () => {
                     onClick={handleClickCopyEmails}
                 >
                     <ClipboardCopy size={20} stroke="grey" />
-                </span>
+                </span> */}
             </div>
             <EmployeeListWrapperMain>
                 {isEmpLoading ? (
@@ -676,6 +677,17 @@ export const EmployeeList: React.FC = () => {
                                 style={{ width: "25%", textAlign: "center" }}
                             >
                                 Электронная почта
+                                <span
+                                    style={{
+                                        cursor: "pointer",
+                                        verticalAlign: "middle",
+                                        marginLeft: "10%",
+                                    }}
+                                    title="Скопировать Email всех найденных сотрудников"
+                                    onClick={handleClickCopyEmails}
+                                >
+                                    <ClipboardCopy size={20} stroke="white" />
+                                </span>
                             </HeadColumn>
                         </FirstHeader>
                         <GroupedVirtuoso
@@ -688,7 +700,7 @@ export const EmployeeList: React.FC = () => {
                             groupContent={(groupIndex) => {
                                 const curr = searchGroupLabels[groupIndex];
                                 return (
-                                    <ThirdHeader>
+                                    <ThirdHeaderForSearch>
                                         <EmployeeDepartmentPath
                                             departmentId={curr.departmentId}
                                             dept={{
@@ -701,7 +713,7 @@ export const EmployeeList: React.FC = () => {
                                             organizationId={curr.orgId}
                                             organizationName={curr.orgName}
                                         />
-                                    </ThirdHeader>
+                                    </ThirdHeaderForSearch>
                                 );
                             }}
                             scrollerRef={(ref) => {
@@ -760,6 +772,17 @@ export const EmployeeList: React.FC = () => {
                                 style={{ width: "25%", textAlign: "center" }}
                             >
                                 Электронная почта
+                                <span
+                                    style={{
+                                        cursor: "pointer",
+                                        verticalAlign: "middle",
+                                        marginLeft: "10%",
+                                    }}
+                                    title="Скопировать Email всех найденных сотрудников"
+                                    onClick={handleClickCopyEmails}
+                                >
+                                    <ClipboardCopy size={20} stroke="white" />
+                                </span>
                             </HeadColumn>
                         </FirstHeader>
                         <div style={{ position: "sticky", top: 35, zIndex: 3 }}>

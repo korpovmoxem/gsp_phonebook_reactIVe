@@ -22,11 +22,13 @@ async def lifespan(app: FastAPI):
         await generate_local_data()
     yield
 
-
+import os
+print(os.listdir())
 app = FastAPI(
     title = 'Телефонный справочник ГСП',
     lifespan=lifespan,
 )
+#instrumentator = Instrumentator(use_registry=True).instrument(app)
 instrumentator = Instrumentator().instrument(app)
 instrumentator.expose(app)
 
@@ -61,5 +63,5 @@ if __name__ == '__main__':
     uvicorn.run(
         app,
         host='0.0.0.0',
-        port=8000,
+        port=8001,
     )
